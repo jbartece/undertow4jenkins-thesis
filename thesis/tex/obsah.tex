@@ -158,7 +158,7 @@
             které lze vypsat pomocí přidání parametru \texttt{--help}.
 
             Pro práci se spuštěnou instancí aplikace se používá především webové rozhraní. Standardně aplikace
-            komunikuje pomocí protokolu \emph{TCP} na portu 8080. Je tedy možné se na lokálním počítači připojit do aplikace zadáním URL adresy 
+            komunikuje pomocí protokolu \emph{HTTP} na portu 8080. Je tedy možné se na lokálním počítači připojit do aplikace zadáním URL adresy 
             \texttt{http://localhost:8080} do webového prohlížeče. 
 
             Pokud se aplikaci povede spustit, tak je již možné libovolně pracovat pouze s~prohlížeče. Detaily práce s~aplikací Jenkins CI
@@ -230,7 +230,7 @@
                     \caption{Model komunikace webového serveru s~klientem \cite{webserverVsServletPage}}
                     \label{imgWebserver}
                 \end{center}
-            \end{figure}
+            \end{figure}    %TODO fix obrazek je potreba prekreslit
 
         \subsection{Servlet kontejner} \label{servletKontejner}
             Jelikož dostávat stále stejná statická data při stejném požadavku není dostatečná funkcionalita serveru,
@@ -258,7 +258,7 @@
                     \caption{Ukázka způsobu činnosti servlet kontejneru a~jeho spolupráce s~webovým serverem \cite{webserverVsServletPage}}
                     \label{imgServlet}
                 \end{center}
-            \end{figure}
+            \end{figure}   %TODO fix obrazek je potreba prekreslit
 
 
          
@@ -349,14 +349,14 @@
         zůstal způsob zpracovávání a~nastavování parametrů. 
         Tato změna proběhla poměrně narychlo
         a~nebyla detailně otestována. Obsahuje zřejmě ještě množství nepotřebného kódu
-        a~samotná implementace není moc předhledná.
+        a~samotná implementace je dosti nepřehledná.
 
         
         %%%%%%%%%%%%%% DŮLEŽITÉ KONTROLOVAT SMYSL %%%%%%%%%%%%%%%%%%%%
         \medskip
         Těsně před integrací serveru Jetty s~Jenkins CI
         vznikalo zadání tohoto diplomového projektu, které mělo za cíl
-        výrazně zlepšit aktuální stav servlet kontejneru v~projektu Jenkins CI. Během
+        výrazně zlepšit aktuální stav servlet kontejneru v~projektu Jenkins~CI. Během
         formulace zadání byl servlet kontejner v~projektu přepracován a~proto
         muselo být zadání upraveno. I~po této změně byly stále důvody pro 
         nahrazení stávajícího servlet kontejneru serverem Undertow.
@@ -399,98 +399,16 @@
             podpory technologie \emph{HTTP upgrade}.
 
         
-        %V budoucnu rozšířit - jít více do hloubky principu na kterých Undertow pracuje
-        \subsection{Praktický způsob práce se serverem}
-            Server Undertow obsahuje velké množství funkcionalit, které lze
-            využít při integraci do cílové aplikace. V~následujícím 
-            textu bude na dvou příkladech ukázán způsob implementace
-            jednoduchého serveru, který umožní pochopit jakým způsobem
-            se se serverem Undertow pracuje. Obsah těchto příkladů 
-            bude jistě využit také při integraci s~Jenkins CI.
+        %TODO V budoucnu rozšířit - jít více do hloubky principu na kterých Undertow pracuje
+        %zpusob jak je vystaven, jak pracuje, implementace servlet kontejneru, security veci,
+        %handler chainy 
 
-            \medskip
-            Prvním příkladem je ukázková aplikace, která pouze naslouchá
-            na zvoleném portu a~na jakoukoliv příchozí odpověď odpoví
-            typickým textem \uv{Hello World}. Celý kód této aplikace vypadá následovně:
-       
-            \begin{verbatim}
-public class HelloWorldServer {
-
-  public static void main(final String[] args) {
-    Undertow server = Undertow.builder()
-      .addListener(8080, "localhost")
-      .setHandler(new HttpHandler() {
-        @Override
-        public void handleRequest(final HttpServerExchange exchange) 
-            throws Exception {
-          exchange.getResponseHeaders()
-            .put(Headers.CONTENT_TYPE, "text/plain");
-          exchange.getResponseSender().send("Hello World");
-        }
-      }).build();
-    server.start();
-  }
-}
-            \end{verbatim}
-
-            Třída \texttt{Undertow} vždy reprezentuje instanci samotného
-            webového serveru a~je ji nutné definovat prakticky vždy. Funkcí
-            \texttt{addListener} je serveru sděleno na kterém portu
-            a~síťové adrese 
-            má naslouchat příchozím požadavkům. 
-            Pomocí funkce \texttt{setHandler} je k~danému portu
-            přiřazena metoda, která se stará o~zpracovávání 
-            požadavků zaslaných na server a~odesílání odpovědí.
-            V~tomto případě pouze jen odpoví již zmíněným řetězcem
-            \uv{Hello World}. Samotné vytvoření požadavku a~jeho
-            odeslání provede tato metoda pomocí entity \texttt{HttpServerExchange},
-            která zpracovává komunikaci a~obsahuje o~ni množství další informací
-            (např. informace z~hlavičky dotazu).
-
-            Je důležité poznamenat, že pro každé naslouchání na 
-            nějakém portu musí být vytvořena nová instance serveru.
-
-            \medskip
-            Druhý příklad ukazuje jakým způsobem aplikace umožňuje 
-            přidat funkcionalitu servlet kontejneru do webového serveru.
-            V~následujícím příkladu je zobrazen pouze efektivní kód aplikace.
-
-            \begin{verbatim}
-DeploymentInfo servletBuilder = deployment()
-   .setClassLoader(ServletServer.class.getClassLoader())
-   .setContextPath("/app")
-   .setDeploymentName("app.war")
-   .addServlets(
-      servlet("MyServlet", CustomServlet.class)
-        .addInitParam("paramKey", "paramValue")
-        .addMapping("/servlet"));
-
-DeploymentManager manager = defaultContainer().addDeployment(servletBuilder);
-manager.deploy();
-
-Undertow server = Undertow.builder()
-   addListener(8080, "localhost")
-   .setHandler(manager.start())
-   .build();
-server.start();
-            \end{verbatim}
-
-            V~prvním kroku ukázkového příkladu se provádí nastavování
-            webové aplikace, která bude zavedena v~servlet kontejneru.
-            Tyto informace se ukládají do entity \texttt{DeploymentInfo}.
-            Nejprve je nastavena aplikaci hlavní třída kontejneru pomocí metody
-            \texttt{setClassLoader}. Metodou \texttt{setContextPath} je
-            definován tvar URL adresy pod kterou bude na serveru tato
-            aplikace dostupná. Důležitá je metoda \texttt{addServlets}
-            pomocí které se přidají jednotlivé součásti aplikace
-            a~nastaví se jejich dostupnost v~aplikaci metodou \texttt{addMapping}.
-
-            Po nastavení konfigurace aplikace proběhne metodami \texttt{addDeployment}
-            a~\texttt{deploy} připravení aplikace po spuštění. Ve zbytku kódu
-            je spuštěna instance serveru obdobným způsobem
-            jako byla ukázána v~předchozím příkladu.
-
-
+        %    Třída \texttt{Undertow} vždy reprezentuje instanci samotného
+        %    webového serveru a~je ji nutné definovat prakticky vždy. Funkcí
+        %    \texttt{addListener} je serveru sděleno na kterém portu
+        %    a~síťové adrese 
+        %    má naslouchat příchozím požadavkům. 
+ 
         
         \subsection{Srovnání serverů Undertow a~Jetty}\label{srovnani}
             Stávající servlet kontejner v~Jenkins CI je sice tvořen
@@ -901,6 +819,11 @@ server.start();
             Undertow přidána.
             
 
+
+
+    \section{Implementace}
+        %web.xml - podpora určitých parametrů, ale zachování obecnosti
+        %
 
 
 
