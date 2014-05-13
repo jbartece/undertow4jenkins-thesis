@@ -414,24 +414,37 @@
             Stávající servlet kontejner v~Jenkins CI je sice tvořen
             kombinací kontejneru Winstone a~serveru Jetty, ale veškerou
             časově kriticky náročnou práci při běhu aplikace vykonává server
-            Jetty. Proto pokud chceme srovnávat aktuální a plánované řešení servlet kontejneru
+            Jetty. Proto pokud chceme srovnávat původní a plánované řešení servlet kontejneru
             v~Jenkins CI, tak bychom měli srovnávat server Jetty se serverem Undertow.
 
             \medskip
             Budeme tedy srovnávat servery Undertow a~Jetty, jejich výhody a~nevýhody
             vzhledem k~využití v~systému Jenkins CI:
             \begin{itemize}
-                \item {\textbf{Rychlost:} Server Undertow je aktuálně ještě stále ve verzi \emph{beta}, ale už přesto existují
+                \item {\textbf{Rychlost:} Server Undertow je sice nový, ale už přesto existují
                     testy v~kterých se ukázal být výkonnější než server Jetty. V~tomto           
                     testování\footnote{Porovnání rychlosti, odezvy a~celkové výkonnosti serverů Undertow, Jetty a~jiných: 
                     \\\texttt{http://www.techempower.com/benchmarks/\#section=data-r8\&hw=ec2\&test=plaintext}}
-                    byl server Undertow i~3,5 krát rychlejší než server Jetty v~počtu zpracovaných
-                    požadavků za jednotku času. Při porovnávání doby odezvy serveru na požadavek
-                    dosáhl server Undertow až třetinového času než server Jetty.
+                    byl server Undertow v některých případech byl server 
+                    Undertow i~3,5 krát rychlejší než server Jetty v~počtu zpracovaných 
+                    požadavků za jednotku času. Při porovnávání doby odezvy serveru na požadavek 
+                    dosáhl server Undertow až třetinového času než server Jetty. 
+                    
+                    Naopak při některých
+                    jiných konfiguracích byl server Jetty rychlejší a proto nelze definitivně určit,
+                    který server je rychlejší a podstatné je také způsob využití serveru. 
+                    Dalším důležitým faktem je, že v Jenkins CI není využitá nejnovější verze serveru
+                    Jetty (verze 9), ale jeho nižší verze 8, protože Jenkins CI aktuálně využívá
+                    starší verzi jazyka Java 6.
+                    
+                    Lze tedy usuzovat, že server Undertow má potenciál být výkonnějším.
         
-                    Po dokončení diplomového projektu a~provedení plánované
-                    integrace bude uskutečněno vlastní porovnání těchto dvou implementací s~cílem potvrdit
-                    nebo vyvrátit tyto výsledky.}
+                    V rámci této práce bylo provedeno vlastní základní testování 
+                    obou těch serverů a to ve vztahu přímo k systému Jenkins CI. Tímto testováním
+                    se zabýcá kapitola \ref{kapPerformance}, kde jsou porovnávány 
+                    implementace servlet kontejneru s využitím serveru Jetty a nové implementace 
+                    postavené na serveru Undertow.
+                    }
 
                 \item{\textbf{Spolehlivost:} Dalším důležitým aspektem je spolehlivost daného serveru. 
                         Server Jetty má za sebou již dlouhou historii a~je integrován ve velkém množství
@@ -439,9 +452,9 @@
                         což mu dodává velkou důvěryhodnost a~lze očekávat, že bude pracovat velmi 
                         spolehlivě. 
                         
-                        U~serveru Undertow ještě nebyla dokončena první finální verze,
+                        U~serveru Undertow byla dokončena první finální verze teprve nedávno,
                         takže lze předpokládat, že může obsahovat ještě drobné nedostatky,
-                        které budou časem opravovány. Jelikož tento server bude integrován
+                        které budou časem opravovány. Jelikož tento server je integrován
                         v~novém aplikačním serveru WildFly 8, tak lze předpokládat,
                         že postupem času bude také velmi spolehlivý. 
                         Nicméně v~tomto aspektu je server Jetty zřejmě 
@@ -457,15 +470,17 @@
                     
                     Cílem serveru Undertow je být minimalistickým a~velmi rychlým 
                     řešením. Server Jetty poskytuje kvalitní podporu pro běh aplikací, ale je 
-                    rozsáhlejší a~není jeho prioritou, aby byl extrémně rychle spuštěn.
+                    rozsáhlejší. 
                     Lze usuzovat, že rychlost spuštění bude u~serveru Undertow výrazně nižší
-                    než u~serveru Jetty. Tato skutečnost bude testována při vyhodnocování
-                    výsledků této diplomové práce.
+                    než u~serveru Jetty. 
+                    
+                    %TODO potřeba zvážit, ale není to klíčové
+                    %Tato skutečnost bude testována při vyhodnocování
+                    %výsledků této diplomové práce.
 
                     V~aktuálním stavu Jenkins CI běží integrační testy více než hodinu. Pokud 
-                    by byl servlet kontejner spuštěn za poloviční dobu, tak by mohla být doba testování
-                    zkrácená také téměř na polovinu.
-
+                    by byl servlet kontejner spuštěn za výrazně kratší dobu, tak by mohla být doba testování
+                     také výrazně zkrácena. 
                     }
 
                 \item{\textbf{Velikost:} Jelikož je servlet kontejner přímo integrován do archivu ve kterém
@@ -479,9 +494,7 @@
                     velikost 1,8 MB. U~serveru Undertow je uváděno, že jeho archiv má méně
                     než 1 MB, ale~konečná velikost po integraci bude také záležet na využitých komponentách
                     a~rozsahu implementace. Přesto z~pohledu velikosti výsledného archivu
-                    se jeví server Undertow jako výhodnější, ale rozdíl oproti serveru Jetty není zásadní.
-                    Rozdíl je zřejmě přibližně 1MB, což jsou necelé 2\% z~aktuální velikosti
-                    Jenkins CI (cca 66 MB).}
+                    se jeví server Undertow jako výhodnější, ale rozdíl oproti serveru Jetty není zásadní.}
 
                 %Tato část by měla být pečlivě překontrolována
                 \item{\textbf{Konfigurovatelnost:} Server Undertow je velmi flexibilní a~způsob
@@ -493,6 +506,13 @@
                     je oproti tomu robustnější a~rozsáhlejší, ale neumožňuje tak velké přizpůsobování potřebám
                     uživatele jako například využití jen několika malých částí jeho funkčnosti či jejich
                     kombinování. }
+
+
+                \item{\textbf{Snadnost použití:}}  
+                TODO: Jetty se mnohem snadněji konfiguruje a využívá
+                %TODO 
+                %Zvážit kam napsat o chybějící pořádné doku k Undertow
+                                                
             \end{itemize}
         
 
@@ -824,7 +844,8 @@
     \section{Implementace}
         %web.xml - podpora určitých parametrů, ale zachování obecnosti
         %
-
+    
+    \section{Srovnání výkonu původní a nové implementace}  \label{kapPerformance}
 
 
 
@@ -844,14 +865,6 @@
     zvolena varianta, kdy budou nahrazeny obě komponenty současného 
     servlet kontejneru a~tudíž proběhne zcela nová implementace.
 
-    Nebyly objeveny žádné překážky, které by znemožňovaly
-    pokračování v~této práci. Dal-ším krokem v~navazujícím diplomovém projektu bude provedení
-    samotné integrace a~její důkladné otestování.
-    Po vytvoření funkční implementace bude výsledná aplikace porovnávána
-    s~původním řešením z~hlediska výkonu.
-    Pokud by byla potvrzena vyšší výkonnost nové implementace, tak
-    by tento přístup mohl nahradit stávající řešení nebo
-    být jeho novou a~lepší alternativou.
 
 
 %=========================================================================
