@@ -145,19 +145,7 @@
             \begin{verbatim}
                 mvn clean install -pl war -am -DskipTests
             \end{verbatim}
-            Pokud bychom chtěli spustit jednotkové testy aplikace, tak jednoduše vynecháme poslední přepínač. Nejjednodušším 
-            způsobem kontroly provedených změn v~programu je právě spouštění automatizovaných testů a~proto je tato možnost
-            velmi důležitá pro plánovanou integraci se serverem Underotw. Kromě jednotkových testů obsahuje Jenkins CI také
-            integrační testy, které jdou více do hloubky aplikační logiky a~jsou schopny odhalit větší množství chyb, 
-            ale na druhou stranu jejich vykonání trvá dlouhou dobu (řádově více než hodinu). Integrační testy lze spustit
-            příkazem:
-            \begin{verbatim}
-                mvn clean package
-            \end{verbatim}
-            Další nevýhodou integračních testů je, že je běžný stav, kdy některé testy aplikace, která je překládaná z~aktuálních zdrojových souborů,
-            končí s~chybou. Proto je při kontrole nutné porovnávat výsledky testů před provedením změn a~po jejich provedením. Tento způsob
-            kontroly aplikace bude využit při hodnocení navazující diplomové práce.
-
+            
             \medskip
             Po úspěšném překladu aplikace vznikne v~adresáři \texttt{./war/target/} archiv \texttt{jenkins.war}, 
             který obsahuje celou přeloženou webovou aplikaci včetně nástrojů na 
@@ -166,7 +154,8 @@
             \begin{verbatim}
                 java -jar jenkins.war
             \end{verbatim}
-            Je možné nastavit ještě další parametry při spuštění programu, které lze vypsat pomocí přidání parametru \texttt{--help}.
+            Chování aplikace lze upravit nastavením různých parametrů při spuštění programu, 
+            které lze vypsat pomocí přidání parametru \texttt{--help}.
 
             Pro práci se spuštěnou instancí aplikace se používá především webové rozhraní. Standardně aplikace
             komunikuje pomocí protokolu \emph{TCP} na portu 8080. Je tedy možné se na lokálním počítači připojit do aplikace zadáním URL adresy 
