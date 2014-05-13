@@ -6,9 +6,9 @@
 %\listoffigures
 
 \chapter{Úvod}
-    Tento semestrální projekt se zabývá vylepšením serveru Jenkins CI, který je v~praxi velmi využíván pro potřeby průběžného testování softwaru
+    Tato diplomová práce se zabývá vylepšením serveru Jenkins CI, který je v~praxi využíván pro potřeby průběžného testování softwaru
     a~jeho kontinuální integraci. Vylepšení se týká především webového serveru a~\emph{servlet} kontejneru, který je v~Jenkins CI integrován. 
-    V~současném stavu tyto funkce vykonává kombinace nástrojů Winstone a~Jetty. 
+    V~současném stavu tyto funkce vykonává kombinace serverů Winstone a~Jetty. 
     
     Server Winstone je již neudržovaný a~zastaralý nástroj a~z~tohoto důvodu
     byl z~velké části nahrazen serverem Jetty, který potřebnou funkcionalitu poskytuje. Server Jetty je poměrně komplexní projekt a~nabízí
@@ -22,16 +22,15 @@
     a~integrovat jej se serverem Jenkins CI. Při integraci je kladen důraz na snahu
     zachovat zpětnou kompatibilitu s~původním řešením. 
 
-    V~rámci tohoto semestrálního projektu jsou nejprve rozebrány potřebné informace týkající se jednotlivých nástrojů a~plánované integrace.
+    V~rámci této diplomové práce jsou nejprve rozebírány potřebné informace týkající se jednotlivých nástrojů a~plánované integrace.
     Následně je detailně analyzována architektura Jenkins CI a~způsob jeho integrace se servery Winstone a~Jetty. V~navazující části
     je diskutována varianta nahrazení pouze serveru Jetty a~varianta nahrazení serveru Jetty i~Winstone pomocí serveru Undertow. 
-    Z~provedené analýzy je zvolena jedna varianta, která je vybrána pro následnou integraci.
+    Z~provedené analýzy byla zvolena jedna varianta, která byla vybrána pro následnou integraci. 
 
-    Samotná implementace integrace není předmětem tohoto semestrálního projektu a~bude provedena až v~navazujícím diplomovém projektu. 
-    V~rámci dimplomového projektu bude také provedeno testování výkonu modifikovaného systému Jenkins CI a~celkové shodnocení navržených
-    a~provedených změn. 
-    Zadání této práce bylo vytvořeno firmou Red Hat s~jejiž spoluprácí tato diplomová práce vzniká. Pokud budou výsledky práce
-    dobré, tak její výstup může být následně využit i~v~praxi.
+    %TODO popis implementace a performance testování
+
+    
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -121,7 +120,7 @@
                 
                 \item{Pokud nechceme nebo nemůžeme spouštět Jenkins CI na aplikačním serveru, tak jej lze spustit přímo
                     z~vytvořené \texttt{.war} archivu (překladem se zabývá kapitola \ref{jenkinsUsage}). V~tomto případě
-                    se o~práci servlet kontejneru i~webového serveru komunikujícího protokolem \emph{HTTP} stará 
+                    se o~práci servlet kontejneru i~webového serveru komunikujícího jedním ze standardních síťových protokolů stará 
                     kombinace nástrojů Winstone a~Jetty, které jsou přímo integrovány do serveru Jenkins CI. 
                     
                     Nahrazení těchto dvou nástrojů (nebo pouze serveru Jetty) a~zajištění vykonávání této činnosti je hlavním cílem této práce.
@@ -142,7 +141,7 @@
             \texttt{http://maven.apache.org/}}.
             %,který je krátce zmíněn v kapitole \ref{maven}. 
             
-            Překlad aplikace bez spuštění jednotkových testů lze provést tímto příkazem:
+            Překlad aplikace bez spuštění jednotkových testů i integračních testů lze provést tímto příkazem:
             \begin{verbatim}
                 mvn clean install -pl war -am -DskipTests
             \end{verbatim}
@@ -756,7 +755,10 @@ server.start();
                 \item{\textbf{Komunikaci protokolem AJP13}} 
                 \item{\textbf{Umožnit přihlašování a~správu přístupových práv} }
                 \item{\textbf{Umožnit restartování a~ukončování aplikace přes speciální port}}
+                \item{\textbf{TODO: access logger, podrobnější popis činností}}
+                \item{\textbf{TODO: Nastavení aplikace dle web.xml?}}
             \end{itemize}
+            
 
             %v budoucnu by možná bylo vhodné popis protokolu AJP13 rozvést
             Protokoly HTTP a~HTTPS jsou velmi běžnými protokoly používanými pro 
