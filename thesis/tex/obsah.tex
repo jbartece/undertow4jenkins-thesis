@@ -115,7 +115,7 @@
                 JBoss\footnote{Více informací o~serveru viz \texttt{http://www.jboss.org/jbossas/}} 
                 anebo Glasfish\footnote{Více informací o~serveru viz \texttt{http://www.oracle.com/technetwork/middleware/glassfish/}}}.
                 Jenkins CI se standardně nasadí na server (dle zvyklostí konkrétního serveru)
-                a~poté je s~ním možné pracovat. V~tomto případě veškerou nízkoúrovňovou komunikaci pomocí \emph{HTTP} 
+                a~poté je s~ním možné pracovat. V~tomto případě veškerou nízkoúrovňovou komunikaci pomocí síťových protokolů 
                 i~práci servlet kontejneru zajišťuje aplikační server.
                 
                 \item{Pokud nechceme nebo nemůžeme spouštět Jenkins CI na aplikačním serveru, tak jej lze spustit přímo
@@ -215,8 +215,9 @@
 
         \subsection{Webový server}
             Webový server je program, který zprostředkovává komunikaci přes síť s~klienty, kteří
-            se k~němu připojí a~požadují po něm nějaká data. Tato komunikace probíhá pomocí protokolu \emph{HTTP}, 
-            který je založen na modelu \emph{požadavek-odpověd} (angl. \emph{request-response}).
+            se k~němu připojí a~požadují po něm nějaká data. Tato komunikace běžně probíhá pomocí protokolu \emph{HTTP}
+            nebo jeho šifrované verze \emph{HTTPS},
+            které jsou založeny na modelu \emph{požadavek-odpověd} (angl. \emph{request-response}).
             Model této komunikace je zachycen na obrázku \ref{imgWebserver}.
             
             Typický způsob komunikace webového serveru je, 
@@ -247,7 +248,7 @@
 
             Základní myšlenkou servlet kontejneru je umožnit dynamicky vytvářet odpovědi (často webové stránky)
             pomocí vykonávání servletů. Samotný servlet kontejner je program, který poskytuje běhové prostředí pro vykonávání servletů,
-            zajišťuje jejich vytváření, vykonávání a~odstraňování. Dále se také podílí na zpracovávání HTTP požadavků, které jsou
+            zajišťuje jejich vytváření, vykonávání a~odstraňování. Dále se také podílí na zpracovávání příchozích požadavků, které jsou
             mu předávány od webového serveru. 
 
             Popsaný způsob fungování servlet kontejneru je znázorněn na obrázku \ref{imgServlet}.
@@ -263,9 +264,13 @@
 
          
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    %\section{Nástroj Maven} \label{maven}
+    \section{Nástroj Maven} \label{maven}
     %    Základní obecné informace, něco o pomkách - co tam najdeme, způsobech překladů
     %    \cite{mavenWeb}
+
+
+
+
 
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     \section{Server Jetty} \label{jetty}
@@ -283,6 +288,7 @@
         klientů i~serverů využívajících Jetty probíhá asynchronně. 
         Návrh serveru umožňuje samostatné spouštění aplikací i~jeho integraci do jiné aplikace. 
 
+        %TODO nějaké reference na ty tachnologie, možná popsat SPDY
         Kromě těchto základních možností obsahuje
         řadu souvisejících technologií jako jsou SPDY, webové sokety\footnote{Oficiální stránky 
             specifikace webových soketů: \texttt{http://www.websocket.org/}}(angl. \emph{websocket}),
@@ -844,8 +850,15 @@
     \section{Implementace}
         %web.xml - podpora určitých parametrů, ale zachování obecnosti
         %
-    
+        %využit parametr setIgnoreFlush
+
     \section{Srovnání výkonu původní a nové implementace}  \label{kapPerformance}
+    %Různé scénáře, prootože rychlost určuje taky jak jsou rychle odpovědi servlet kontejneru na požadavky servletu
+    %proto i různé stránky, ale není to jen o servlet kontejneru, ale také o tom, jak je napsán kontejner
+    %
+    %používá jen POST a GET, pro DELETE se dělá POST (získáno z popisu REST API /job/jobName/API)
+    %Testovány nejpodstatnější části webserveru - komunikace pomocí HTTP a HTTPS
+
 
 
 
