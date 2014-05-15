@@ -138,8 +138,7 @@
 
             Po stažení zdrojových souborů je potřeba provést překlad aplikace. Pro tento automatizovaný 
             překlad se používá nástroj Maven\footnote{Více informací o~nástroji Maven lze získat na stránce 
-            \texttt{http://maven.apache.org/}}.
-            %,který je krátce zmíněn v kapitole \ref{maven}. 
+            \texttt{http://maven.apache.org/}},který je krátce zmíněn v kapitole \ref{maven}. 
             
             Překlad aplikace bez spuštění jednotkových testů i integračních testů lze provést tímto příkazem:
             \begin{verbatim}
@@ -265,11 +264,54 @@
          
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     \section{Nástroj Maven} \label{maven}
-    %    Základní obecné informace, něco o pomkách - co tam najdeme, způsobech překladů
-    %    \cite{mavenWeb}
+         %TODO zkontrolovat, jestli to dává smysl a není to moc rozvláčné
+        Pro vývoj a práci se serverem Jenkins CI v podobě zdrojových kódů je zapotřebí nástroj Maven. 
+        Jeho využití je také nutné při vytváření programu, který provede integraci serveru Undertow do Jenkins CI. 
+        V této kapitole budou o něm poskytnuty základní informace. Pro případné bližší
+        seznámení s tímto nástrojem lze další informace získat z webových stránek projektu \cite{mavenWeb}
+        z kterých byly čerpány informace v této kapitole. 
+        
+        Maven je nástroj, který provádí činnosti spojené s vytváření spustitelných aplikací ze zdrojových kódů 
+        Je zaměřen na aplikace vytvářené v jazyce Java. Hlavním cílem je umožnit uživatelům v co nejkratším
+        čase provádět běžné a opakující se úkony při překladu aplikace. Především umožňuje
+        provádění překladu aplikací, jejich spouštění automatizovaných jednotkových a 
+        integračních testů, uložení spustitelné podoby aplikace do lokálního repozitáře 
+        a případně i nahrání vytvořené aplikace na nějaký server. 
+
+        Je dodáván jako aplikace, která se spouští z příkazové řádky příkazem \texttt{mvn}. Veškeré
+        informace o projektu a definice činnosti, které má Maven provést, se specifikuje 
+        v XML souboru \texttt{pom.xml}. Mezi nejdůležitější patří definice výsledné podoby aplikace
+        a způsob jejího překladu, informace o závislostech
+        projektu na jiných knihovnách a definice serverů z kterých má stahovat potřebné knihovny pro svůj 
+        běh i pro běh aplikace. Po spuštění aplikace jsou tedy lokalizovány knihovny na kterých projekt
+        závisí a uloženy v lokálním repozitáři aniž by se o tuto činnost uživatel musel dále starat.
+        Kromě těchto praktických činností také umožňuje zveřejnit podrobnější informace o projektu         
+        jako jsou informace o licenci, vývojářích, adrese systému pro správu verzí, atp.
 
 
+        Na příkladu \ref{jenkinsPom} je ukázka části souboru \texttt{pom.xml}, který je vytvořen pro Jenkins~CI:
+        \begin{priklad} \label{jenkinsPom} 
+            Ukázka souboru \texttt{pom.xml}
+\begin{verbatim}
+  ...
+  <repositories>
+    <repository>
+      <id>repo.jenkins-ci.org</id>
+      <url>http://repo.jenkins-ci.org/public/</url>
+  ...
+  <dependency>
+    <groupId>org.mockito</groupId>
+    <artifactId>mockito-core</artifactId>
+    <version>1.8.5</version>
+  </dependency>
+  ...
+\end{verbatim}
+        \end{priklad}
 
+        V části \texttt{repository} je definována cesta k serveru z kterého má Maven stahovat potřebné soubory
+        a v těle značky \texttt{dependency} je pomocí hodnot \texttt{groupId, artifactId, version} jednoznačně
+        definována potřebná knihovna. Na základě těchto informací poté Maven při překladu stáhne požadovanou
+        knihovnu a při distribuci aplikace nemusí být tato knihovna k programu přibalena. 
 
 
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -288,7 +330,7 @@
         klientů i~serverů využívajících Jetty probíhá asynchronně. 
         Návrh serveru umožňuje samostatné spouštění aplikací i~jeho integraci do jiné aplikace. 
 
-        %TODO nějaké reference na ty tachnologie, možná popsat SPDY
+        %TODO nějaké reference na ty tachnologie, možná popsat SPDY a AJP13
         Kromě těchto základních možností obsahuje
         řadu souvisejících technologií jako jsou SPDY, webové sokety\footnote{Oficiální stránky 
             specifikace webových soketů: \texttt{http://www.websocket.org/}}(angl. \emph{websocket}),
