@@ -130,40 +130,7 @@
 
             Pro tuto práci je důležitý druhý způsob používání Jenkins CI a~proto další informace se budou přímo vázat k~němu.
 
-        \subsection{Základy práce s~Jenkins CI} \label{jenkinsUsage}
-            Pro přeložení a~spuštění aplikace je potřeba pracovat z~příkazové řádky nebo provést instalaci nějakým dávkovým souborem (skriptem).
-            Aplikaci je možné stáhnout připravenou přímo ze stránek projektu \cite{jenkinsWeb}, ale pro tuto práci je potřeba 
-            pracovat s~aplikací ze zdrojových souborů. Aktuální verze aplikace je dostupná na serveru 
-            GitHub\footnote{Adresa aktuální verze Jekins CI: \texttt{www.github.com/jenkinsci}}.
-
-            Po stažení zdrojových souborů je potřeba provést překlad aplikace. Pro tento automatizovaný 
-            překlad se používá nástroj Maven\footnote{Více informací o~nástroji Maven lze získat na stránce 
-            \texttt{http://maven.apache.org/}},který je krátce zmíněn v kapitole \ref{maven}. 
-            
-            Překlad aplikace bez spuštění jednotkových testů i integračních testů lze provést tímto příkazem:
-            \begin{verbatim}
-                mvn clean install -pl war -am -DskipTests
-            \end{verbatim}
-            
-            \medskip
-            Po úspěšném překladu aplikace vznikne v~adresáři \texttt{./war/target/} archiv \texttt{jenkins.war}, 
-            který obsahuje celou přeloženou webovou aplikaci včetně nástrojů na 
-            kterých závisí. Z~tohoto archivu je možné aplikaci přímo spustit pomocí příkazu:
-
-            \begin{verbatim}
-                java -jar jenkins.war
-            \end{verbatim}
-            Chování aplikace lze upravit nastavením různých parametrů při spuštění programu, 
-            které lze vypsat pomocí přidání parametru \texttt{--help}.
-
-            Pro práci se spuštěnou instancí aplikace se používá především webové rozhraní. Standardně aplikace
-            komunikuje pomocí protokolu \emph{HTTP} na portu 8080. Je tedy možné se na lokálním počítači připojit do aplikace zadáním URL adresy 
-            \texttt{http://localhost:8080} do webového prohlížeče. 
-
-            Pokud se aplikaci povede spustit, tak je již možné libovolně pracovat pouze s~prohlížeče. Detaily práce s~aplikací Jenkins CI
-            lze nalézt v~této knize \cite{jenkinsBook}, ale tyto informace jsou již nad rámec této publikace.
-            
-        \subsection{Architektura serveru}   \label{secJenkinsArchitektura}
+         \subsection{Architektura serveru}   \label{secJenkinsArchitektura}
             Architektura systému Jenkins CI je poměrně komplikovaná a~pro tuto práci není nutné ji detailně celou znát.
             Bude popsána na vysoké úrovni abstrakce a~zaměří se pouze na komponenty, které se přímo týkají této práce
             a~budou dále v~textu odkazovány nebo blíže rozebírány. Přehled architektury je na obrázku~\ref{imgJenkinsArchitecture}.
@@ -204,6 +171,42 @@
             Informace v~této kapitole byly čerpány z~tohoto dokumentu \cite{architectureOverview}
             a~z~webových stránek projektu Stapler \cite{staplerWeb}.
 
+        \subsection{Základy práce s~Jenkins CI} \label{jenkinsUsage}
+            Pro přeložení a~spuštění aplikace je potřeba pracovat z~příkazové řádky nebo provést instalaci nějakým dávkovým souborem (skriptem).
+            Aplikaci je možné stáhnout připravenou přímo ze stránek projektu \cite{jenkinsWeb}, ale pro tuto práci je potřeba 
+            pracovat s~aplikací ze zdrojových souborů. Aktuální verze aplikace je dostupná na serveru 
+            GitHub\footnote{Adresa aktuální verze Jekins CI: \texttt{www.github.com/jenkinsci}}.
+
+            Po stažení zdrojových souborů je potřeba provést překlad aplikace. Pro tento automatizovaný 
+            překlad se používá nástroj Maven\footnote{Více informací o~nástroji Maven lze získat na stránce 
+            \texttt{http://maven.apache.org/}},který je krátce zmíněn v kapitole \ref{maven}. 
+            
+            Překlad aplikace bez spuštění jednotkových testů i integračních testů lze provést tímto příkazem:
+            \begin{verbatim}
+                mvn clean install -pl war -am -DskipTests
+            \end{verbatim}
+            
+            \medskip
+            Po úspěšném překladu aplikace vznikne v~adresáři \texttt{./war/target/} archiv \texttt{jenkins.war}, 
+            který obsahuje celou přeloženou webovou aplikaci včetně nástrojů na 
+            kterých závisí. Z~tohoto archivu je možné aplikaci přímo spustit pomocí příkazu:
+
+            \begin{verbatim}
+                java -jar jenkins.war
+            \end{verbatim}
+            Chování aplikace lze upravit nastavením různých parametrů při spuštění programu, 
+            které lze vypsat pomocí přidání parametru \texttt{--help}.
+
+            Pro práci se spuštěnou instancí aplikace se používá především webové rozhraní. Standardně aplikace
+            komunikuje pomocí protokolu \emph{HTTP} na portu 8080. Je tedy možné se na lokálním počítači připojit do aplikace zadáním URL adresy 
+            \texttt{http://localhost:8080} do webového prohlížeče. 
+
+            Pokud se aplikaci povede spustit, tak je již možné libovolně pracovat pouze s~prohlížeče. Detaily práce s~aplikací Jenkins CI
+            lze nalézt v~této knize \cite{jenkinsBook}, ale tyto informace jsou již nad rámec této publikace.
+
+
+            
+       
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     \section{Webový server a~servlet kontejner} \label{servletWebserver}
         V~této kapitole jsou vysvětleny pojmy webový server a~servlet kontejner, které se 
@@ -259,6 +262,9 @@
                     \label{imgServlet}
                 \end{center}
             \end{figure}   %TODO fix obrazek je potreba prekreslit
+
+        \subsection{Architektura archivu webové aplikace}
+            %TODO Pridat něco o webových aplikacích, souboru web.xml, archivu .war?
 
 
          
@@ -400,7 +406,7 @@
         a~samotná implementace je dosti nepřehledná.
 
         
-        %%%%%%%%%%%%%% DŮLEŽITÉ KONTROLOVAT SMYSL %%%%%%%%%%%%%%%%%%%%
+        %%%%%%%%%%%%%% TODO DŮLEŽITÉ KONTROLOVAT SMYSL %%%%%%%%%%%%%%%%%%%%
         \medskip
         Těsně před integrací serveru Jetty s~Jenkins CI
         vznikalo zadání tohoto diplomového projektu, které mělo za cíl
@@ -414,19 +420,26 @@
 
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     \section{Server Undertow} \label{undertow}
-        Undertow je nový webový server, který vzniká za podpory firmy Red Hat a~její sekce JBoss,
-        a~je vytvořen v~jazyce Java. 
-        Vzniká především aby byl výchozím webovým serverem v~aplikačním serveru WildFly 8.
-        V~současné době je ve fázi beta verze programu, ale je již plně použitelný.
+        Undertow je webový server napsaný v jazyce Java, 
+        který vzniká za podpory firmy Red Hat a~její sekce JBoss.
+        Primárním účelem serveru Undertow je být výchozím webovým serverem v~aplikačním serveru WildFly.
+        Jeho první verze finální byla vydána teprve před nedávnem, takže se jedná o
+        nově vytvořený server a jeho vývoj stále usilovně 
+        probíhá\footnote{Aktuální verzi serveru, lze najít na serveru GitHub: 
+        \texttt{https://github.com/undertow-io/undertow}}. Pro stažení a využití tohoto serveru
+        je nejjednodušší využít aplikaci Maven (kapitola \ref{maven}) a nastavit patřičnou 
+        závislost\footnote{Definice závilosti v aplikaci Maven pro stažení serveru Undertow: 
+        \texttt{http://undertow.io/downloads.html} }.
 
-        Informace v~této kapitole byly čerpány z~webových stránek projektu \cite{undertowWeb}.
-        Jelikož je aplikace poměrně nová, tak k~ní existuje jen poměrně nedostatečná 
-        dokumentace. Některé informace z~této kapitoly musely být čerpány
-        z~vygenerované projektové dokumentace.
+        Informace v~této kapitole byly čerpány především z~webové dokumentace projektu \cite{undertowDocs},
+        ale jelikož je aplikace poměrně nová, tak zveřejněná dokumentace je poměrně nedostatečná. 
+        Některé informace z~této kapitoly musely být čerpány
+        z~vygenerované projektové dokumentace a z komunikace s vývojáři projektu
+        na chatu IRC.
 
         \subsection{Vlastnosti serveru}
             Server Undertow je zaměřen na to, aby byl plně integrovatelný do libovolných aplikací
-            a~aby byl co nejmenší a~nejjednodušší. Samotný
+            a~byl co nejmenší a~nejjednodušší. Samotný
             archiv s~jádrem aplikace je menší než 1MB a~při běhu aplikace potřebuje
             méně než 4MB dynamicky alokované paměti. 
 
@@ -443,19 +456,52 @@
             pro synchronní komunikaci.
             Dalšími funcionalitami, které server poskytuje, jsou možnost integrace
             servlet kontejneru odpovídajícího specifikaci verze 3.1,
-            využití plné podpory webových soketů nebo 
+            využití plné podpory webových soketů (angl. \emph{websockets}) nebo 
             podpory technologie \emph{HTTP upgrade}.
 
         
-        %TODO V budoucnu rozšířit - jít více do hloubky principu na kterých Undertow pracuje
-        %zpusob jak je vystaven, jak pracuje, implementace servlet kontejneru, security veci,
-        %handler chainy 
 
-        %    Třída \texttt{Undertow} vždy reprezentuje instanci samotného
-        %    webového serveru a~je ji nutné definovat prakticky vždy. Funkcí
-        %    \texttt{addListener} je serveru sděleno na kterém portu
-        %    a~síťové adrese 
-        %    má naslouchat příchozím požadavkům. 
+
+        \subsection{Architektura serveru}
+            %jít více do hloubky principu na kterých Undertow pracuje
+
+            \subsubsection{Webový server}
+                %Obecně je jedno, které listenery se v aplikaci použijí (HTTP, HTTPS, AJP), 
+                %ale samozřejmě nelze použít
+                %specifické věci pro nějaký protokol, pokud se naktuálně nepoužív 
+                %(např. při použití protokolu AJP nelze využít HTTP upgrade).
+
+                %zpusob jak je vystaven, jak pracuje, 
+                %listenery i all interfaces 0.0.0.0, handlery, handler chain, preddefinované
+                %Handlery jsou řetězeny tak, že  při vytvoření je definován následující handler
+                
+                %Listenery:
+                %Vstupní bod do aplikace. Jsou zodpověné za překlad požadavku 
+                %do entity HtttpServerExchange a obdobně vyváření odpovědi.
+
+
+                %    Třída \texttt{Undertow} vždy reprezentuje instanci samotného
+                %    webového serveru a~je ji nutné definovat prakticky vždy. Funkcí
+                %    \texttt{addListener} je serveru sděleno na kterém portu
+                %    a~síťové adrese 
+                %    má naslouchat příchozím požadavkům. 
+
+                %ukazka kousku kodu s vytvoreni serveru
+
+            \subsubsection{Integrace servlet kontejneru}
+                %Vytvoření DeploymentInfo a nastavení požadovaných funkcí 
+                %infastuktury servlet kontejneru.
+                %vytvoreni veci z web.xml
+
+                %Vhodné využití statických metod z io.undertow.servlets.Servlets
+                %Správa statických zdrojů pomocí ResourceManager.
+
+                %Ukázka vytvoreni deployment info
+
+            \subsection{Zabezpečení servlet kontejneru}
+                %Nastavení autentizace pomocí LoginConfig, IdentityManageru, 
+                %security-constraints z web.xml
+                
  
         
         \subsection{Srovnání serverů Undertow a~Jetty}\label{srovnani}
@@ -483,7 +529,7 @@
                     který server je rychlejší a podstatné je také způsob využití serveru. 
                     Dalším důležitým faktem je, že v Jenkins CI není využitá nejnovější verze serveru
                     Jetty (verze 9), ale jeho nižší verze 8, protože Jenkins CI aktuálně využívá
-                    starší verzi jazyka Java 6.
+                    starší verzi jazyka Java (verzi Java 6).
                     
                     Lze tedy usuzovat, že server Undertow má potenciál být výkonnějším.
         
