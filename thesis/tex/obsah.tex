@@ -522,7 +522,7 @@
                     Lze usuzovat, že rychlost spuštění bude u~serveru Undertow výrazně nižší
                     než u~serveru Jetty. 
                     
-                    %TODO potřeba zvážit, ale není to klíčové
+                    %TODO potřeba zvážit, ale spíše to není podstatné
                     %Tato skutečnost bude testována při vyhodnocování
                     %výsledků této diplomové práce.
 
@@ -556,11 +556,27 @@
                     kombinování. }
 
 
-                \item{\textbf{Snadnost použití:}}  
-                TODO: Jetty se mnohem snadněji konfiguruje a využívá
-                %TODO 
-                %Zvážit kam napsat o chybějící pořádné doku k Undertow
-                                                
+                \item{\textbf{Snadnost použití:}}                      
+                    Server Jetty má již dlouhou historii a je v něm vše pečlivě dokumentováno
+                    a to jeho využití pro uživatele činí poměrně snadným. Podstatnou výhodou je, že
+                    server Jetty poskytuje velké množství vysokoúrovňových rozhraní
+                    pro různé konfigurace serveru.
+                    
+                    Jelikož je server Undertow velmi mladým projektem a není tolik ustálený, 
+                    tak postrádá některé věci,
+                    které jsou u serveru Jetty samozřejmostí. 
+                    Dokumentace k serveru
+                    Undertow je poměrně strohá, místy ne úplně přesná a stále se vyvíjí. 
+                    Jeho velká flexibilita při konfiguraci s sebou nese i jisté nevýhody
+                    a tím je právě jednoduchost jeho použití. Další nepříjemností je, že není
+                    dostupné tolik propracované rozhraní pro konfiguraci jako u serveru Jetty,
+                    což lze opět přičítat délce trvání projektu.
+
+                    Je zjevné, že využití serveru Jetty je podstatně jednodušší než je tomu
+                    u serveru Undertow. Nicméně tato skutečnost je jen překážkou pro provedení
+                    integrace, ale následně nemusí činit další problémy a nijak neovlivňuje
+                    funkčnost výsledné aplikace.
+
             \end{itemize}
         
 
@@ -890,6 +906,10 @@
 
 
     \section{Implementace}
+%                    V mnoha místech navíc chybí patřičné komentování zdrojových kódů a to
+%                    i na úrovni veřejného rozhraní, což činilo využití poměrně náročným a byl jsem nucen zkoumat
+%                    samotné zdrojové kódy serveru, abych vše správně pochopil a využil.
+
         %web.xml - podpora určitých parametrů, ale zachování obecnosti
         %
         %využit parametr setIgnoreFlush

@@ -19,6 +19,7 @@ Vhodné využití statických metod z io.undertow.servlets.Servlets
 
 Správa statických zdrojů pomocí ResourceManager.
 
-Nastavení autentizace pomocí LoginConfig.
+Nastavení autentizace pomocí LoginConfig, IdentityManageru, security-constraints z web.xml
+Další možnost řešení security jsou security handlery
 
 
