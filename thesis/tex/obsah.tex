@@ -462,47 +462,64 @@
 
         \subsection{Architektura serveru}
             V této kapitole jsou podrobněji rozebrány základní principy, jak Undertow funguje, 
-            a je popsána jeho architektura. Další podrobnější informace o serveru 
+            a je zjednodušeně popsána jeho architektura z pohledu uživatele. Další podrobnější informace o serveru 
             lze nalézt na webové dokumentaci projektu, která byla hlavním zdrojem této kapitoly \cite{undertowDocs}.
             Popis architektury serveru se přímo vzahuje k samotné integraci do Jenkins CI.
 
             \subsubsection{Webový server}
-                Architektura serveru Undertow nevyužívá koncept kontejneru, který se pomocí vysokoúrovňového rozhraní nastaví 
+                Architektura serveru Undertow nevyužívá koncept jednoho velkého kontejneru, který se pomocí vysokoúrovňového rozhraní nastaví 
                 pro danou aplikaci a sám o sobě funguje. Naopak aplikace jsou sestavovány z množství tříd tzv. \emph{handlerů} 
                 (viz níže), které spravují příchozí požadavky a samy o sobě utvářejí samotný webový server. 
                 Díky tomuto konceptu je možné využít jen tu funkcionalitu serveru, která je v aplikaci potřeba, a server
                 není brzděn zbytečnou činností, která není pro konkrétní aplikaci potřebná. 
 
+                Vstupním bodem aplikace jsou tzv. \textbf{\emph{listenery}} (angl. \emph{listener}), které naslouchají na určených síťových
+                rozhraních a portech a zpracovávají příchozí požadavky. Jednotlivé \emph{listenery} se liší dle protokolu, kterým komunikují.
+                V Undertow jsou 3 základní typy \emph{listenerů}
+                pro protokoly HTTP, HTTPS, a AJP. Také je vytvořen podpora protokolu SPDY, ale v aktuální verzi ještě není zahrnuta. 
+                Pro uživatele poskytují abstrakci nad samotnými síťovými protokoly, takže v serveru lze stejným způsobem zpracovávat
+                požadavky přicházejícími v různých protokolech. Jediným samozřejmým omezením je, že nelze v jednom protokolu
+                používat informace specifické pouze pro protokol jiný. 
+                
+                Pro umožnění této abstrakce každý \emph{listener} provádí překlad 
+                požadavku do objektu třídy
+                \texttt{HttpServerExchange}. V něm je uchováván aktuální stav požadavku a vytvářené odpovědi
+                a při odesílání odpovědi z tohoto objektu \emph{listener} vytvoří odpověď, která je poslána klientovi.
+
+                Tyto listenery jsou těsně navázané na knihovnu XNIO\footnote{TODO}, která
+                poskytuje pro Undertow abstrakci nad síťovou komunikací. Samotné listenery v Undertow je možné konfigurovat
+                nastavením několika parametrů \cite{undertowListeners}, ale lze také přímo konfigurovat síťové kanály knihovny XNIO.
+
+                \medskip
+                Samotné jádro serveru tvoří již zmiňované \emph{handlery}.
                 \textbf{\emph{Handler}} je třída, která definuje metodu \texttt{handleRequest} v níž
                 je příchozí požadavek na serveru libovolně upraven a předán dalšímu \emph{handleru} ke zpracování nebo je vytvořena odpověď 
-                a poslána zpět klientovi. \emph{Handlery} tedy jsou tedy za sebou napojeny a tvoří řetěz (angl. \emph{handler chain}).
+                a poslána zpět klientovi (tedy jsou vynechány následující \emph{handlery}). 
+                \emph{Handlery} jsou tedy za sebou napojeny a tvoří řetěz (angl. \emph{handler chain}).
                 Je možné si nadefinovat libovolný vlastní \emph{handler}, který pouze musí implementovat patřičné rozhraní s metodou 
                 \texttt{handleRequest} nebo je možné využít již předpřipravených tříd. V těchoto předpřipravených třídách
                 jsou běžně požadované funkce serveru jako úprava hlaviček příchozího požadavku, přesměrování požadavku apod.
                 Pomocí jediného parametru (objekt třídy \texttt{HttpServerExchange}) metody \texttt{handleRequest} 
                 si \emph{handlery} předávají aktuální stav požadavku a postupně vytvářené odpovědi.
 
-                                
-                %Listenery:
-                %Vstupní bod do aplikace. Jsou zodpověné za překlad požadavku 
-                %do entity HtttpServerExchange a obdobně vyváření odpovědi.
-                %listenery i all interfaces 0.0.0.0, handlery,                
 
-                %Obecně je jedno, které listenery se v aplikaci použijí (HTTP, HTTPS, AJP), 
-                %ale samozřejmě nelze použít
-                %specifické věci pro nějaký protokol, pokud se naktuálně nepoužív 
-                %(např. při použití protokolu AJP nelze využít HTTP upgrade).
+                Popisované \emph{handlery} a \emph{listenery} jsou základem architektury serveru Undertow, terá je znázorněna
+                na obrázku \ref{imgUndertowArchitecture}. 
+                Na příkladu \ref{prUndertow} je ukázáno vytvoření jednoduchého webového serveru.
 
-                %TODO obrázek architektury listenery různých typů, handler chain, předávaný objekt exchange
+                \begin{figure}[ht]
+                    \begin{center}
+                        \scalebox{0.63}{\includegraphics{img/web-server.jpg}}
+                        \caption{Architektura serveru Undertow}
+                        \label{imgUndertowArchitecture}
+                    \end{center}
+                \end{figure}    %TODO fix obrazek je potreba nakreslit
+  
 
-                %    Třída \texttt{Undertow} vždy reprezentuje instanci samotného
-                %    webového serveru a~je ji nutné definovat prakticky vždy. Funkcí
-                %    \texttt{addListener} je serveru sděleno na kterém portu
-                %    a~síťové adrese 
-                %    má naslouchat příchozím požadavkům. 
 
-                %ukazka kousku kodu s vytvoreni serveru
-\begin{priklad} Vytvoření jednoduché instance serveru Undertow
+                %TODO kontrola posunutí textu
+                \newpage
+\begin{priklad} \label{prUndertow} Vytvoření jednoduché instance serveru Undertow
 \begin{verbatim}
 Undertow server = Undertow.builder()
   .addHttpListener(8080, "localhost")
@@ -517,6 +534,16 @@ Undertow server = Undertow.builder()
 server.start();
 \end{verbatim}
 \end{priklad}
+
+                
+            Třída \texttt{Undertow} reprezentuje instanci samotného
+            webového serveru a~je ji nutné definovat prakticky vždy. Metodou
+            \texttt{addListener} je přidán výše zmiňovaný \emph{listener}, který
+            naslouchá na zvoleném síťovém rozhraní a portu (při zvolení IP adresy 0.0.0.0 naslouchá
+            na všech rozhraních). Tento jednoduchý příklad obsahuje pouze jeden \emph{handler} 
+            přidaný metodou \texttt{addHandler}, který
+            provádí veškerou činnost serveru a tou je odpovídání na všechny požadavky jednotným textem. 
+            Ve standardních aplikacích by následovalo volání dalšího \emph{handleru}.
 
             \subsubsection{Integrace servlet kontejneru}
                 %Vytvoření DeploymentInfo a nastavení požadovaných funkcí 
