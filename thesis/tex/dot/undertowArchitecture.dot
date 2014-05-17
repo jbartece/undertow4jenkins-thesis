@@ -1,0 +1,21 @@
+digraph undertowArchitecture {
+    shape="box";
+    
+    http[label="HTTP listener"];
+    https[label="HTTPS listener"];
+    ajp[label="AJP listener"];
+    han1[label="První handler"];
+    han2[label="Poslední handler"];
+    
+    httpExchange[label="objekt HttpServerExchange", shape=box];
+
+    
+    http -> httpExchange;
+    
+    https -> httpExchange;
+    ajp -> httpExchange;
+
+    httpExchange -> han1;
+    han1 -> han2[label=" Další handlery", style=dotted];
+
+}

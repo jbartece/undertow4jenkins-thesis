@@ -263,7 +263,7 @@
                 \end{center}
             \end{figure}   %TODO fix obrazek je potreba prekreslit
 
-        \subsection{Architektura archivu webové aplikace}
+        \subsection{Architektura archivu webové aplikace} \label{kapWebXml}
             %TODO Pridat něco o webových aplikacích, souboru web.xml, archivu .war?
 
 
@@ -486,7 +486,7 @@
                 \texttt{HttpServerExchange}. V něm je uchováván aktuální stav požadavku a vytvářené odpovědi
                 a při odesílání odpovědi z tohoto objektu \emph{listener} vytvoří odpověď, která je poslána klientovi.
 
-                Tyto listenery jsou těsně navázané na knihovnu XNIO\footnote{TODO}, která
+                Tyto listenery jsou těsně navázané na knihovnu XNIO\footnote{Webové stránky projektu XNIO: \texttt{http://xnio.jboss.org/}}, která
                 poskytuje pro Undertow abstrakci nad síťovou komunikací. Samotné listenery v Undertow je možné konfigurovat
                 nastavením několika parametrů \cite{undertowListeners}, ale lze také přímo konfigurovat síťové kanály knihovny XNIO.
 
@@ -503,17 +503,17 @@
                 si \emph{handlery} předávají aktuální stav požadavku a postupně vytvářené odpovědi.
 
 
-                Popisované \emph{handlery} a \emph{listenery} jsou základem architektury serveru Undertow, terá je znázorněna
+                Popisované \emph{handlery} a \emph{listenery} jsou základem architektury serveru Undertow, která je znázorněna
                 na obrázku \ref{imgUndertowArchitecture}. 
                 Na příkladu \ref{prUndertow} je ukázáno vytvoření jednoduchého webového serveru.
 
                 \begin{figure}[ht]
                     \begin{center}
-                        \scalebox{0.63}{\includegraphics{img/web-server.jpg}}
-                        \caption{Architektura serveru Undertow}
+                        \scalebox{0.63}{\includegraphics{dot/undertowArchitecture.png}}
+                        \caption{Zjednodušená architektura serveru Undertow}
                         \label{imgUndertowArchitecture}
                     \end{center}
-                \end{figure}    %TODO fix obrazek je potreba nakreslit
+                \end{figure}
   
 
 
@@ -527,7 +527,8 @@ Undertow server = Undertow.builder()
     @Override
     public void handleRequest(final HttpServerExchange exchange) 
         throws Exception {
-      exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain");
+      exchange.getResponseHeaders()
+        .put(Headers.CONTENT_TYPE, "text/plain");
       exchange.getResponseSender().send("Hello World");
     }
   }).build();
@@ -536,26 +537,58 @@ server.start();
 \end{priklad}
 
                 
-            Třída \texttt{Undertow} reprezentuje instanci samotného
-            webového serveru a~je ji nutné definovat prakticky vždy. Metodou
-            \texttt{addListener} je přidán výše zmiňovaný \emph{listener}, který
-            naslouchá na zvoleném síťovém rozhraní a portu (při zvolení IP adresy 0.0.0.0 naslouchá
-            na všech rozhraních). Tento jednoduchý příklad obsahuje pouze jeden \emph{handler} 
-            přidaný metodou \texttt{addHandler}, který
-            provádí veškerou činnost serveru a tou je odpovídání na všechny požadavky jednotným textem. 
-            Ve standardních aplikacích by následovalo volání dalšího \emph{handleru}.
+                Třída \texttt{Undertow} reprezentuje instanci samotného
+                webového serveru a~je ji nutné definovat prakticky vždy. Metodou
+                \texttt{addListener} je přidán výše zmiňovaný \emph{listener}, který
+                naslouchá na zvoleném síťovém rozhraní a portu (při zvolení IP adresy 0.0.0.0 naslouchá
+                na všech rozhraních). Tento jednoduchý příklad obsahuje pouze jeden \emph{handler} 
+                přidaný metodou \texttt{addHandler}, který
+                provádí veškerou činnost serveru a tou je odpovídání na všechny požadavky jednotným textem. 
+                Ve standardních aplikacích by následovalo volání dalšího \emph{handleru}.
 
             \subsubsection{Integrace servlet kontejneru}
-                %Vytvoření DeploymentInfo a nastavení požadovaných funkcí 
-                %infastuktury servlet kontejneru.
-                %vytvoreni veci z web.xml
+                Servlet kontejner obsažený v serveru Undertow je tvořen již implementovaným
+                řetězcem \emph{handlerů}, které poskytují potřebné funkcionality odpovídající specifikaci.
+                Pro nastavení základní funkcionality kontejneru existuje vysokoúrovňové rozhraní,
+                ale opět je možné jeho funkce upravit nebo rozšířit pomocí vlastních \emph{handlerů}. 
 
-                %Vhodné využití statických metod z io.undertow.servlets.Servlets
+                Při inicializaci servlet kontejneru se nastavují požadované funkce v entitě \texttt{DeploymentInfo}
+                a až po jeho kompletním nastavení se provede vytvoření řetězce \emph{handlerů}, což
+                dává prostor k vnitřním optimalizacím. 
+                Základní činností je potřeba nastavit prvky webové aplikace, které jsou definovány v souboru web.xml (viz. kapitola \ref{kapWebXml}).
+                Pro nastavení většiny možných prvků tohoto souboru je
+                definováno několik statických metod ve třídě \\\texttt{io.undertow.servlets.Servlets}, které    %TODO check zalomení
+                pomáhají servlet kontejner patřičně nastavit.
+
+                Nastavení jednoduchého servlet kontejneru je demonstrováno na příkladu \ref{prServlet}.
+
+\begin{priklad} \label{prServlet} Konfigurace jednoduchého servlet kontejneru
+\begin{verbatim}
+DeploymentInfo servletBuilder = Servlets.deployment()
+    .setContextPath("/myapp")
+    .setDeploymentName("test")
+    .addServlets(
+        Servlets.servlet("MessageServlet", MessageServlet.class));
+
+DeploymentManager manager = Servlets.defaultContainer()
+    .addDeployment(servletBuilder);
+manager.deploy();
+HttpHandler httpHandler = manager.start();
+\end{verbatim}
+\end{priklad}
+                V první části ukázky je vytvořená instance \texttt{DeploymentInfo}, která bude obsahovat jednoduchou konfiguraci
+                s jediným servletem. Následně pomocí proběhne přidání do výchozího kontejneru a pomocí volání metody \texttt{deploy}
+                se vytvoří celý řetězec \emph{handlerů}, které budou poskytovat požadovanou funkčnost.
+                
+                Celý proces je zakončen voláním metody \texttt{start}, kdy proběhnou poslední nastavení a obdržíme 
+                vstupní \emph{handler} celého servlet kontejneru.
+                Poté jej lze nastavit jako vstupní \emph{handler} celé aplikace
+                (viz metoda \texttt{addHandler} v příkladu \ref{prUndertow}), ale také mu může předcházet několik jiných handlerů,
+                což je typičtější případ.
+
+
+            \subsubsection{Pokročilá konfigurace servlet kontejneru}
                 %Správa statických zdrojů pomocí ResourceManager.
-
-                %Ukázka vytvoreni deployment info
-
-            \subsubsection{Zabezpečení servlet kontejneru}
                 %Nastavení autentizace pomocí LoginConfig, IdentityManageru, 
                 %security-constraints z web.xml
                 
