@@ -431,7 +431,8 @@
         závislost\footnote{Definice závilosti v aplikaci Maven pro stažení serveru Undertow: 
         \texttt{http://undertow.io/downloads.html} }.
 
-        Informace v~této kapitole byly čerpány především z~webové dokumentace projektu \cite{undertowDocs},
+        Informace v~této kapitole byly čerpány především z~webových stránek projektu \cite{undertowWeb} a 
+        jeho dokumentace \cite{undertowDocs},
         ale jelikož je aplikace poměrně nová, tak zveřejněná dokumentace je poměrně nedostatečná. 
         Některé informace z~této kapitoly musely být čerpány
         z~vygenerované projektové dokumentace a z komunikace s vývojáři projektu
@@ -459,26 +460,40 @@
             využití plné podpory webových soketů (angl. \emph{websockets}) nebo 
             podpory technologie \emph{HTTP upgrade}.
 
-        
-
-
         \subsection{Architektura serveru}
-            %jít více do hloubky principu na kterých Undertow pracuje
+            V této kapitole jsou podrobněji rozebrány základní principy, jak Undertow funguje, 
+            a je popsána jeho architektura. Další podrobnější informace o serveru 
+            lze nalézt na webové dokumentaci projektu, která byla hlavním zdrojem této kapitoly \cite{undertowDocs}.
+            Popis architektury serveru se přímo vzahuje k samotné integraci do Jenkins CI.
 
             \subsubsection{Webový server}
+                Architektura serveru Undertow nevyužívá koncept kontejneru, který se pomocí vysokoúrovňového rozhraní nastaví 
+                pro danou aplikaci a sám o sobě funguje. Naopak aplikace jsou sestavovány z množství tříd tzv. \emph{handlerů} 
+                (viz níže), které spravují příchozí požadavky a samy o sobě utvářejí samotný webový server. 
+                Díky tomuto konceptu je možné využít jen tu funkcionalitu serveru, která je v aplikaci potřeba, a server
+                není brzděn zbytečnou činností, která není pro konkrétní aplikaci potřebná. 
+
+                \textbf{\emph{Handler}} je třída, která definuje metodu \texttt{handleRequest} v níž
+                je příchozí požadavek na serveru libovolně upraven a předán dalšímu \emph{handleru} ke zpracování nebo je vytvořena odpověď 
+                a poslána zpět klientovi. \emph{Handlery} tedy jsou tedy za sebou napojeny a tvoří řetěz (angl. \emph{handler chain}).
+                Je možné si nadefinovat libovolný vlastní \emph{handler}, který pouze musí implementovat patřičné rozhraní s metodou 
+                \texttt{handleRequest} nebo je možné využít již předpřipravených tříd. V těchoto předpřipravených třídách
+                jsou běžně požadované funkce serveru jako úprava hlaviček příchozího požadavku, přesměrování požadavku apod.
+                Pomocí jediného parametru (objekt třídy \texttt{HttpServerExchange}) metody \texttt{handleRequest} 
+                si \emph{handlery} předávají aktuální stav požadavku a postupně vytvářené odpovědi.
+
+                                
+                %Listenery:
+                %Vstupní bod do aplikace. Jsou zodpověné za překlad požadavku 
+                %do entity HtttpServerExchange a obdobně vyváření odpovědi.
+                %listenery i all interfaces 0.0.0.0, handlery,                
+
                 %Obecně je jedno, které listenery se v aplikaci použijí (HTTP, HTTPS, AJP), 
                 %ale samozřejmě nelze použít
                 %specifické věci pro nějaký protokol, pokud se naktuálně nepoužív 
                 %(např. při použití protokolu AJP nelze využít HTTP upgrade).
 
-                %zpusob jak je vystaven, jak pracuje, 
-                %listenery i all interfaces 0.0.0.0, handlery, handler chain, preddefinované
-                %Handlery jsou řetězeny tak, že  při vytvoření je definován následující handler
-                
-                %Listenery:
-                %Vstupní bod do aplikace. Jsou zodpověné za překlad požadavku 
-                %do entity HtttpServerExchange a obdobně vyváření odpovědi.
-
+                %TODO obrázek architektury listenery různých typů, handler chain, předávaný objekt exchange
 
                 %    Třída \texttt{Undertow} vždy reprezentuje instanci samotného
                 %    webového serveru a~je ji nutné definovat prakticky vždy. Funkcí
@@ -487,6 +502,21 @@
                 %    má naslouchat příchozím požadavkům. 
 
                 %ukazka kousku kodu s vytvoreni serveru
+\begin{priklad} Vytvoření jednoduché instance serveru Undertow
+\begin{verbatim}
+Undertow server = Undertow.builder()
+  .addHttpListener(8080, "localhost")
+  .setHandler(new HttpHandler() {
+    @Override
+    public void handleRequest(final HttpServerExchange exchange) 
+        throws Exception {
+      exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain");
+      exchange.getResponseSender().send("Hello World");
+    }
+  }).build();
+server.start();
+\end{verbatim}
+\end{priklad}
 
             \subsubsection{Integrace servlet kontejneru}
                 %Vytvoření DeploymentInfo a nastavení požadovaných funkcí 
@@ -498,7 +528,7 @@
 
                 %Ukázka vytvoreni deployment info
 
-            \subsection{Zabezpečení servlet kontejneru}
+            \subsubsection{Zabezpečení servlet kontejneru}
                 %Nastavení autentizace pomocí LoginConfig, IdentityManageru, 
                 %security-constraints z web.xml
                 
@@ -527,7 +557,7 @@
                     Naopak při některých
                     jiných konfiguracích byl server Jetty rychlejší a proto nelze definitivně určit,
                     který server je rychlejší a podstatné je také způsob využití serveru. 
-                    Dalším důležitým faktem je, že v Jenkins CI není využitá nejnovější verze serveru
+                    Dalším důležitým faktem je, že v Jenkins CI není využita nejnovější verze serveru
                     Jetty (verze 9), ale jeho nižší verze 8, protože Jenkins CI aktuálně využívá
                     starší verzi jazyka Java (verzi Java 6).
                     
