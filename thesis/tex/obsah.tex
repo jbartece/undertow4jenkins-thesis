@@ -179,9 +179,9 @@
 
             Po stažení zdrojových souborů je potřeba provést překlad aplikace. Pro tento automatizovaný 
             překlad se používá nástroj Maven\footnote{Více informací o~nástroji Maven lze získat na stránce 
-            \texttt{http://maven.apache.org/}},který je krátce zmíněn v kapitole \ref{maven}. 
+            \texttt{http://maven.apache.org/}},který je krátce zmíněn v~kapitole \ref{maven}. 
             
-            Překlad aplikace bez spuštění jednotkových testů i integračních testů lze provést tímto příkazem:
+            Překlad aplikace bez spuštění jednotkových testů i~integračních testů lze provést tímto příkazem:
             \begin{verbatim}
                 mvn clean install -pl war -am -DskipTests
             \end{verbatim}
@@ -271,28 +271,28 @@
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     \section{Nástroj Maven} \label{maven}
          %TODO zkontrolovat, jestli to dává smysl a není to moc rozvláčné
-        Pro vývoj a práci se serverem Jenkins CI v podobě zdrojových kódů je zapotřebí nástroj Maven. 
+        Pro vývoj a~práci se serverem Jenkins CI v~podobě zdrojových kódů je zapotřebí nástroj Maven. 
         Jeho využití je také nutné při vytváření programu, který provede integraci serveru Undertow do Jenkins CI. 
-        V této kapitole budou o něm poskytnuty základní informace. Pro případné bližší
-        seznámení s tímto nástrojem lze další informace získat z webových stránek projektu \cite{mavenWeb}
-        z kterých byly čerpány informace v této kapitole. 
+        V~této kapitole budou o~něm poskytnuty základní informace. Pro případné bližší
+        seznámení s~tímto nástrojem lze další informace získat z~webových stránek projektu \cite{mavenWeb}
+        z~kterých byly čerpány informace v~této kapitole. 
         
-        Maven je nástroj, který provádí činnosti spojené s vytváření spustitelných aplikací ze zdrojových kódů 
-        Je zaměřen na aplikace vytvářené v jazyce Java. Hlavním cílem je umožnit uživatelům v co nejkratším
-        čase provádět běžné a opakující se úkony při překladu aplikace. Především umožňuje
-        provádění překladu aplikací, jejich spouštění automatizovaných jednotkových a 
-        integračních testů, uložení spustitelné podoby aplikace do lokálního repozitáře 
-        a případně i nahrání vytvořené aplikace na nějaký server. 
+        Maven je nástroj, který provádí činnosti spojené s~vytváření spustitelných aplikací ze zdrojových kódů 
+        Je zaměřen na aplikace vytvářené v~jazyce Java. Hlavním cílem je umožnit uživatelům v~co nejkratším
+        čase provádět běžné a~opakující se úkony při překladu aplikace. Především umožňuje
+        provádění překladu aplikací, jejich spouštění automatizovaných jednotkových
+a~integračních testů, uložení spustitelné podoby aplikace do lokálního repozitáře 
+        a~případně i~nahrání vytvořené aplikace na nějaký server. 
 
-        Je dodáván jako aplikace, která se spouští z příkazové řádky příkazem \texttt{mvn}. Veškeré
-        informace o projektu a definice činnosti, které má Maven provést, se specifikuje 
-        v XML souboru \texttt{pom.xml}. Mezi nejdůležitější patří definice výsledné podoby aplikace
-        a způsob jejího překladu, informace o závislostech
-        projektu na jiných knihovnách a definice serverů z kterých má stahovat potřebné knihovny pro svůj 
-        běh i pro běh aplikace. Po spuštění aplikace jsou tedy lokalizovány knihovny na kterých projekt
-        závisí a uloženy v lokálním repozitáři aniž by se o tuto činnost uživatel musel dále starat.
-        Kromě těchto praktických činností také umožňuje zveřejnit podrobnější informace o projektu         
-        jako jsou informace o licenci, vývojářích, adrese systému pro správu verzí, atp.
+        Je dodáván jako aplikace, která se spouští z~příkazové řádky příkazem \texttt{mvn}. Veškeré
+        informace o~projektu a~definice činnosti, které má Maven provést, se specifikuje 
+        v~XML souboru \texttt{pom.xml}. Mezi nejdůležitější patří definice výsledné podoby aplikace
+        a~způsob jejího překladu, informace o~závislostech
+        projektu na jiných knihovnách a~definice serverů z~kterých má stahovat potřebné knihovny pro svůj 
+        běh i~pro běh aplikace. Po spuštění aplikace jsou tedy lokalizovány knihovny na kterých projekt
+        závisí a~uloženy v~lokálním repozitáři aniž by se o~tuto činnost uživatel musel dále starat.
+        Kromě těchto praktických činností také umožňuje zveřejnit podrobnější informace o~projektu         
+        jako jsou informace o~licenci, vývojářích, adrese systému pro správu verzí, atp.
 
 
         Na příkladu \ref{jenkinsPom} je ukázka části souboru \texttt{pom.xml}, který je vytvořen pro Jenkins~CI:
@@ -314,10 +314,10 @@
 \end{verbatim}
         \end{priklad}
 
-        V části \texttt{repository} je definována cesta k serveru z kterého má Maven stahovat potřebné soubory
-        a v těle značky \texttt{dependency} je pomocí hodnot \texttt{groupId, artifactId, version} jednoznačně
+        V~části \texttt{repository} je definována cesta k~serveru z~kterého má Maven stahovat potřebné soubory
+        a~v~těle značky \texttt{dependency} je pomocí hodnot \texttt{groupId, artifactId, version} jednoznačně
         definována potřebná knihovna. Na základě těchto informací poté Maven při překladu stáhne požadovanou
-        knihovnu a při distribuci aplikace nemusí být tato knihovna k programu přibalena. 
+        knihovnu a~při distribuci aplikace nemusí být tato knihovna k~programu přibalena. 
 
 
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -420,22 +420,22 @@
 
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     \section{Server Undertow} \label{undertow}
-        Undertow je webový server napsaný v jazyce Java, 
+        Undertow je webový server napsaný v~jazyce Java, 
         který vzniká za podpory firmy Red Hat a~její sekce JBoss.
         Primárním účelem serveru Undertow je být výchozím webovým serverem v~aplikačním serveru WildFly.
-        Jeho první verze finální byla vydána teprve před nedávnem, takže se jedná o
-        nově vytvořený server a jeho vývoj stále usilovně 
+        Jeho první verze finální byla vydána teprve před nedávnem, takže se jedná
+o~nově vytvořený server a~jeho vývoj stále usilovně 
         probíhá\footnote{Aktuální verzi serveru, lze najít na serveru GitHub: 
-        \texttt{https://github.com/undertow-io/undertow}}. Pro stažení a využití tohoto serveru
-        je nejjednodušší využít aplikaci Maven (kapitola \ref{maven}) a nastavit patřičnou 
-        závislost\footnote{Definice závilosti v aplikaci Maven pro stažení serveru Undertow: 
+        \texttt{https://github.com/undertow-io/undertow}}. Pro stažení a~využití tohoto serveru
+        je nejjednodušší využít aplikaci Maven (kapitola \ref{maven}) a~nastavit patřičnou 
+        závislost\footnote{Definice závilosti v~aplikaci Maven pro stažení serveru Undertow: 
         \texttt{http://undertow.io/downloads.html} }.
 
-        Informace v~této kapitole byly čerpány především z~webových stránek projektu \cite{undertowWeb} a 
-        jeho dokumentace \cite{undertowDocs},
+        Informace v~této kapitole byly čerpány především z~webových stránek projektu \cite{undertowWeb}
+a~jeho dokumentace \cite{undertowDocs},
         ale jelikož je aplikace poměrně nová, tak zveřejněná dokumentace je poměrně nedostatečná. 
         Některé informace z~této kapitoly musely být čerpány
-        z~vygenerované projektové dokumentace a z komunikace s vývojáři projektu
+        z~vygenerované projektové dokumentace a~z~komunikace s~vývojáři projektu
         na chatu IRC.
 
         \subsection{Vlastnosti serveru}
@@ -461,49 +461,49 @@
             podpory technologie \emph{HTTP upgrade}.
 
         \subsection{Architektura serveru}
-            V této kapitole jsou podrobněji rozebrány základní principy, jak Undertow funguje, 
-            a je zjednodušeně popsána jeho architektura z pohledu uživatele. Další podrobnější informace o serveru 
+            V~této kapitole jsou podrobněji rozebrány základní principy, jak Undertow funguje, 
+            a~je zjednodušeně popsána jeho architektura z~pohledu uživatele. Další podrobnější informace o~serveru 
             lze nalézt na webové dokumentaci projektu, která byla hlavním zdrojem této kapitoly \cite{undertowDocs}.
-            Popis architektury serveru se přímo vzahuje k samotné integraci do Jenkins CI.
+            Popis architektury serveru se přímo vzahuje k~samotné integraci do Jenkins CI.
 
             \subsubsection{Webový server}
                 Architektura serveru Undertow nevyužívá koncept jednoho velkého kontejneru, který se pomocí vysokoúrovňového rozhraní nastaví 
-                pro danou aplikaci a sám o sobě funguje. Naopak aplikace jsou sestavovány z množství tříd tzv. \emph{handlerů} 
-                (viz níže), které spravují příchozí požadavky a samy o sobě utvářejí samotný webový server. 
-                Díky tomuto konceptu je možné využít jen tu funkcionalitu serveru, která je v aplikaci potřeba, a server
+                pro danou aplikaci a~sám o~sobě funguje. Naopak aplikace jsou sestavovány z~množství tříd tzv. \emph{handlerů} 
+                (viz níže), které spravují příchozí požadavky a~samy o~sobě utvářejí samotný webový server. 
+                Díky tomuto konceptu je možné využít jen tu funkcionalitu serveru, která je v~aplikaci potřeba, a~server
                 není brzděn zbytečnou činností, která není pro konkrétní aplikaci potřebná. 
 
                 Vstupním bodem aplikace jsou tzv. \textbf{\emph{listenery}} (angl. \emph{listener}), které naslouchají na určených síťových
-                rozhraních a portech a zpracovávají příchozí požadavky. Jednotlivé \emph{listenery} se liší dle protokolu, kterým komunikují.
-                V Undertow jsou 3 základní typy \emph{listenerů}
-                pro protokoly HTTP, HTTPS, a AJP. Také je vytvořen podpora protokolu SPDY, ale v aktuální verzi ještě není zahrnuta. 
-                Pro uživatele poskytují abstrakci nad samotnými síťovými protokoly, takže v serveru lze stejným způsobem zpracovávat
-                požadavky přicházejícími v různých protokolech. Jediným samozřejmým omezením je, že nelze v jednom protokolu
+                rozhraních a~portech a~zpracovávají příchozí požadavky. Jednotlivé \emph{listenery} se liší dle protokolu, kterým komunikují.
+                V~Undertow jsou 3 základní typy \emph{listenerů}
+                pro protokoly HTTP, HTTPS, a~AJP. Také je vytvořen podpora protokolu SPDY, ale v~aktuální verzi ještě není zahrnuta. 
+                Pro uživatele poskytují abstrakci nad samotnými síťovými protokoly, takže v~serveru lze stejným způsobem zpracovávat
+                požadavky přicházejícími v~různých protokolech. Jediným samozřejmým omezením je, že nelze v~jednom protokolu
                 používat informace specifické pouze pro protokol jiný. 
                 
                 Pro umožnění této abstrakce každý \emph{listener} provádí překlad 
                 požadavku do objektu třídy
-                \texttt{HttpServerExchange}. V něm je uchováván aktuální stav požadavku a vytvářené odpovědi
-                a při odesílání odpovědi z tohoto objektu \emph{listener} vytvoří odpověď, která je poslána klientovi.
+                \texttt{HttpServerExchange}. V~něm je uchováván aktuální stav požadavku a~vytvářené odpovědi
+                a~při odesílání odpovědi z~tohoto objektu \emph{listener} vytvoří odpověď, která je poslána klientovi.
 
                 Tyto listenery jsou těsně navázané na knihovnu XNIO\footnote{Webové stránky projektu XNIO: \texttt{http://xnio.jboss.org/}}, která
-                poskytuje pro Undertow abstrakci nad síťovou komunikací. Samotné listenery v Undertow je možné konfigurovat
+                poskytuje pro Undertow abstrakci nad síťovou komunikací. Samotné listenery v~Undertow je možné konfigurovat
                 nastavením několika parametrů \cite{undertowListeners}, ale lze také přímo konfigurovat síťové kanály knihovny XNIO.
 
                 \medskip
                 Samotné jádro serveru tvoří již zmiňované \emph{handlery}.
-                \textbf{\emph{Handler}} je třída, která definuje metodu \texttt{handleRequest} v níž
-                je příchozí požadavek na serveru libovolně upraven a předán dalšímu \emph{handleru} ke zpracování nebo je vytvořena odpověď 
-                a poslána zpět klientovi (tedy jsou vynechány následující \emph{handlery}). 
-                \emph{Handlery} jsou tedy za sebou napojeny a tvoří řetěz (angl. \emph{handler chain}).
-                Je možné si nadefinovat libovolný vlastní \emph{handler}, který pouze musí implementovat patřičné rozhraní s metodou 
-                \texttt{handleRequest} nebo je možné využít již předpřipravených tříd. V těchoto předpřipravených třídách
+                \textbf{\emph{Handler}} je třída, která definuje metodu \texttt{handleRequest} v~níž
+                je příchozí požadavek na serveru libovolně upraven a~předán dalšímu \emph{handleru} ke zpracování nebo je vytvořena odpověď 
+                a~poslána zpět klientovi (tedy jsou vynechány následující \emph{handlery}). 
+                \emph{Handlery} jsou tedy za sebou napojeny a~tvoří řetěz (angl. \emph{handler chain}).
+                Je možné si nadefinovat libovolný vlastní \emph{handler}, který pouze musí implementovat patřičné rozhraní s~metodou 
+                \texttt{handleRequest} nebo je možné využít již předpřipravených tříd. V~těchoto předpřipravených třídách
                 jsou běžně požadované funkce serveru jako úprava hlaviček příchozího požadavku, přesměrování požadavku apod.
                 Pomocí jediného parametru (objekt třídy \texttt{HttpServerExchange}) metody \texttt{handleRequest} 
-                si \emph{handlery} předávají aktuální stav požadavku a postupně vytvářené odpovědi.
+                si \emph{handlery} předávají aktuální stav požadavku a~postupně vytvářené odpovědi.
 
 
-                Popisované \emph{handlery} a \emph{listenery} jsou základem architektury serveru Undertow, která je znázorněna
+                Popisované \emph{handlery} a~\emph{listenery} jsou základem architektury serveru Undertow, která je znázorněna
                 na obrázku \ref{imgUndertowArchitecture}. 
                 Na příkladu \ref{prUndertow} je ukázáno vytvoření jednoduchého webového serveru.
 
@@ -540,22 +540,22 @@ server.start();
                 Třída \texttt{Undertow} reprezentuje instanci samotného
                 webového serveru a~je ji nutné definovat prakticky vždy. Metodou
                 \texttt{addListener} je přidán výše zmiňovaný \emph{listener}, který
-                naslouchá na zvoleném síťovém rozhraní a portu (při zvolení IP adresy 0.0.0.0 naslouchá
+                naslouchá na zvoleném síťovém rozhraní a~portu (při zvolení IP adresy 0.0.0.0 naslouchá
                 na všech rozhraních). Tento jednoduchý příklad obsahuje pouze jeden \emph{handler} 
                 přidaný metodou \texttt{addHandler}, který
-                provádí veškerou činnost serveru a tou je odpovídání na všechny požadavky jednotným textem. 
+                provádí veškerou činnost serveru a~tou je odpovídání na všechny požadavky jednotným textem. 
                 Ve standardních aplikacích by následovalo volání dalšího \emph{handleru}.
 
             \subsubsection{Servlet kontejner}
-                Servlet kontejner obsažený v serveru Undertow je tvořen již implementovaným
+                Servlet kontejner obsažený v~serveru Undertow je tvořen již implementovaným
                 řetězcem \emph{handlerů}, které poskytují potřebné funkcionality odpovídající specifikaci.
                 Pro nastavení základní funkcionality kontejneru existuje vysokoúrovňové rozhraní,
                 ale opět je možné jeho funkce upravit nebo rozšířit pomocí vlastních \emph{handlerů}. 
 
-                Při inicializaci servlet kontejneru se nastavují požadované funkce v entitě \texttt{DeploymentInfo}
-                a až po jeho kompletním nastavení se provede vytvoření řetězce \emph{handlerů}, což
-                dává prostor k vnitřním optimalizacím. 
-                Základní činností je potřeba nastavit prvky webové aplikace, které jsou definovány v souboru web.xml (viz. kapitola \ref{kapWebXml}).
+                Při inicializaci servlet kontejneru se nastavují požadované funkce v~entitě \texttt{DeploymentInfo}
+                a~až po jeho kompletním nastavení se provede vytvoření řetězce \emph{handlerů}, což
+                dává prostor k~vnitřním optimalizacím. 
+                Základní činností je potřeba nastavit prvky webové aplikace, které jsou definovány v~souboru web.xml (viz. kapitola \ref{kapWebXml}).
                 Pro nastavení většiny možných prvků tohoto souboru je
                 definováno několik statických metod ve třídě \\\texttt{io.undertow.servlets.Servlets}, které    %TODO check zalomení
                 pomáhají servlet kontejner patřičně nastavit.
@@ -576,59 +576,59 @@ manager.deploy();
 HttpHandler httpHandler = manager.start();
 \end{verbatim}
 \end{priklad}
-                V první části ukázky je vytvořená instance \texttt{DeploymentInfo}, která bude obsahovat jednoduchou konfiguraci
-                s jediným servletem. Následně pomocí proběhne přidání do výchozího kontejneru a pomocí volání metody \texttt{deploy}
+                V~první části ukázky je vytvořená instance \texttt{DeploymentInfo}, která bude obsahovat jednoduchou konfiguraci
+                s~jediným servletem. Následně pomocí proběhne přidání do výchozího kontejneru a~pomocí volání metody \texttt{deploy}
                 se vytvoří celý řetězec \emph{handlerů}, které budou poskytovat požadovanou funkčnost.
                 
-                Celý proces je zakončen voláním metody \texttt{start}, kdy proběhnou poslední nastavení a obdržíme 
+                Celý proces je zakončen voláním metody \texttt{start}, kdy proběhnou poslední nastavení a~obdržíme 
                 vstupní \emph{handler} celého servlet kontejneru.
                 Poté jej lze nastavit jako vstupní \emph{handler} celé aplikace
-                (viz metoda \texttt{addHandler} v příkladu \ref{prUndertow}), ale také mu může předcházet několik jiných handlerů,
+                (viz metoda \texttt{addHandler} v~příkladu \ref{prUndertow}), ale také mu může předcházet několik jiných handlerů,
                 což je typičtější případ.
 
 
             \subsubsection{Pokročilá konfigurace servlet kontejneru}
-                Potřebných či možných nastavení servlet kontejneru je celá řada. Z těch nejdůležitějších stojí za zmínku 
-                správa zdrojů (angl. \emph{resource management}), nastavení autentizace a zabezpečení servlet kontejneru
-                a úprava činnosti kontejneru pomocí vložení vlastních \emph{handlerů} do posloupnosti \emph{handlerů},
+                Potřebných či možných nastavení servlet kontejneru je celá řada. Z~těch nejdůležitějších stojí za zmínku 
+                správa zdrojů (angl. \emph{resource management}), nastavení autentizace a~zabezpečení servlet kontejneru
+                a~úprava činnosti kontejneru pomocí vložení vlastních \emph{handlerů} do posloupnosti \emph{handlerů},
                 která je vytvářena před jeho spuštěním.
 
                 Pro správu zdrojů je nutné vytvořit instanci rozhraní \texttt{ResourceManager}, jinak kontejner při 
                 každém požadavku na zdroj žádný nenajde (zjištěno ze zdrojových kódů). Je možné vytvořit si vlastní
-                implementaci pro správu zdrojů nebo použít jednu z implementací, které Undertow obsahuje:
+                implementaci pro správu zdrojů nebo použít jednu z~implementací, které Undertow obsahuje:
 
                 \begin{itemize}
-                    \item \texttt{FileResourceManager} -- spravuje zdroje z určené složky souborového systému
+                    \item \texttt{FileResourceManager} -- spravuje zdroje z~určené složky souborového systému
                     \item \texttt{ClassPathResourceManager}  -- spravuje soubory, které se nacházejí na \emph{classpath} kontejneru 
                         (cesta ke knihovnám určená při spuštění programu)
-                    \item \texttt{CachingResourceManager} -- zastřešuje jinou implementaci správce zdrojů a pro
+                    \item \texttt{CachingResourceManager} -- zastřešuje jinou implementaci správce zdrojů a~pro
                         urychlení pracuje jako vyrovnávací paměť (angl. cache)
                 \end{itemize}
 
                 %TODO pořádně zkontrolovat význam či přepracovat, přidat něco o securiy-constraints?
                 Servlet kontejner může poskytovat dva základní typy zabezpečení. 
-                První možností je poskytovat autentizaci v případech, které uživatel deklaruje v souboru
-                \emph{web.xml}. Při tomto způsobu kontejner kontroluje příchozí požadavky a v případě
-                potřeby požádá uživatele o autentizaci. Pro správnou funkčnost tohoto způsobu zabezpečení
+                První možností je poskytovat autentizaci v~případech, které uživatel deklaruje v~souboru
+                \emph{web.xml}. Při tomto způsobu kontejner kontroluje příchozí požadavky a~v~případě
+                potřeby požádá uživatele o~autentizaci. Pro správnou funkčnost tohoto způsobu zabezpečení
                 je potřeba vytvořit objekt \texttt{LoginConfig} \cite{undertowServletSecurity} (odpovídající
-                nastavení části \emph{login-config} ve \emph{web.xml} a vytvořit vlastní implementaci
+                nastavení části \emph{login-config} ve \emph{web.xml} a~vytvořit vlastní implementaci
                 rozhraní \texttt{IdentityManager}. Tato instance na základě požadavku rozhooruje, zda
-                uživatel byl rozpoznán (a případně jej blíže identifikuje) nebo zamítne požadavek na autentizaci.
+                uživatel byl rozpoznán (a~případně jej blíže identifikuje) nebo zamítne požadavek na autentizaci.
                 
                 Druhou možností je definovat
                 libovolný počet instancí rozhraní \texttt{AuthenticationMechanism}. Každý příchozí požadavek
-                je následně prochází každou instatncí a její základním činností je určit, zda požadavek má
-                mít umožněn přístup do kontejneru nebo ne. Bližší informace lze nalézt v dokumentaci z níž
-                byly čerpány informace v této kapitole \cite{undertowDeployment}, \cite{undertowSecurity}.
+                je následně prochází každou instatncí a~její základním činností je určit, zda požadavek má
+                mít umožněn přístup do kontejneru nebo ne. Bližší informace lze nalézt v~dokumentaci z~níž
+                byly čerpány informace v~této kapitole \cite{undertowDeployment}, \cite{undertowSecurity}.
 
                 \medskip
                 Upravit činnost servlet kontejneru je navíc možné tak, že se do něj vloží vlastní instance
-                \emph{handlerů} a ty libovolně upravují příchozí požadavky. Samotné vložení
+                \emph{handlerů} a~ty libovolně upravují příchozí požadavky. Samotné vložení
                 není možné provést přímo, protože servlet kontejner se sestavuje automaticky na základě
                 definovaných vlastností. Je tedy nutné zaobalit handler do instance rozhraní \texttt{HandlerWrapper},
                 který toto vložení umožní. Tato instance umožní následné vložení \emph{handleru} do řetězce \emph{handlerů}
-                v kontejneru. Je možné vložit \emph{handler} před vykonáním všech \emph{handlerů} serveru, po
-                nastavení kontextu požadavku a po vykonání všech handlerů před spuštěním kódu uvnitř uživatelského 
+                v~kontejneru. Je možné vložit \emph{handler} před vykonáním všech \emph{handlerů} serveru, po
+                nastavení kontextu požadavku a~po vykonání všech handlerů před spuštěním kódu uvnitř uživatelského 
                 servletru \cite{undertowDeployment}.
  
         
@@ -636,7 +636,7 @@ HttpHandler httpHandler = manager.start();
             Stávající servlet kontejner v~Jenkins CI je sice tvořen
             kombinací kontejneru Winstone a~serveru Jetty, ale veškerou
             časově kriticky náročnou práci při běhu aplikace vykonává server
-            Jetty. Proto pokud chceme srovnávat původní a plánované řešení servlet kontejneru
+            Jetty. Proto pokud chceme srovnávat původní a~plánované řešení servlet kontejneru
             v~Jenkins CI, tak bychom měli srovnávat server Jetty se serverem Undertow.
 
             \medskip
@@ -647,24 +647,24 @@ HttpHandler httpHandler = manager.start();
                     testy v~kterých se ukázal být výkonnější než server Jetty. V~tomto           
                     testování\footnote{Porovnání rychlosti, odezvy a~celkové výkonnosti serverů Undertow, Jetty a~jiných: 
                     \\\texttt{http://www.techempower.com/benchmarks/\#section=data-r8\&hw=ec2\&test=plaintext}}
-                    byl server Undertow v některých případech byl server 
+                    byl server Undertow v~některých případech byl server 
                     Undertow i~3,5 krát rychlejší než server Jetty v~počtu zpracovaných 
                     požadavků za jednotku času. Při porovnávání doby odezvy serveru na požadavek 
                     dosáhl server Undertow až třetinového času než server Jetty. 
                     
                     Naopak při některých
-                    jiných konfiguracích byl rychlejší server Jetty a proto nelze definitivně určit,
-                    který server je rychlejší a podstatné je také způsob využití serveru. 
-                    Dalším důležitým faktem je, že v Jenkins CI není využita nejnovější verze serveru
+                    jiných konfiguracích byl rychlejší server Jetty a~proto nelze definitivně určit,
+                    který server je rychlejší a~podstatné je také způsob využití serveru. 
+                    Dalším důležitým faktem je, že v~Jenkins CI není využita nejnovější verze serveru
                     Jetty (verze 9), ale jeho nižší verze 8, protože Jenkins CI aktuálně využívá
                     starší verzi jazyka Java (verzi Java 6).
                     
                     Lze tedy usuzovat, že server Undertow má potenciál být výkonnějším.
         
-                    V rámci této práce bylo provedeno vlastní základní testování 
-                    obou těch serverů a to ve vztahu přímo k systému Jenkins CI. Tímto testováním
+                    V~rámci této práce bylo provedeno vlastní základní testování 
+                    obou těch serverů a~to ve vztahu přímo k~systému Jenkins CI. Tímto testováním
                     se zabýcá kapitola \ref{kapPerformance}, kde jsou porovnávány 
-                    implementace servlet kontejneru s využitím serveru Jetty a nové implementace 
+                    implementace servlet kontejneru s~využitím serveru Jetty a~nové implementace 
                     postavené na serveru Undertow.
                     }
 
@@ -731,24 +731,24 @@ HttpHandler httpHandler = manager.start();
 
 
                 \item{\textbf{Snadnost použití:}}                      
-                    Server Jetty má již dlouhou historii a je v něm vše pečlivě dokumentováno
-                    a to jeho využití pro uživatele činí poměrně snadným. Podstatnou výhodou je, že
+                    Server Jetty má již dlouhou historii a~je v~něm vše pečlivě dokumentováno
+                    a~to jeho využití pro uživatele činí poměrně snadným. Podstatnou výhodou je, že
                     server Jetty poskytuje velké množství vysokoúrovňových rozhraní
                     pro různé konfigurace serveru.
                     
-                    Jelikož je server Undertow velmi mladým projektem a není tolik ustálený, 
+                    Jelikož je server Undertow velmi mladým projektem a~není tolik ustálený, 
                     tak postrádá některé věci,
-                    které jsou u serveru Jetty samozřejmostí. 
-                    Dokumentace k serveru
-                    Undertow je poměrně strohá, místy ne úplně přesná a stále se vyvíjí. 
-                    Jeho velká flexibilita při konfiguraci s sebou nese i jisté nevýhody
-                    a tím je právě jednoduchost jeho použití. Další nepříjemností je, že není
-                    dostupné tolik propracované rozhraní pro konfiguraci jako u serveru Jetty,
+                    které jsou u~serveru Jetty samozřejmostí. 
+                    Dokumentace k~serveru
+                    Undertow je poměrně strohá, místy ne úplně přesná a~stále se vyvíjí. 
+                    Jeho velká flexibilita při konfiguraci s~sebou nese i~jisté nevýhody
+                    a~tím je právě jednoduchost jeho použití. Další nepříjemností je, že není
+                    dostupné tolik propracované rozhraní pro konfiguraci jako u~serveru Jetty,
                     což lze opět přičítat délce trvání projektu.
 
                     Je zjevné, že využití serveru Jetty je podstatně jednodušší než je tomu
-                    u serveru Undertow. Nicméně tato skutečnost je jen překážkou pro provedení
-                    integrace, ale následně nemusí činit další problémy a nijak neovlivňuje
+                    u~serveru Undertow. Nicméně tato skutečnost je jen překážkou pro provedení
+                    integrace, ale následně nemusí činit další problémy a~nijak neovlivňuje
                     funkčnost výsledné aplikace.
 
             \end{itemize}
@@ -787,8 +787,8 @@ HttpHandler httpHandler = manager.start();
             Na vysoké úrovni pohledu lze architekturu serveru Jenkins CI rozdělit do tří částí:
             
             \begin{itemize}
-                \item{\textbf{Jádro aplikace} do kterého patří nejnutnější základní komponenty systému a
-                    části, které jsou pro Jenkins CI specifické a~vznikají v~rámci tohoto projektu.}
+                \item{\textbf{Jádro aplikace} do kterého patří nejnutnější základní komponenty systému
+a~části, které jsou pro Jenkins CI specifické a~vznikají v~rámci tohoto projektu.}
 
                 \item{\textbf{Přídavné moduly} aplikace, které jsou do ní dynamicky přidávány jako archivy javových programů
                     \texttt{.jar}. Tyto součásti jsou většinou nutné pro standardní běh aplikace a~je s~nimi aplikace
@@ -1007,7 +1007,7 @@ HttpHandler httpHandler = manager.start();
                 \item{\textbf{Srovnání zpětné kompatibility:} Dosažení zpětné kompatibility
                     u~první varianty je snazší, jelikož jsou viditelná místa, která je 
                     potřeba znovu implementovat a~nezanedbat. Nicméně druhá varianta
-                    nemá žádné faktické nevýhody k dosažení 
+                    nemá žádné faktické nevýhody k~dosažení 
                     stejné úrovně zpětné kompatibility jako varianta první.}
 
                 \item{\textbf{Další hlediska:} Jelikož dlouhodobý vývoj servlet kontejneru
@@ -1088,7 +1088,7 @@ HttpHandler httpHandler = manager.start();
         %
         %využit parametr setIgnoreFlush
 
-    \section{Srovnání výkonu původní a nové implementace}  \label{kapPerformance}
+    \section{Srovnání výkonu původní a~nové implementace}  \label{kapPerformance}
     %Různé scénáře, prootože rychlost určuje taky jak jsou rychle odpovědi servlet kontejneru na požadavky servletu
     %proto i různé stránky, ale není to jen o servlet kontejneru, ale také o tom, jak je napsán kontejner
     %
