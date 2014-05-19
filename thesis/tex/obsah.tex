@@ -546,7 +546,7 @@ server.start();
                 provádí veškerou činnost serveru a tou je odpovídání na všechny požadavky jednotným textem. 
                 Ve standardních aplikacích by následovalo volání dalšího \emph{handleru}.
 
-            \subsubsection{Integrace servlet kontejneru}
+            \subsubsection{Servlet kontejner}
                 Servlet kontejner obsažený v serveru Undertow je tvořen již implementovaným
                 řetězcem \emph{handlerů}, které poskytují potřebné funkcionality odpovídající specifikaci.
                 Pro nastavení základní funkcionality kontejneru existuje vysokoúrovňové rozhraní,
@@ -588,10 +588,48 @@ HttpHandler httpHandler = manager.start();
 
 
             \subsubsection{Pokročilá konfigurace servlet kontejneru}
-                %Správa statických zdrojů pomocí ResourceManager.
-                %Nastavení autentizace pomocí LoginConfig, IdentityManageru, 
-                %security-constraints z web.xml
+                Potřebných či možných nastavení servlet kontejneru je celá řada. Z těch nejdůležitějších stojí za zmínku 
+                správa zdrojů (angl. \emph{resource management}), nastavení autentizace a zabezpečení servlet kontejneru
+                a úprava činnosti kontejneru pomocí vložení vlastních \emph{handlerů} do posloupnosti \emph{handlerů},
+                která je vytvářena před jeho spuštěním.
+
+                Pro správu zdrojů je nutné vytvořit instanci rozhraní \texttt{ResourceManager}, jinak kontejner při 
+                každém požadavku na zdroj žádný nenajde (zjištěno ze zdrojových kódů). Je možné vytvořit si vlastní
+                implementaci pro správu zdrojů nebo použít jednu z implementací, které Undertow obsahuje:
+
+                \begin{itemize}
+                    \item \texttt{FileResourceManager} -- spravuje zdroje z určené složky souborového systému
+                    \item \texttt{ClassPathResourceManager}  -- spravuje soubory, které se nacházejí na \emph{classpath} kontejneru 
+                        (cesta ke knihovnám určená při spuštění programu)
+                    \item \texttt{CachingResourceManager} -- zastřešuje jinou implementaci správce zdrojů a pro
+                        urychlení pracuje jako vyrovnávací paměť (angl. cache)
+                \end{itemize}
+
+                %TODO pořádně zkontrolovat význam či přepracovat, přidat něco o securiy-constraints?
+                Servlet kontejner může poskytovat dva základní typy zabezpečení. 
+                První možností je poskytovat autentizaci v případech, které uživatel deklaruje v souboru
+                \emph{web.xml}. Při tomto způsobu kontejner kontroluje příchozí požadavky a v případě
+                potřeby požádá uživatele o autentizaci. Pro správnou funkčnost tohoto způsobu zabezpečení
+                je potřeba vytvořit objekt \texttt{LoginConfig} \cite{undertowServletSecurity} (odpovídající
+                nastavení části \emph{login-config} ve \emph{web.xml} a vytvořit vlastní implementaci
+                rozhraní \texttt{IdentityManager}. Tato instance na základě požadavku rozhooruje, zda
+                uživatel byl rozpoznán (a případně jej blíže identifikuje) nebo zamítne požadavek na autentizaci.
                 
+                Druhou možností je definovat
+                libovolný počet instancí rozhraní \texttt{AuthenticationMechanism}. Každý příchozí požadavek
+                je následně prochází každou instatncí a její základním činností je určit, zda požadavek má
+                mít umožněn přístup do kontejneru nebo ne. Bližší informace lze nalézt v dokumentaci z níž
+                byly čerpány informace v této kapitole \cite{undertowDeployment}, \cite{undertowSecurity}.
+
+                \medskip
+                Upravit činnost servlet kontejneru je navíc možné tak, že se do něj vloží vlastní instance
+                \emph{handlerů} a ty libovolně upravují příchozí požadavky. Samotné vložení
+                není možné provést přímo, protože servlet kontejner se sestavuje automaticky na základě
+                definovaných vlastností. Je tedy nutné zaobalit handler do instance rozhraní \texttt{HandlerWrapper},
+                který toto vložení umožní. Tato instance umožní následné vložení \emph{handleru} do řetězce \emph{handlerů}
+                v kontejneru. Je možné vložit \emph{handler} před vykonáním všech \emph{handlerů} serveru, po
+                nastavení kontextu požadavku a po vykonání všech handlerů před spuštěním kódu uvnitř uživatelského 
+                servletru \cite{undertowDeployment}.
  
         
         \subsection{Srovnání serverů Undertow a~Jetty}\label{srovnani}
@@ -615,7 +653,7 @@ HttpHandler httpHandler = manager.start();
                     dosáhl server Undertow až třetinového času než server Jetty. 
                     
                     Naopak při některých
-                    jiných konfiguracích byl server Jetty rychlejší a proto nelze definitivně určit,
+                    jiných konfiguracích byl rychlejší server Jetty a proto nelze definitivně určit,
                     který server je rychlejší a podstatné je také způsob využití serveru. 
                     Dalším důležitým faktem je, že v Jenkins CI není využita nejnovější verze serveru
                     Jetty (verze 9), ale jeho nižší verze 8, protože Jenkins CI aktuálně využívá
