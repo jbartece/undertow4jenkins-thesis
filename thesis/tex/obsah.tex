@@ -263,10 +263,46 @@
                 \end{center}
             \end{figure}   %TODO fix obrazek je potreba prekreslit
 
-        \subsection{Architektura archivu webové aplikace} \label{kapWebXml}
-            %TODO Pridat něco o webových aplikacích, souboru web.xml, archivu .war?
+        \subsection{Struktura archivu webové aplikace} \label{kapWebXml}
+            Kompletní popis architektury webových aplikací v jazyce Java by byl velmi rozsáhlý. 
+            Tato kapitola se zaměřuje pouze na strukturu archivu webové aplikace \texttt{.war} pro aplikace běžící v servlet kontejneru.
+            Popis je zaměřen pouze na části, které jsou použity v Jenkins CI a jsou podstatné
+            pro samotnou integraci serveru Undertow do Jenkins CI.
 
+            \medskip
+            Archiv \texttt{.war} je archiv zabalený metodou \emph{ZIP} a základ jeho struktury je následující:
+            
+\begin{priklad} Zjednodušená struktura archivu \texttt{.war}
+\begin{verbatim}
+webapp.war
+    |-- WEB-INF/
+        |-- lib/
+            |-- *.jar
+        |-- classes/
+            |-- *.class
+        |-- web.xml
+\end{verbatim}
+\end{priklad}
 
+            %TODO kontrola newpage
+            \newpage
+
+            Pro konfiguraci aplikace je nejdůležitěší adresář WEB-INF a především tyto jeho položky:
+
+            \begin{itemize}
+                \item Adresář \textbf{lib} obsahuje libovolné uživatelské knihovny, které jsou ve webové aplikaci využívány. 
+                    Knihovny jsou ve standardním archivu \texttt{.jar}.
+                    Servlet kontejner je zodpovědný za zavádění těchto knihoven, aby je bylo možné v aplikaci následně využívat.
+
+                \item Adresář \textbf{classes} obsahuje přeložené třídy, které se podílejí na činnosti aplikace. 
+                    Servlet kontejner je opět zodpovědný za jejich zavedení. 
+
+                \item Soubor \textbf{web.xml} obsahuje nejpodstatnější konfiguraci webové aplikace pro servlet kontejner.
+                    Na základě tohoto souboru servlet kontejner provádí nastavené celé aplikace.
+                    Jsou zde popsány veškeré \emph{servlety}, které aplikace obsahuje, pravidla pro zabezpečení aplikace,
+                    \emph{filtery}, které mohou upravovat příchozí požadavky a spousta dalších konfigurací. 
+            \end{itemize}
+            
          
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     \section{Nástroj Maven} \label{maven}
