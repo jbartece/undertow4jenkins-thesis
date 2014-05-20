@@ -1010,44 +1010,79 @@ HttpHandler httpHandler = manager.start();
             Autorizace a autentizace je v Jenkins CI založena na tzv. filtrech (angl. \emph{filters})
             (prvky webové aplikace upravující příchozí požadavky než je začne zpracovávat servlet) 
             a na dalších metodikách, jejich většina není pro činnost servlet kontejneru podstatná~\cite{securityArchitectureJenkins}. 
+            
             Kontrolu přístupu k jednotlivým prvkům aplikace provádí 
-            Jenkins CI samostatně, ale pro provádění autentizace poskytuje několik možností:
+            Jenkins CI samostatně, ale pro provádění autentizace využívá několik externích zdrojů. Pro nastavení autentizace
+            poskytuje několik možností:
 
             \begin{itemize}
                 \item Delegovat autentizaci na servlet kontejner
-                \item Využít vlastní databázi uživatelů sefinovanou v Jenkins CI
-                \item Získávat informace o uživatelích z LDAP serveru
+                \item Využít vlastní databázi uživatelů definovanou v Jenkins CI
+                \item Autentizovat uživatele pomocí LDAP serveru
                 \item Delegovat autentizaci na databázi uživatelů v operačním systému UNIX. Uživatelé 
-                    se mohou přihlásit zadáním jejich přístupovch práv do ooperačního systému. 
+                    se mohou přihlásit zadáním jejich přístupovch práv do operačního systému. 
             \end{itemize}
             
-            Servlet kontejner musí poskytovat možnost autentizace pro Jenkins CI a poskytnout podporu
-
             Pro podporu autorizace a autorizace musí servlet kontejner zajistit správné zavedení aplikace a nastavení
             všech položek souboru \emph{web.xml}, které se týkají bezpečnosti. Jedná se tedy především
             o následující položky \cite{webXml}:
 
             \begin{itemize}
-                \item \emph{security-role} popsat
-                \item \emph{security-constraint} 
-                \item \emph{login-config}
+                \item \emph{security-role} umožňuje specifikovat různé typy rolí pro uživatele v systému,
+                    které je jim možné přidělit
+                \item \emph{security-constraint} definuje části aplikace mají chráněný přístup a role, které k nim
+                    mohou přistupovat. V Jenkins CI je tato kontrola prováděná interně a je specifikován
+                    omezený přístup pouze k přihlašovacímu formuláři.
+                \item \emph{login-config} umožňuje určit způsob jakým se má po uživateli vyžadovat zadání přistupových
+                    údajů, pokud přistupuje k chráněnému zdroji, a na jaké stránky má být přesměrován v případě úspěchu
+                    nebo neúspěchu pokusu o přihlášení
             \end{itemize}
             
     
-            \begin{figure}[h!t]
-                \begin{center}
-                    \scalebox{0.7}{\includegraphics{img/jenkinsSecurity.png}}
-                    \caption{Průběh autentizace uživatele pomocí servlet kontejneru}
-                    \label{imgSecurity}
-                \end{center}
-            \end{figure}
+            \subsubsection{Autentizace pomocí servlet kontejneru}
+                Jedním z výše uvedených způsobů autentizace v Jenkins CI je využít servlet kontejneru pro autentizaci.
+                Princip tohoto způsobu autentizace v Jenkins CI je znázorněn na obrázku \ref{imgSecurity}. 
+                Tento způsob funguje následovně. Příchozí 
+                požadavek je předán servlet kontejnerem do Jenkins CI k normálnímu zpracování. 
+                Pokud Jenkins CI zjistí, že uživatel
+                není autentizován, tak pošle požadavek servlet kontejneru pro ověření uživatele. Servlet
+                kontejner provede ověření a vrátí buď identitu ověřeného uživatele nebo jeho ověření zamítné (z důvodu
+                neplatných přihlašovacích údajů).
+                
+                \begin{figure}[h!t]
+                    \begin{center}
+                        \scalebox{0.7}{\includegraphics{img/jenkinsSecurity.png}}
+                        \caption{Průběh autentizace uživatele pomocí servlet kontejneru}
+                        \label{imgSecurity}
+                    \end{center}
+                \end{figure}
 
+                Při použití tohoto způsobu autentizace je nutné správně nakonfigurovat servlet kontejneru před spuštěním.
+                
+                \begin{enumerate}
+                    \item Definovat dostupné bezpečnostní role pro systém v souboru \emph{web.xml}
+                    \item Specifikovat uživatele systému s jejich hesly a s libovolným výčtem rolí, které
+                        jsou definovány v prvním kroku
+                \end{enumerate}
 
-            dva druhy realm classes, autentizace, definování uživatelů, obrázek autentizace
-                  % \cite{securityArchitectureWinstone}
-                    
-                    definování uživatelů jako parametr, 
-                    v souboru users.xml, dynamické definování nových tříd
+                V aktuálním servlet kontejneru jsou předdefinovány dvě třídy, které provádějí autentizaci,
+                a je možné si zvolit jednu z nich nebo si dodefinovat třídu vlastní.
+                Dostupné třídy poskytují tyto dva způsoby přidávání uživatelů \cite{securityArchitectureWinstone}:
+
+                \begin{itemize}
+                    \item Přidávání uživatelů pomocí parametrů při spuštění příkazové řádky při spuštění servlet kontejneru 
+                    \item Definování uživatelů v XML souboru s implicitním jménem \emph{users.xml} nebo 
+                        lze specifikovat umístění tohoto souboru pomocí parametru. Formát položky
+                        pro zadání uživatele je uveden v příkladu \ref{prUsers}
+                \end{itemize}
+
+\begin{priklad} \label{prUsers}
+    Formát položky XML souboru pro zadávání uživatelů v aktuálním servlet kontejneru
+\begin{verbatim}
+    <user username="joe" password="doe" roles="user,admin" />
+\end{verbatim}
+\end{priklad}
+
 
 
     \section{Návrh způsobu integrace serveru Undertow} \label{secNavrh}
