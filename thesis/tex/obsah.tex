@@ -977,7 +977,7 @@ HttpHandler httpHandler = manager.start();
                     \texttt{http://httpd.apache.org/}}. V tomto případě je pro optimalizaci komunikace mezi HTTP serverem
                     a \emph{proxy} severem využit protokol AJP13 \cite{ajp13Web}.
 
-                \item Podporovat zabezpečení aplikace pomocí. Musí umožnit přihlašování uživatelů, správu přístupových práv a rolí.
+                \item Podporovat zabezpečení aplikace. Musí umožnit přihlašování uživatelů, správu přístupových práv a rolí.
                     Tato problematika je blíže rozebírána v~následující kapitole~\ref{secSecurityArchitecture}.
                     
                 \item Činnost servlet kontejneru může být ovlivňována pomocí komunikace přes síťové rozhraní zasláním zprávy
@@ -1003,17 +1003,41 @@ HttpHandler httpHandler = manager.start();
             tento protokol ještě není 
             v~Jenkins CI více využíván a~tudíž jeho podpora v servlet kontejneru není pro činnost Jenkins CI zásadní~\cite{kohsukeTopic}.
         
-        %Možnost rozšířiš informace o security architektuře     
-        \subsection{Bezpečnostní architektura v~Jenkins CI} \label{secSecurityArchitecture}
-                    \cite{securityArchitectureJenkins}, \cite{securityArchitectureWinstone}
-                    
-            Další činností kontejneru, kterou může vykonávat 
-            je správa přístupových práv a~umožnění autentizace uživatelů. 
-            Konkrétní uživatelské účty mohou být specifikovány
-            při spouštění servlet kontejneru nebo načítány ze
-            standardního konfiguračního
-            souboru webové aplikace \texttt{web.xml}.
+        \subsection{Zabezpečení v~Jenkins CI} \label{secSecurityArchitecture}
+            Zabezpečení serveru Jenkins CI z pohledu autentizace a autorizace je poměrně komplikované,
+            ale pouze část se týká servlet kontejneru a vyžaduje jeho činnost. 
+            
+            Autorizace a autentizace je v Jenkins CI založena na tzv. filtrech (angl. \emph{filters})
+            (prvky webové aplikace upravující příchozí požadavky než je začne zpracovávat servlet) 
+            a na dalších metodikách, jejich většina není pro činnost servlet kontejneru podstatná~\cite{securityArchitectureJenkins}. 
+            Kontrolu přístupu k jednotlivým prvkům aplikace provádí 
+            Jenkins CI samostatně, ale pro provádění autentizace poskytuje několik možností:
 
+            \begin{itemize}
+                \item Delegovat autentizaci na servlet kontejner
+                \item Využít vlastní databázi uživatelů sefinovanou v Jenkins CI
+                \item Získávat informace o uživatelích z LDAP serveru
+                \item Delegovat autentizaci na databázi uživatelů v operačním systému UNIX. Uživatelé 
+                    se mohou přihlásit zadáním jejich přístupovch práv do ooperačního systému. 
+            \end{itemize}
+            
+            Servlet kontejner musí poskytovat možnost autentizace pro Jenkins CI a poskytnout podporu
+
+            Pro podporu autorizace a autorizace musí servlet kontejner zajistit správné zavedení aplikace a nastavení
+            všech položek souboru \emph{web.xml}, které se týkají bezpečnosti. Jedná se tedy především
+            o následující položky \cite{webXml}:
+
+            \begin{itemize}
+                \item \emph{security-role} popsat
+                \item \emph{security-constraint} 
+                \item \emph{login-config}
+            \end{itemize}
+            
+    
+
+            dva druhy realm classes, autentizace, definování uživatelů, obrázek autentizace
+                  % \cite{securityArchitectureWinstone}
+                    
                     definování uživatelů jako parametr, 
                     v souboru users.xml, dynamické definování nových tříd
 
