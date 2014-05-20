@@ -281,11 +281,10 @@ webapp.war
         |-- classes/
             |-- *.class
         |-- web.xml
+    |-- <ostatní>
 \end{verbatim}
 \end{priklad}
 
-            %TODO kontrola newpage
-            \newpage
 
             Pro konfiguraci aplikace je nejdůležitěší adresář WEB-INF a především tyto jeho položky:
 
@@ -302,6 +301,12 @@ webapp.war
                     Jsou zde popsány veškeré \emph{servlety}, které aplikace obsahuje, pravidla pro zabezpečení aplikace,
                     \emph{filtery}, které mohou upravovat příchozí požadavky a spousta dalších konfigurací. 
             \end{itemize}
+
+            Kromě základních výše popsaných položek může archiv obsahovat libovolné jiné soubory pro běh aplikace jako jsou 
+            HTML soubory, kaskádové styly (CSS), obrázky a jiné. Servlet kontejner musí spravovat tyto zdroje
+            a při příchozích požadavcích je načítat. Pro odkazování těchto souborů je jako kořenový adresář považován
+            samotný archiv, takže cesta k souboru wem.xml je následující: \texttt{/WEB-INF/web.xml}.
+
             
          
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -551,10 +556,6 @@ a~jeho dokumentace \cite{undertowDocs},
                     \end{center}
                 \end{figure}
   
-
-
-                %TODO kontrola posunutí textu
-                \newpage
 \begin{priklad} \label{prUndertow} Vytvoření jednoduché instance serveru Undertow
 \begin{verbatim}
 Undertow server = Undertow.builder()
@@ -571,7 +572,6 @@ Undertow server = Undertow.builder()
 server.start();
 \end{verbatim}
 \end{priklad}
-
                 
                 Třída \texttt{Undertow} reprezentuje instanci samotného
                 webového serveru a~je ji nutné definovat prakticky vždy. Metodou
@@ -945,55 +945,77 @@ HttpHandler httpHandler = manager.start();
             Při spouštění aplikace je před předáním řízení aplikace servlet kontejneru
             část parametrů zpracována komponentou \texttt{extras-executable-war} (blíže 
             rozebrána v~kapitole \ref{secArchitecture}) a~zbylé parametry jsou přímo
-            předány kontejneru, který podle nich nastaví svou činnost.
+            předány servlet kontejneru, který podle nich nastaví svou činnost.
             Jednotlivé parametry zde nejsou rozebírány, ale následující analýza
             se zaměřuje především na klíčové body funkčnosti servlet kontejneru.
 
             Pro zachování zpětné kompatibility musí servlet kontejner v~aplikaci 
-            Jenkins CI poskytovat následující funkce:
+            Jenkins CI poskytovat především následující funkce:
             
-            \newpage
             \begin{itemize}
-                \item{\textbf{Komunikaci nešifrovaným protokolem HTTP}}
-                \item{\textbf{Komunikaci šifrovaným protokolem HTTPS}}
-                \item{\textbf{Komunikaci protokolem AJP13}} 
-                \item{\textbf{Umožnit přihlašování a~správu přístupových práv} }
-                \item{\textbf{Umožnit restartování a~ukončování aplikace přes speciální port}}
-                \item{\textbf{TODO: access logger, podrobnější popis činností}}
-                \item{\textbf{TODO: Nastavení aplikace dle web.xml?}}
+                \item Provádět inicializaci a spuštění webové aplikace, která je zabalená v archivu \texttt{.war}
+                    nebo je již rozbalená v nějakém konkrétním adresáři na disku.
+                
+                \item Poskytovat možnost komunikace nešifrovaným protokolem HTTP, který je výchozím
+                    komuničním protokolem v serveru Jenkins CI.  Aplikace musí naslouchat na všech síťových rozhraních na portu 8080.
+                
+                \item Umožnit komunikaci šifrovaným síťovým protokolem HTTPS. V Jenkins CI jsou dostupné 
+                    3 způsoby inicializace šifrované komunikace, které se liší poskytnutými informacemi pro 
+                    zabezpečení pomocí SSL:
+                    \begin{itemize}
+                        \item Zadáním certifikátu ve formátu PEM a zároveň zadání privátního klíče serveru
+                        \item Zadáním souboru, který obsahuje úložiště certifikátů (v prostředí aplikací v jazyce Java tzv. \emph{KeyStore}) a zároveň zadání 
+                            přístupového hesla k tomuto souboru
+                        \item Nezadání žádných bezpečnostních údajů. V tom případě si servlet kontejner musí certifikát sám
+                            vygenerovat a pomocí něj inicializovat komunikaci. Je důležité dodat, že tento způsob
+                            není pro bežné využití bezpečný a je vhodné jej použít jen pro účely testování.
+                    \end{itemize} 
+
+                \item Komunikovat protokolem AJP13. Tento protokol se využívá při architektuře serveru,
+                    kdy je HTTP server umístěn až za tzv. \emph{proxy} serverem. Typickým příkladem takového
+                    \emph{proxy} serveru je program Apache\footnote{Webové stránky projektu Apache: 
+                    \texttt{http://httpd.apache.org/}}. V tomto případě je pro optimalizaci komunikace mezi HTTP serverem
+                    a \emph{proxy} severem využit protokol AJP13 \cite{ajp13Web}.
+
+                \item Podporovat zabezpečení aplikace pomocí. Musí umožnit přihlašování uživatelů, správu přístupových práv a rolí.
+                    Tato problematika je blíže rozebírána v~následující kapitole~\ref{secSecurityArchitecture}.
+                    
+                \item Činnost servlet kontejneru může být ovlivňována pomocí komunikace přes síťové rozhraní zasláním zprávy
+                    na speciální port. Při obdržení zprávy na tomto portu je potřeba umožnit ukončení nebo restartování aplikace.
+                    Pro ukončení aplikace servlet kontejner očekává zprávu, která bude obsahovat pouze ASCII hodnotu číslice 0.
+                    Restartování aplikace provede při obdržení zprávy s ASCII hodnotou číslice 4. Jakékoliv
+                    jiné zprávy než v uvedeném formátu mohou být ignorovány.
+
+                \item Zaznamenávat informace o přístupech k aplikaci. V současném servlet kontejneru je možné zaznamenávat
+                    údaje o IP adrese, jménu uživatele (pro přístup do aplikace), času, cílové URL adrese, hodnotě 
+                    kódu HTTP odpovědi a o hodnotách hlaviček \emph{Referer} a \emph{User-Agent}, které jsou v protokolu HTTP.
+                    Při spuštění si uživatel může zvolit, které z údajů si přeje zaznamenávat a s každý přístup poté 
+                    servlet kontejner uchovává patřičné informace v souboru na serveru.
+
             \end{itemize}
             
 
-            %v budoucnu by možná bylo vhodné popis protokolu AJP13 rozvést
-            Protokoly HTTP a~HTTPS jsou velmi běžnými protokoly používanými pro 
-            komunikaci aplikací ve webovém prostředí a~v~této práci je očekáváno, 
-            že čtenář je s~němi již seznámen. Protokol AJP13 je speciálním
-            typem protokolu, který se využívá především pro efektivnější komunikaci
-            webového serveru a~servlet kontejneru \cite{ajp13Web}.
-            
+            Po integraci serveru Jetty do servlet kontejneru byla přidána ještě možnost
+            komunikace protokolem SPDY. SPDY je nový síťový protokol aplikační vrstvy, který je
+            navržen pro přenos obsahu webových stránek v oblasti internetu. Jeho hlavní cílem je snížit odezvu stránek a zdokonalit
+            komunikaci pro kterou již protokol HTTP není ideální \cite{spdyArticle}.
+            Jeho využití v budoucnu může přinést zrychlení aplikace, ale 
+            tento protokol ještě není 
+            v~Jenkins CI více využíván a~tudíž jeho podpora v servlet kontejneru není pro činnost Jenkins CI zásadní~\cite{kohsukeTopic}.
+        
+        %Možnost rozšířiš informace o security architektuře     
+        \subsection{Bezpečnostní architektura v~Jenkins CI} \label{secSecurityArchitecture}
+                    \cite{securityArchitectureJenkins}, \cite{securityArchitectureWinstone}
+                    
             Další činností kontejneru, kterou může vykonávat 
             je správa přístupových práv a~umožnění autentizace uživatelů. 
             Konkrétní uživatelské účty mohou být specifikovány
             při spouštění servlet kontejneru nebo načítány ze
             standardního konfiguračního
             souboru webové aplikace \texttt{web.xml}.
-            %Tato problematika je blíže rozebírána v~následující kapitole \ref{secSecurityArchitecture}.
 
-
-            Poslední z~hlavních funkcionalit, které nabízí servlet kontejner v~Jenkins CI
-            a~je nutné ji zachovat,
-            je možnost ukončit nebo restartovat aplikaci pomocí zaslání
-            speciálního požadavku na zvolený port. 
-
-            Po integraci serveru Jetty do servlet kontejneru byla přidána ještě možnost
-            komunikace protokolem SPDY, ale tento protokol ještě není 
-            v~Jenkins CI více využíván a~tudíž jeho implementace není zásadní.
-
-        
-        %Možnost rozšířiš informace o security architektuře     
-        %\subsection{Bezpečnostní architektura v~Jenkins CI} \label{secSecurityArchitecture}
-        %            \cite{securityArchitectureJenkins}, \cite{securityArchitectureWinstone}
-        %            
+                    definování uživatelů jako parametr, 
+                    v souboru users.xml, dynamické definování nových tříd
 
 
     \section{Návrh způsobu integrace serveru Undertow} \label{secNavrh}
@@ -1123,11 +1145,13 @@ HttpHandler httpHandler = manager.start();
 
 
     \chapter{Implementace}  \label{kapImpl}
+        %package diagram
 %                    V mnoha místech navíc chybí patřičné komentování zdrojových kódů a to
 %                    i na úrovni veřejného rozhraní, což činilo využití poměrně náročným a byl jsem nucen zkoumat
 %                    samotné zdrojové kódy serveru, abych vše správně pochopil a využil.
 
         %web.xml - podpora určitých parametrů, ale zachování obecnosti
+        %resources z archivu, možná ten caching?
         %
         %využit parametr setIgnoreFlush
 
