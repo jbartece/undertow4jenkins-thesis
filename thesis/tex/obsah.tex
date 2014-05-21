@@ -1212,15 +1212,76 @@ HttpHandler httpHandler = manager.start();
 
 
     \chapter{Implementace}  \label{kapImpl}
-        %package diagram
+        
+        %nějaké uvední do toho, oecné věci o implementaci, ve sporných místech hledání ve strých zdrojácích
+        %a snaha zachovat význam implementace
+        %načítání parametrů Apache commons: http://commons.apache.org/proper/commons-cli/
+        %logovaní slf4j a jako backend log4j - při přechodu by se dalo odstranit
+        %jak distribuovano (maven), baleno do jar
+
 %                    V mnoha místech navíc chybí patřičné komentování zdrojových kódů a to
 %                    i na úrovni veřejného rozhraní, což činilo využití poměrně náročným a byl jsem nucen zkoumat
 %                    samotné zdrojové kódy serveru, abych vše správně pochopil a využil.
+        %proti jake verzi jenkins byl vyvoj provaden -- aktualni nejnovejsi v dobe pocatku vyvoje, ktery mel winstone-2.0
 
-        %web.xml - podpora určitých parametrů, ale zachování obecnosti
-        %resources z archivu, možná ten caching?
+        %popis toku programu - jak veci na sebe navazuji
+
+        %package diagram - popis jednotlivých balíků a co vykonávají
+
+        %zjistene problemy a jak resene?
+
+        %popis implementace jednotlivých částí funkčnosti - resourcemanager odkud bere veci, typ (mozna potom i caching), rozbalovani warka do webrootu
+            %nebo do tmp, accesslogger implementovany jako handler na konci retezce handleru,     
+        %mapovani starych classname na nove, uzivatelske vytvareni trid, webXML parser(podporovani jen 
+        %casti ze specifikace verze 2.4, ktera je v jenkins, ale je to udelano obecne a pripadne rozsireni
+        %je mozne bez zmeny architektury a nastavovani servlet
+        %kontejneru a jeho porovnani s Jetty (ze tam je samozrejmosti) - v undertow by se casem mohlo taky vyskytnout (zdeleno pres irc),
+        %pridavani prefixu k url adrese - vyreseno pridanim RedirectHandleru na zacatek weboveho serveru
+        %classloading lib/classes pripadne slozky s knihovnami z adresare predaneho jako parametr, 
+        %jak je nastaveno security, pridavani listeneru, implementace kontrol portu,
+        %popis zpracovávání parametrů a přidání nových, příípadně změna default hodnot, nastavovani defaul mime-types ze souboru
+
+        %využit parametr setIgnoreFlush a jeho popis
+
+        %3 repozitare, zmena v jenkins CI novych verzi extra-executables-war a noveho jarka s undertow4jenkins,
+        %což je název, kterým byl pojmenován tento projekt
+
+
+        %vytvorene 6 zakladnich unit testu a zkousena aplikace fungovala, nelze vyuzit integracni testy celeho jenkins, protoze
+        %ten nebezi na servlet kontejneru pro celou aplikaci, ale na nejake mensi jetty
+
+        %ignorovane parametry      
+        %nastavovano spolecne s tim, ze prednost ma nastaveni u http, nastaveni mozne pouze pro cely server
+        %nebo to uplne rucne provest sestaveni serveru, coz by slo, ale pro pripadny nasledujici vyvo by to byla komplikace
+        %ponechano aktualne jako nastavovani dohromady (naprikald pri pridani podpory SPDY by se kod musel prepracovat)
+        %--httpKeepAliveTimeout   = how long idle HTTP keep-alive connections are kept around (in ms; default 5000)?\n" +
+        %--httpsKeepAliveTimeout   = how long idle HTTPS keep-alive connections are kept around (in ms; default 5000)?\n" +
+          
+        %spdy;          -- aktualne neni podpora v undertow ale brzo bude
+
+        %webappsDir;    -- nedava smysl, vice instanci jenkins nemuze bezet na jednom stroji (pozustatek)
+        %hostsDir;
+        
+        %Npouzivane uz ani ve winstone 2.0
+        %httpDoHostnameLookups;
+        %httpsDoHostnameLookups;
+        %handlerCountStartup;
+        %logThrowingLineNo;
+
+        %V jetty se vlakna vytvarela rucen a nasledne predavala k vykonani.
+        %V underotw tato moznost nebyla a je to ponechano na serveru
+        %handlerCountMaxIdle;
+
+        %Naprosto nezasadni - ponechano pro pripadny nasledujici vyvoj
+        %logThrowingThread;
+        %debug;
+
+
+
+        
+
         %
-        %využit parametr setIgnoreFlush
+
 
     \chapter{Srovnání výkonu původní a~nové implementace}  \label{kapPerformance}
     %Různé scénáře, prootože rychlost určuje taky jak jsou rychle odpovědi servlet kontejneru na požadavky servletu
