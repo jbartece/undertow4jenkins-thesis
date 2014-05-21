@@ -335,6 +335,13 @@ a~integračních testů, uložení spustitelné podoby aplikace do lokálního r
         Kromě těchto praktických činností také umožňuje zveřejnit podrobnější informace o~projektu         
         jako jsou informace o~licenci, vývojářích, adrese systému pro správu verzí, atp.
 
+        Zmíněný lokální repozitář neslouží pouze ke stahování knihoven ze serveru, ale
+        také pro ukládání lokálně vyvíjený aplikací.
+        Pokud je aplikace vyvíjena lokálně a skládá se z více nezávislých modulů, tak je potřeba
+        postupně tyto moduly přidávat do lokálního repozitáře, aby je při sestavování
+        výsledného programu Maven mohl najít (na serveru je totiž nenajde). Pro přidání modulu či aplikace do 
+        lokálního Maven repoitáře slouží parametr \texttt{install}.
+
 
         Na příkladu \ref{jenkinsPom} je ukázka části souboru \texttt{pom.xml}, který je vytvořen pro Jenkins~CI:
         \begin{priklad} \label{jenkinsPom} 
@@ -1219,7 +1226,8 @@ HttpHandler httpHandler = manager.start();
 
         %3 maven projekty (repozitare), zmena v jenkins CI novych verzi extra-executables-war a noveho jarka s undertow4jenkins,
         %což je název, kterým byl pojmenován tento projekt
-
+    %licence
+    
     \section{Implementované funkce}
 
     %popis implementace jednotlivých částí funkčnosti - resourcemanager odkud bere veci, typ (mozna potom i caching), rozbalovani warka do webrootu
@@ -1247,12 +1255,7 @@ HttpHandler httpHandler = manager.start();
     %zjistene problemy a jak resene?
     %využit parametr setIgnoreFlush a jeho popis
 
-    \section{Spuštění a testování}
-    %jak prelozit a spustit
-    %posloupnost maven installu, zpusob spusteni programu
-    %vytvorene 6 zakladnich unit testu a zkousena aplikace fungovala, nelze vyuzit integracni testy celeho jenkins, protoze
-    %ten nebezi na servlet kontejneru pro celou aplikaci, ale na nejake mensi jetty
-    %licence
+
 
     \section{Omezení aplikace}
     Veškerá podstatná funkčnost servlet kontejneru byla zachována a při testování nebyly odhaleny žádné chyby,
@@ -1305,12 +1308,38 @@ HttpHandler httpHandler = manager.start();
     by se servlet kontejner ustálil, tak je možné provést zmíněné ruční sestavení serveru a poskytnout
     podporu obou těchto parametrů.
       
+    Kromě zde uvedených parametrů byly ostatní parametry původního servlet kontejneru zachovány.
+
+
+
+    \section{Spuštění a testování}
+        Nová implementace servlet kontejneru byla vyvíjena jako samostatný modul a její přeložení
+        a uložení do lokálního Maven repozitáře provede následující příkaz (volaný z adresáře projektu
+        undertow4jenkins):
+
+\begin{verbatim}
+    mvn clean install -DskipTests
+\end{verbatim}
+    
+    Po přeložení nového servlet kontejneru je následně nutné stejným příkazem přeložit upravenou
+    verzi modulu \texttt{extras-executable-war}. Jakmile jsou moduly připravené
+    v lokálním Maven repozitáři, tak již lze aplikaci Jenkins CI spustit standardním postupem,
+    který je popsán v kapitole \ref{jenkinsUsage}.
+
     \medskip
-    Kromě zde uvedených parametrů byly ostatní parametry původního servlet kontejneru zachovány a při testování
-    nebyla zjištěna nefunkčnost některých z nich.
+    Při vývoji aplikace bylo vytvořeno 6 integračních testů, které testují základní funkčnosti
+    vytvořeného servlet kontejneru. Nejedná se o žádnou kompletní sadu testů, ale sloužily pro
+    otestování základní funkčnosti nezbytných komponent servlet kontejneru jako jsou
+    komunikace pomocí HTTP, HTTPS, správa přístupových údajů, aj. Tyto testy byly inspirovány
+    testy v původním servlet kontejneru. Pro jejich spuštění stačí při překladu vynechat poslední
+    parametr \texttt{-DskipTests}.
 
-
-
+    Kromě spouštění těchto testů byla aplikace opakovaně testována používáním jejich různých součástí
+    a nebyly zjištěné žádné nefunkční prvky.
+    Při testování výsledného programu bylo zváženo využtí integračních testů celého serveru Jenkins CI.
+    Bohužel tyto testy nevyužívají vestavěný servlet kontejner, takže jejich využití
+    pro prokázání funkčnosti aplikace nebylo možné.
+    
 
     
 
