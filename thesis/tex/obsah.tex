@@ -1173,62 +1173,37 @@ HttpHandler httpHandler = manager.start();
             lepší výkonnost celé aplikace než druhá varianta.
 
         \subsection{Zjištěné problémy}
-            Při analyzování možností integrace byly zjištěny dva problémy.
-
-            %TODO Ponechat nebo odstranit? 
-            Prvním problémem je, že server Undertow
-            je určen pro běh pod virtuálním strojem, který odpovídá specifikaci jazyka
-            Java verze 7, zatímco server Jenkins CI využívá verzi 6. 
-            Server Jenkins CI využívá starší verzi z~důvodu zpětné kompatibility
-            řešení. 
-            
-            Specifikace jazyka je plně zpětně kompatibilní, takže server Jenkins CI
-            může být spuštěn s~novější verzí virtuálního stroje, ale pro okamžité začlenění
-            serveru Undertow do Jenkins~CI je tato skutečnost problém. Pokud by ovšem
-            provedená integrace poskytovala dobré výsledky, tak by bylo možné 
-            upravit kód serveru Undertow tak, aby odpovídal starší specifikaci.
-            V~těchto verzích jazyka není zásadní rozdíl a~úprava by byla jistě
-            možná, ale velmi pracná a~stále by potřebovala údržbu při příchodu
-            nových verzí serveru Undertow. Další možností je
-            zvýšit tlak na přechod celé aplikace na novější verzi specifikace jazyka,
-            což výhledově jistě nastane, ale není jisté kdy. 
-
-            V~této práci bude tento problém vyřešen převedením aplikace Jenkins CI na vyšší verzi,
-            což představuje úpravu několika konfigurací.
-
-            \medskip        
-            Druhým problémem je, že při integraci serveru Jetty do Jenkins CI byla přidána
+            Z analyzování možností integrace vyplývá jeden problém.
+            Při integraci serveru Jetty do Jenkins CI byla přidána
             možnost využít protokol SPDY, jehož implementace
             není v~současné době v~serveru Undertow dostupná. Nicméně tato možnost
             je zavedena jen krátce a~zřejmě ještě není využívána žádnými komponentami,
             takže by neměl být problém, kdyby nová implementace neobsahovala tuto volbu.
             
             Je důležité poznamenat, že základ implementace tohoto protokolu byl v 
-            serveru Undertow proveden, ale ještě není začleněn do aktuální 
-            verze, takže z dlohodobého hlediska toto nebude pro výslednou aplikaci
-            problém.
+            serveru Undertow již proveden, ale ještě není začleněn do aktuální 
+            verze. Takže z dlouhodobého hlediska bude možné tento problém odstranit.
             
 
 
 
     \chapter{Implementace}  \label{kapImpl}
         
+        \section{Obecné informace}
         %nějaké uvední do toho, oecné věci o implementaci, ve sporných místech hledání ve strých zdrojácích
         %a snaha zachovat význam implementace
-        %načítání parametrů Apache commons: http://commons.apache.org/proper/commons-cli/
-        %logovaní slf4j a jako backend log4j - při přechodu by se dalo odstranit
-        %jak distribuovano (maven), baleno do jar
+
 
 %                    V mnoha místech navíc chybí patřičné komentování zdrojových kódů a to
 %                    i na úrovni veřejného rozhraní, což činilo využití poměrně náročným a byl jsem nucen zkoumat
 %                    samotné zdrojové kódy serveru, abych vše správně pochopil a využil.
         %proti jake verzi jenkins byl vyvoj provaden -- aktualni nejnovejsi v dobe pocatku vyvoje, ktery mel winstone-2.0
 
-        %popis toku programu - jak veci na sebe navazuji
+        %3 repozitare, zmena v jenkins CI novych verzi extra-executables-war a noveho jarka s undertow4jenkins,
+        %což je název, kterým byl pojmenován tento projekt
 
-        %package diagram - popis jednotlivých balíků a co vykonávají
 
-        %zjistene problemy a jak resene?
+        \section{Implementované funkce}
 
         %popis implementace jednotlivých částí funkčnosti - resourcemanager odkud bere veci, typ (mozna potom i caching), rozbalovani warka do webrootu
             %nebo do tmp, accesslogger implementovany jako handler na konci retezce handleru,     
@@ -1241,14 +1216,34 @@ HttpHandler httpHandler = manager.start();
         %jak je nastaveno security, pridavani listeneru, implementace kontrol portu,
         %popis zpracovávání parametrů a přidání nových, příípadně změna default hodnot, nastavovani defaul mime-types ze souboru
 
+
+
+        \section{Popis struktury programu}
+        %popis toku programu - jak veci na sebe navazuji
+        
+        %načítání parametrů Apache commons: http://commons.apache.org/proper/commons-cli/
+        %logovaní slf4j a jako backend log4j - při přechodu by se dalo odstranit
+        %jak distribuovano (maven), baleno do jar
+
+        %package diagram - popis jednotlivých balíků a co vykonávají
+
+        %zjistene problemy a jak resene?
+
+        %jak prelozit a spustit
+
+
         %využit parametr setIgnoreFlush a jeho popis
 
-        %3 repozitare, zmena v jenkins CI novych verzi extra-executables-war a noveho jarka s undertow4jenkins,
-        %což je název, kterým byl pojmenován tento projekt
-
-
+        \section{Spuštění a testování}
+        %posloupnost maven installu, zpusob spusteni programu
         %vytvorene 6 zakladnich unit testu a zkousena aplikace fungovala, nelze vyuzit integracni testy celeho jenkins, protoze
         %ten nebezi na servlet kontejneru pro celou aplikaci, ale na nejake mensi jetty
+        %licence
+
+        \section{Omezení aplikace}
+        %Program byl otestovan a jevil se plne funkce, ale je tam nekolik uprav v parametrech 
+        
+        %je je mozne zadat, ale bude vypsana informativni hlaska, ze nejsou podporovane, ale program bude fungovat
 
         %ignorovane parametry      
         %nastavovano spolecne s tim, ze prednost ma nastaveni u http, nastaveni mozne pouze pro cely server
@@ -1289,6 +1284,9 @@ HttpHandler httpHandler = manager.start();
     %
     %používá jen POST a GET, pro DELETE se dělá POST (získáno z popisu REST API /job/jobName/API)
     %Testovány nejpodstatnější části webserveru - komunikace pomocí HTTP a HTTPS
+
+
+    \section{Zhodnocení přínosu pro komunitu Jenkins CI}
 
 
 
