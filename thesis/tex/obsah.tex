@@ -1227,8 +1227,21 @@ HttpHandler httpHandler = manager.start();
         %3 maven projekty (repozitare), zmena v jenkins CI novych verzi extra-executables-war a noveho jarka s undertow4jenkins,
         %což je název, kterým byl pojmenován tento projekt
     %licence
+    TODO
+
+    Implementace některých částí aplikace byla poměrně komplikovaná oproti původní verzi servlet kontejneru. Server Undertow 
+    neposkytuje některé standardní funkcionality pro integraci servlet kontejneru. Mezi nejvýznamnější patří nutnost
+    zpracování souboru \emph{web.xml} a nastavení dle něj servlet kontejneru nebo například nutnost 
+    provádět zavádění tříd servletů (tzv. \emph{classloading}). V aplikaci Jetty lze provést načtení 
+    souboru \emph{web.xml} pomocí jediného volání metody.
+
     
     \section{Implementované funkce}
+    TODO
+    
+    V této kapitole jsou popsány kličové části aplikace a způsob jakým byly implementovány. Většina těchoto
+    funkcionalit přímo koresponduje s uvedenými požadavky na zachování kompatibility, které jsou popsány v kapitole \ref{secKompatibilita}.
+
 
     %popis implementace jednotlivých částí funkčnosti - resourcemanager odkud bere veci, typ (mozna potom i caching), rozbalovani warka do webrootu
         %nebo do tmp, accesslogger implementovany jako handler na konci retezce handleru,     
@@ -1246,6 +1259,15 @@ HttpHandler httpHandler = manager.start();
         %což je název, kterým byl pojmenován tento projekt
 
     \section{Popis struktury programu}
+                
+    \begin{figure}[h!t]
+        \begin{center}
+            \scalebox{0.7}{\includegraphics{img/package.png}}
+            \caption{Package diagram - TODO}
+            \label{imgPackage}
+        \end{center}
+    \end{figure}
+
     
     %načítání parametrů Apache commons: http://commons.apache.org/proper/commons-cli/
     %logovaní slf4j a jako backend log4j - při přechodu by se dalo odstranit
@@ -1334,12 +1356,11 @@ HttpHandler httpHandler = manager.start();
     testy v původním servlet kontejneru. Pro jejich spuštění stačí při překladu vynechat poslední
     parametr \texttt{-DskipTests}.
 
-    Kromě spouštění těchto testů byla aplikace opakovaně testována používáním jejich různých součástí
-    a nebyly zjištěné žádné nefunkční prvky.
-    Při testování výsledného programu bylo zváženo využtí integračních testů celého serveru Jenkins CI.
+    Při testování výsledného programu bylo zváženo využití integračních testů celého serveru Jenkins CI.
     Bohužel tyto testy nevyužívají vestavěný servlet kontejner, takže jejich využití
     pro prokázání funkčnosti aplikace nebylo možné.
-    
+    Kromě spouštění vlastních vytvořených testů byla aplikace opakovaně testována používáním jejich různých součástí
+    a nebyly zjištěné žádné nefunkční prvky.
 
     
 
