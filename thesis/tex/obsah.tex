@@ -1084,7 +1084,7 @@ HttpHandler httpHandler = manager.start();
 \end{priklad}
 
 
-    \section{Zjištěné problémy}
+    \section{Zjištěné problémy} \label{kapSpdy}
         Z analyzování možností integrace vyplývá jeden problém.
         Při integraci serveru Jetty do Jenkins CI byla přidána
         možnost využít protokol SPDY, jehož implementace
@@ -1102,16 +1102,6 @@ HttpHandler httpHandler = manager.start();
         integrace serveru Undertow do systému Jenkins CI. 
         Obě navržené možné varianty integrace jsou porovnány z~různých
         hledisek a~je zvolen způsob, kterým bude následně implementace provedena.
-
-        Na závěr kapitoly jsou popsány problémy, které byly objeny při analýze
-        a~mají dopad na samotnou integraci a~její výsledky.
-
-
-        \medskip
-        Bez ohledu na zvolený způsob integrace bude jeho výsledkem především nový archiv \texttt{.jar},
-        který bude obsahovat nový servlet kontejner. Pro jeho využití v~systému Jenkins~CI je potřeba
-        upravit několik konfigurací a~upravit jeho načítání při spouštění aplikace v~modulu
-        \texttt{extras-executable-war}, který byl rozebírán v~kapitole \ref{secArchitecture}.
 
                 
         \subsection{Varianty integrace}
@@ -1183,6 +1173,19 @@ HttpHandler httpHandler = manager.start();
             varianta by měla přinést lepší čitelnost zdrojového kódu a~poskytnout 
             lepší výkonnost celé aplikace než druhá varianta.
 
+
+            \medskip
+            Architekturu spouštění a integrace servlet kontejneru v aplikaci není potřeba měnit a při integraci bude
+            zachován stávající stav tak, ktyrý byl popsán při analýze architektury (kapitola \ref{secArchitecture})
+            Zvolený způsob integrace vyžaduje vytvoření úplně nového projektu a jeho začlenění do stávající
+            verze serveru Jenkins CI. Nový servlet kontejner musí být vyvíjen jako samostatný modul,
+            který bude zabalen v archivu \texttt{.jar}, aby jej bylo možné následně vložit jako externí modul do Jenkins CI.
+            Pro spuštění nového servlet kontejneru
+            je potřeba upravit modul \texttt{extras-executable-war} (viz kapitola \ref{secArchitecture}), který
+            je vstupním bodem aplikace a mimo jiné provádí spuštění servlet kontejneru.
+            
+            Hlavním cílem tohoto projektu je zachovat kompatibilitu s aktuální verzí servlet kontejneru a tudíž je 
+            potřeba implementovat všechny podstatné funkcionality tak, jak byly popsány v kapitole \ref{secKompatibilita}.
             
 
 
@@ -1190,8 +1193,6 @@ HttpHandler httpHandler = manager.start();
 
 
 
-        %3 maven projekty (repozitare), zmena v jenkins CI novych verzi extra-executables-war a noveho jarka s undertow4jenkins,
-        %což je název, kterým byl pojmenován tento projekt
 
 
 
@@ -1205,7 +1206,8 @@ HttpHandler httpHandler = manager.start();
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Implementace}  \label{kapImpl}
     
-    \section{Obecné informace}
+    \section{Základní informace}
+        
     %nějaké uvední do toho, oecné věci o implementaci, ve sporných místech hledání ve starých zdrojácích
     %a snaha zachovat význam implementace
 
@@ -1215,6 +1217,8 @@ HttpHandler httpHandler = manager.start();
 %                    samotné zdrojové kódy serveru, abych vše správně pochopil a využil.
     %proti jake verzi jenkins byl vyvoj provaden -- aktualni nejnovejsi v dobe pocatku vyvoje, ktery mel winstone-2.0
 
+        %3 maven projekty (repozitare), zmena v jenkins CI novych verzi extra-executables-war a noveho jarka s undertow4jenkins,
+        %což je název, kterým byl pojmenován tento projekt
 
     \section{Implementované funkce}
 
@@ -1251,35 +1255,60 @@ HttpHandler httpHandler = manager.start();
     %licence
 
     \section{Omezení aplikace}
-    %Program byl otestovan a jevil se plne funkce, ale je tam nekolik uprav v parametrech 
+    Veškerá podstatná funkčnost servlet kontejneru byla zachována a při testování nebyly odhaleny žádné chyby,
+    ale některé nedůležité parametry nebyly implementovány. Aby nedocházelo
+    k problemům s kompatibilitou např. při spouštění se staršími skripty, tak program zadání těchto
+    parametrů akceptuje, ale pouze vypíše varování, že nejsou podporovány a dále je ignoruje.
     
-    %je je mozne zadat, ale bude vypsana informativni hlaska, ze nejsou podporovane, ale program bude fungovat
+    \medskip
+    \noindent Nepodporovanými parametry jsou:
+    \begin{itemize}
+        \item Parametr \texttt{spdy}, který umožňoval zapnutí podpory komunikace pomocí protokolu SPDY. Tento parametr
+            nebyl implementován, jelikož v aktuální verzi Undertow není ještě podporován, ale zřejmě
+            brzy bude přidán (viz kapitola \ref{kapSpdy}.
 
-    %ignorovane parametry      
-    %nastavovano spolecne s tim, ze prednost ma nastaveni u http, nastaveni mozne pouze pro cely server
-    %nebo to uplne rucne provest sestaveni serveru, coz by slo, ale pro pripadny nasledujici vyvo by to byla komplikace
-    %ponechano aktualne jako nastavovani dohromady (naprikald pri pridani podpory SPDY by se kod musel prepracovat)
-    %--httpKeepAliveTimeout   = how long idle HTTP keep-alive connections are kept around (in ms; default 5000)?\n" +
-    %--httpsKeepAliveTimeout   = how long idle HTTPS keep-alive connections are kept around (in ms; default 5000)?\n" +
+        \item Skupina parametrů \texttt{httpDoHostnameLookups}, \texttt{httpsDoHostnameLookups}, \\\texttt{handlerCountStartup},
+            \texttt{logThrowingLineNo}, které zůstaly v kontejneru jako pozůstatek z původní implementace, ale po integraci
+            serveru Jetty do servlet kontejneru se přestaly využívat.
+
+        \item Parametry \texttt{webappsDir} a \texttt{hostsDir} byly v aktuálním servlet kontejneru implementovány
+            a sloužily ke spuštění více webových aplikací v servlet kontejneru. Server Jenkins CI má omezení,
+            že může současně běžet na jednom počítači pouze jeho jediná instance. 
+            Jelikož tento servlet kontejner je určen pouze pro Jenkins CI, tak jejich implementace nebyla smysluplná,
+            protože by tyto parametry nemohly být využity pro jeho spuštění.
+
+        \item Parametr \texttt{handlerCountMaxIdle} umožňoval určit maximální počet vláken servlet kontejneru, 
+            které aktuálně neprováděly žádnou činnost. V původní implementaci byla vlákna pro práci servlet kontejneru
+            inicializována ručně instance rozhraní \\\texttt{ExecutorService} ze standardní knihovny. Jelikož
+            tato možnost v serveru Undertow nebyla, tak byla správa vláken ponechána ve výchozím stavu,
+            protože tento parametr nemá zásadní vliv na zachování zpětné kopatibility.
+
+        \item Parametry \texttt{debug} a \texttt{logThrowingThread}, které pouze upravovaly vypisování průběhu
+            běhu aplikace, ale nemají žádný vliv na jeho funkčnost. Jejich implementace může být předmětem dalšího
+            vývoje.
+    \end{itemize}
+    
+    
+    Při implementaci dvou parametrů \texttt{httpKeepAliveTimeout}, \texttt{httpsKeepAliveTimeout}, které slouží 
+    k~určení doby uchovávání aktivních spojení při komunikaci (hodnota \emph{keep-alive}), nebylo možné jednoduchým způsobem
+    nastavit chování serveru jako u původní verze. U původní verze bylo možné provést nastavení zvlášť pro
+    protokol HTTP i HTTPS, ale při standardním využití serveru Undertow lze nastavit tuto hodnotu pouze pro celý
+    server a tedy společnou pro oba protokoly. 
+    
+    Existuje možnost nevyužít veřejné API pro sestavení serveru 
+    a provést podstatně komplikovanější variantu jeho inicializace při které by bylo možné nastavit tyto hodnoty \cite{undertowAssembly}.
+    Tento přístup by byl překážkou při dalším vývoji servlet kontejneru, protože by bylo nutné tento
+    kód upravovat s přicházejícími novými verzemi Undertow (např. při přidání podpory SPDY). 
+    Z těchto důvodů bylo zvoleno kompromisní řešení, kdy je možné zadat hodnoty těchto parametrů, ale
+    jsou využity pro celý server. Pokud jsou zadány oba parametry, tak je jako prioritní zvolen
+    parametr pro protokol HTTP. Tato úprava by neměla negativně ovlivnit chování serveru a pokud
+    by se servlet kontejner ustálil, tak je možné provést zmíněné ruční sestavení serveru a poskytnout
+    podporu obou těchto parametrů.
       
-    %spdy;          -- aktualne neni podpora v undertow ale brzo bude
+    \medskip
+    Kromě zde uvedených parametrů byly ostatní parametry původního servlet kontejneru zachovány a při testování
+    nebyla zjištěna nefunkčnost některých z nich.
 
-    %webappsDir;    -- nedava smysl, vice instanci jenkins nemuze bezet na jednom stroji (pozustatek)
-    %hostsDir;
-    
-    %Npouzivane uz ani ve winstone 2.0
-    %httpDoHostnameLookups;
-    %httpsDoHostnameLookups;
-    %handlerCountStartup;
-    %logThrowingLineNo;
-
-    %V jetty se vlakna vytvarela rucen a nasledne predavala k vykonani.
-    %V underotw tato moznost nebyla a je to ponechano na serveru
-    %handlerCountMaxIdle;
-
-    %Naprosto nezasadni - ponechano pro pripadny nasledujici vyvoj
-    %logThrowingThread;
-    %debug;
 
 
 
