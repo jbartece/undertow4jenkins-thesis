@@ -1227,11 +1227,16 @@ HttpHandler httpHandler = manager.start();
         
         Projekt Jenkins CI je umístěn na serveru GitHub v několika oddělených repozitářích, které
         využívají verzovací program Git. Aby vývoj nového servlet kontejneru bylo možné následně předvést 
-        komunitě Jenkins CI, tak byl tento projekt také verzován na serveru GitHub\footnote{adresa repozitáře} 
-        a je uveřejněn pod licencí Apache License 2.0\footnote{link licence}, takže je \emph{open source} projektem.
+        komunitě Jenkins CI, tak byl tento projekt také verzován na serveru GitHub\footnote{Server GitHub je 
+        dostupný na adrese: \texttt{https://github.com/}} 
+        a je uveřejněn pod licencí \emph{Apache License 2.0}\footnote{Text licence \emph{Apache license 2.0} je dostupný na: 
+        \texttt{http://www.apache.org/licenses/LICENSE-2.0.html}}, takže je \emph{open source} projektem.
 
-        Na počátku integrace bylo nutné vytvořit kopie dvou repozitářů stávající implementace serveru Jenkins CI.
-        Jedná se o repozitář s celým serverem\footnote{link fork jenkins} a také jeho modul \\\texttt{extras-executable-war}\footnote{link fork extras}.
+        Na počátku integrace bylo nutné vytvořit kopie (tzv. \emph{fork}) dvou repozitářů stávající implementace serveru Jenkins CI.
+        Jedná se o repozitář s celým serverem\footnote{Adresa kopie repozitáře Jenkins CI: 
+        \texttt{https://github.com/jbartece/jenkins}} a také jeho modul 
+        \\\texttt{extras-executable-war}\footnote{Adresa kopie modulu \texttt{extras-executable-war}:
+        \texttt{https://github.com/jbartece/extras-executable-war} }.
         Vývoj nového servlet kontejneru probíhal na verzi \texttt{1.543} systému Jenkins CI, což byla nejnovější verze
         programu v době, kdy započala práce na tomto diplomovém projektu. 
         
@@ -1242,15 +1247,22 @@ HttpHandler httpHandler = manager.start();
         například při volbě šifrovacích protokolů pro nastavení komunikaci pomocí HTTPS nebo nastavení zaznamenávání
         příchozích požadavků.
         
+     \section{Technické detaily implementace}
+        Tato kapitola se více zaměřuje na způsob jakým byla implementace provedena. Jsou rozebrány nejdůležitější
+        části implementace výsledného servlet kontejneru, způsob integrace do Jenkins CI
+        a celé jeho architektura. V této kapitole se předpokládá, že čtenář je
+        základním způsobem seznámen se servery Undertow a Jenkins CI v rozsahu, který byl popsán
+        v předchozích kapitolách.
 
-    \section{Nahrazení původního servlet kontejneru}
-        První krokem před započetím vývoje nového servlet kontejneru bylo zajištění vložení archivu \texttt{undertow4jenkins.jar} 
-        do výsledného archivu \texttt{.war}.
-        Jelikož je Jenkins CI překládán programem Maven, tak byla změněna závilost v souboru \texttt{pom.xml} 
-        (viz kapitola \ref{maven} o programu Maven)
-        z původního kontejneru \emph{winstone} na nový projekt \emph{undertow4jenkins}.
-        Nastavení této konfigurace je uvedeno na příkladu \ref{prDep}. Jedná se o zvolenou identifikaci nového servlet
-        kontejneru pro program Maven, který provede vložení archivu \texttt{.jar} do Jenkins CI ze svého lokálního repozitáře.
+
+        \subsection{Nahrazení původního servlet kontejneru}
+            První krokem před započetím vývoje nového servlet kontejneru bylo zajištění vložení archivu \texttt{undertow4jenkins.jar} 
+            do výsledného archivu \texttt{.war}.
+            Jelikož je Jenkins CI překládán programem Maven, tak byla změněna závilost v souboru \texttt{pom.xml} 
+            (viz kapitola \ref{maven} o programu Maven)
+            z původního kontejneru \emph{winstone} na nový projekt \emph{undertow4jenkins}.
+            Nastavení této konfigurace je uvedeno na příkladu \ref{prDep}. Jedná se o zvolenou identifikaci nového servlet
+            kontejneru pro program Maven, který provede vložení archivu \texttt{.jar} do Jenkins CI ze svého lokálního repozitáře.
 
 \begin{priklad} \label{prDep} Identifikace nového servlet kontejneru pro program Maven 
 \begin{verbatim}
@@ -1261,51 +1273,51 @@ HttpHandler httpHandler = manager.start();
 \end{verbatim}
 \end{priklad}
 
-        Po úspěšném vložení archivu nové implementace byl upraven modul \texttt{extras-executable-war}.
-        Většina jeho činnost byla ponechána, ale bylo nahrazeno spuštění původního servlet kontejneru
-        jeho novou implementací. Po takto provedeném nastavení byla práce zaměřena přímo na vývoj
-        nového servlet kontejneru. 
+            Po úspěšném vložení archivu nové implementace byl upraven modul \texttt{extras-executable-war}.
+            Většina jeho činnost byla ponechána, ale bylo nahrazeno spuštění původního servlet kontejneru
+            jeho novou implementací. Po takto provedeném nastavení byla práce zaměřena přímo na vývoj
+            nového servlet kontejneru. 
 
-    
-    \section{Implementované funkce}
-    
-        V této kapitole jsou popsány kličové části aplikace a způsob jakým byly implementovány. Většina těchoto
-        funkcionalit přímo koresponduje s uvedenými požadavky na zachování kompatibility, které jsou popsány v kapitole \ref{secKompatibilita}.
-
-
-        %popis implementace jednotlivých částí funkčnosti - resourcemanager odkud bere veci, typ (mozna potom i caching), rozbalovani warka do webrootu
-            %nebo do tmp, accesslogger implementovany jako handler na konci retezce handleru,     
-        %mapovani starych classname na nove, uzivatelske vytvareni trid, webXML parser(podporovani jen 
-        %casti ze specifikace verze 2.4, ktera je v jenkins, ale je to udelano obecne a pripadne rozsireni
-        %je mozne bez zmeny architektury a nastavovani servlet
-        %kontejneru a jeho porovnani s Jetty (ze tam je samozrejmosti) - v undertow by se casem mohlo taky vyskytnout (zdeleno pres irc),
-        %pridavani prefixu k url adrese - vyreseno pridanim RedirectHandleru na zacatek weboveho serveru
-        %classloading lib/classes pripadne slozky s knihovnami z adresare predaneho jako parametr, 
-        %jak je nastaveno security, pridavani listeneru, implementace kontrol portu,
-        %popis zpracovávání parametrů a přidání nových, příípadně změna default hodnot, nastavovani defaul mime-types ze souboru
+        
+        \subsection{Způsob realizace základních funkcionalit}
+            V této kapitole jsou popsány kličové části aplikace a způsob jakým byly implementovány. Většina těchoto
+            funkcionalit přímo koresponduje s uvedenými požadavky na zachování kompatibility, které jsou popsány v kapitole \ref{secKompatibilita}.
+            Zde uváděné přístupy a komponenty serveru Undertow jsou blíže rozebrány v kapitole \ref{undertow}.
 
 
-        %3 maven projekty (repozitare), zmena v jenkins CI novych verzi extra-executables-war a noveho jarka s undertow4jenkins,
-        %což je název, kterým byl pojmenován tento projekt
+            %popis implementace jednotlivých částí funkčnosti - resourcemanager odkud bere veci, typ (mozna potom i caching), rozbalovani warka do webrootu
+                %nebo do tmp, accesslogger implementovany jako handler na konci retezce handleru,     
+            %mapovani starych classname na nove, uzivatelske vytvareni trid, webXML parser(podporovani jen 
+            %casti ze specifikace verze 2.4, ktera je v jenkins, ale je to udelano obecne a pripadne rozsireni
+            %je mozne bez zmeny architektury a nastavovani servlet
+            %kontejneru a jeho porovnani s Jetty (ze tam je samozrejmosti) - v undertow by se casem mohlo taky vyskytnout (zdeleno pres irc),
+            %pridavani prefixu k url adrese - vyreseno pridanim RedirectHandleru na zacatek weboveho serveru
+            %classloading lib/classes pripadne slozky s knihovnami z adresare predaneho jako parametr, 
+            %jak je nastaveno security, pridavani listeneru, implementace kontrol portu,
+            %popis zpracovávání parametrů a přidání nových, příípadně změna default hodnot, nastavovani defaul mime-types ze souboru
 
-    \section{Popis struktury programu}
-                
-    \begin{figure}[h!t]
-        \begin{center}
-            \scalebox{0.7}{\includegraphics{img/package.png}}
-            \caption{Diagram balíků zachycující architekturu servlet kontejneru rozšířený o tři nejdůležitější třídy }
-            \label{imgPackage}
-        \end{center}
-    \end{figure}
 
-    
-    %načítání parametrů Apache commons: http://commons.apache.org/proper/commons-cli/
-    %logovaní slf4j a jako backend log4j - při přechodu by se dalo odstranit
-    %jak distribuovano (maven), baleno do jar
-    %package diagram - popis jednotlivých balíků a co vykonávají
+            %3 maven projekty (repozitare), zmena v jenkins CI novych verzi extra-executables-war a noveho jarka s undertow4jenkins,
+            %což je název, kterým byl pojmenován tento projekt
 
-    %zjistene problemy a jak resene?
-    %využit parametr setIgnoreFlush a jeho popis
+        \subsection{Popis struktury programu}
+                    
+        \begin{figure}[h!t]
+            \begin{center}
+                \scalebox{0.7}{\includegraphics{img/package.png}}
+                \caption{Diagram balíků zachycující architekturu servlet kontejneru rozšířený o tři nejdůležitější třídy }
+                \label{imgPackage}
+            \end{center}
+        \end{figure}
+
+        
+        %načítání parametrů Apache commons: http://commons.apache.org/proper/commons-cli/
+        %logovaní slf4j a jako backend log4j - při přechodu by se dalo odstranit
+        %jak distribuovano (maven), baleno do jar
+        %package diagram - popis jednotlivých balíků a co vykonávají
+
+        %zjistene problemy a jak resene?
+        %využit parametr setIgnoreFlush a jeho popis
 
 
     \section{Problémy při implementaci}
@@ -1326,7 +1338,7 @@ HttpHandler httpHandler = manager.start();
     \section{Omezení aplikace}
     Veškerá podstatná funkčnost servlet kontejneru byla zachována a při testování nebyly odhaleny žádné chyby,
     ale některé nedůležité parametry nebyly implementovány. Aby nedocházelo
-    k problemům s kompatibilitou např. při spouštění se staršími skripty, tak program zadání těchto
+    k problemům s kompatibilitou (např. při spouštění staršími skripty), tak program zadání těchto
     parametrů akceptuje, ale pouze vypíše varování, že nejsou podporovány a dále je ignoruje.
     
     \medskip
@@ -1425,6 +1437,9 @@ HttpHandler httpHandler = manager.start();
     %asynchronne ruzne cinnosti jako treba zjistovani novych aktualizaci. Tendence byla spustit to 
     %ve stejnou dobu, ale jelikoz se to spoustelo oddelene na dvou serverech, tak nebylo mozne dosahnout uplne
     %stejneho okamziku
+
+    %popsat scénáře a dát do přílohy
+    %popsat něco málo o frameworku na testování
 
     \section{Zhodnocení přínosu pro komunitu Jenkins CI}
     %výkonnost, čitelnější kód, odstranění nevyužívaných věcí, 
