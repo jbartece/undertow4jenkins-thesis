@@ -1244,7 +1244,7 @@ HttpHandler httpHandler = manager.start();
         Jelikož hlavním cílem projektu je dosáhnou zpětné kompatibility s původní verzí servlet kontejneru,
         tak v případě nejasného přístupu k implementaci některých komponent byly studovány zdrojové kódy
         původní implementace a nové servlet kontejner jim byl přizpůsobován. Tohoto přístupu bylo využito
-        například při volbě šifrovacích protokolů pro nastavení komunikaci pomocí HTTPS nebo nastavení zaznamenávání
+        například při volbě šifrovacích protokolů pro nastavení komunikaci pomocí protokolu HTTPS nebo nastavení zaznamenávání
         příchozích požadavků.
         
      \section{Technické detaily implementace}
@@ -1273,7 +1273,7 @@ HttpHandler httpHandler = manager.start();
 \end{verbatim}
 \end{priklad}
 
-            Po úspěšném vložení archivu nové implementace byl upraven modul \texttt{extras-executable-war}.
+            Po úspěšném vložení archivu nové implementace byl upraven modul \\\texttt{extras-executable-war}.
             Většina jeho činnost byla ponechána, ale bylo nahrazeno spuštění původního servlet kontejneru
             jeho novou implementací. Po takto provedeném nastavení byla práce zaměřena přímo na vývoj
             nového servlet kontejneru. 
@@ -1320,73 +1320,76 @@ HttpHandler httpHandler = manager.start();
         %využit parametr setIgnoreFlush a jeho popis
 
 
-    \section{Problémy při implementaci}
-        Implementace některých částí aplikace byla poměrně komplikovaná oproti původní verzi servlet kontejneru. Server Undertow 
+    \section{Řešené problémy při implementaci}
+        Při implementaci jsem se potýkal s nedostatečným komentováním zdrojových kódů serveru Undertow.
+        Velká část serveru je naprosto nedostatečně komentovaná a největším problémem je, že
+        není komentované ani veřejné rozraní API. 
+        Dokumentace projektu v průběhu implementace teprve postupně vznikala a navíc se zaobírá pouze popisem jednotlivých součástí,
+        ale implementační detaily jsou rozebírány jen v některých částech.
+        Z těchto důvodů bylo během implementace nutné velmi často zkoumat a analyzovat přímo zdrojové kódy serveru Undertow
+        a někdy i napsané integrační testy, které umožňují lépe pochopit některé typy konfigurací (např. vytvoření podpory autentizace
+        pomocí instance rozhraní \texttt{Identity Manager}).
+
+        Implementace některých částí aplikace byla podstatně komplikovanější oproti původní verzi servlet kontejneru
+        a očekáváním na začátku projektu. Server Undertow 
         neposkytuje některé standardní funkcionality pro integraci servlet kontejneru. Mezi nejvýznamnější patří nutnost
         zpracování souboru \emph{web.xml} a nastavení dle něj servlet kontejneru nebo například nutnost 
         provádět zavádění tříd servletů (tzv. \emph{classloading}). V aplikaci Jetty lze provést načtení 
-        souboru \emph{web.xml} pomocí jediného volání metody.
+        souboru \emph{web.xml} pomocí jediného volání metody serveru.
 
-
-        %V mnoha místech navíc chybí patřičné komentování zdrojových kódů a to
-        %i na úrovni veřejného rozhraní, což činilo využití poměrně náročným a byl jsem nucen zkoumat
-        %samotné zdrojové kódy serveru, abych vše správně pochopil a využil.
-        %proti jake verzi jenkins byl vyvoj provaden -- aktualni nejnovejsi v dobe pocatku vyvoje, ktery mel winstone-2.0
-
-
-
+        
     \section{Omezení aplikace}
-    Veškerá podstatná funkčnost servlet kontejneru byla zachována a při testování nebyly odhaleny žádné chyby,
-    ale některé nedůležité parametry nebyly implementovány. Aby nedocházelo
-    k problemům s kompatibilitou (např. při spouštění staršími skripty), tak program zadání těchto
-    parametrů akceptuje, ale pouze vypíše varování, že nejsou podporovány a dále je ignoruje.
-    
-    \medskip
-    \noindent Nepodporovanými parametry jsou:
-    \begin{itemize}
-        \item Parametr \texttt{spdy}, který umožňoval zapnutí podpory komunikace pomocí protokolu SPDY. Tento parametr
-            nebyl implementován, jelikož v aktuální verzi Undertow není ještě podporován, ale zřejmě
-            brzy bude přidán (viz kapitola \ref{kapSpdy}.
+        Veškerá podstatná funkčnost servlet kontejneru byla zachována a při testování nebyly odhaleny žádné chyby,
+        ale některé nedůležité parametry nebyly implementovány. Aby nedocházelo
+        k problemům s kompatibilitou (např. při spouštění staršími skripty), tak program zadání těchto
+        parametrů akceptuje, ale pouze vypíše varování, že nejsou podporovány a dále je ignoruje.
+        
+        \medskip
+        \noindent Nepodporovanými parametry jsou:
+        \begin{itemize}
+            \item Parametr \texttt{spdy}, který umožňoval zapnutí podpory komunikace pomocí protokolu SPDY. Tento parametr
+                nebyl implementován, jelikož v aktuální verzi Undertow není ještě podporován, ale zřejmě
+                brzy bude přidán (viz kapitola \ref{kapSpdy}.
 
-        \item Skupina parametrů \texttt{httpDoHostnameLookups}, \texttt{httpsDoHostnameLookups}, \\\texttt{handlerCountStartup},
-            \texttt{logThrowingLineNo}, které zůstaly v kontejneru jako pozůstatek z původní implementace, ale po integraci
-            serveru Jetty do servlet kontejneru se přestaly využívat.
+            \item Skupina parametrů \texttt{httpDoHostnameLookups}, \texttt{httpsDoHostnameLookups}, \\\texttt{handlerCountStartup},
+                \texttt{logThrowingLineNo}, které zůstaly v kontejneru jako pozůstatek z původní implementace, ale po integraci
+                serveru Jetty do servlet kontejneru se přestaly využívat.
 
-        \item Parametry \texttt{webappsDir} a \texttt{hostsDir} byly v aktuálním servlet kontejneru implementovány
-            a sloužily ke spuštění více webových aplikací v servlet kontejneru. Server Jenkins CI má omezení,
-            že může současně běžet na jednom počítači pouze jeho jediná instance. 
-            Jelikož tento servlet kontejner je určen pouze pro Jenkins CI, tak jejich implementace nebyla smysluplná,
-            protože by tyto parametry nemohly být využity pro jeho spuštění.
+            \item Parametry \texttt{webappsDir} a \texttt{hostsDir} byly v aktuálním servlet kontejneru implementovány
+                a sloužily ke spuštění více webových aplikací v servlet kontejneru. Server Jenkins CI má omezení,
+                že může současně běžet na jednom počítači pouze jeho jediná instance. 
+                Jelikož tento servlet kontejner je určen pouze pro Jenkins CI, tak jejich implementace nebyla smysluplná,
+                protože by tyto parametry nemohly být využity pro jeho spuštění.
 
-        \item Parametr \texttt{handlerCountMaxIdle} umožňoval určit maximální počet vláken servlet kontejneru, 
-            které aktuálně neprováděly žádnou činnost. V původní implementaci byla vlákna pro práci servlet kontejneru
-            inicializována ručně instance rozhraní \\\texttt{ExecutorService} ze standardní knihovny. Jelikož
-            tato možnost v serveru Undertow nebyla, tak byla správa vláken ponechána ve výchozím stavu,
-            protože tento parametr nemá zásadní vliv na zachování zpětné kopatibility.
+            \item Parametr \texttt{handlerCountMaxIdle} umožňoval určit maximální počet vláken servlet kontejneru, 
+                které aktuálně neprováděly žádnou činnost. V původní implementaci byla vlákna pro práci servlet kontejneru
+                inicializována ručně instance rozhraní \\\texttt{ExecutorService} ze standardní knihovny. Jelikož
+                tato možnost v serveru Undertow nebyla, tak byla správa vláken ponechána ve výchozím stavu,
+                protože tento parametr nemá zásadní vliv na zachování zpětné kopatibility.
 
-        \item Parametry \texttt{debug} a \texttt{logThrowingThread}, které pouze upravovaly vypisování průběhu
-            běhu aplikace, ale nemají žádný vliv na jeho funkčnost. Jejich implementace může být předmětem dalšího
-            vývoje.
-    \end{itemize}
-    
-    
-    Při implementaci dvou parametrů \texttt{httpKeepAliveTimeout}, \texttt{httpsKeepAliveTimeout}, které slouží 
-    k~určení doby uchovávání aktivních spojení při komunikaci (hodnota \emph{keep-alive}), nebylo možné jednoduchým způsobem
-    nastavit chování serveru jako u původní verze. U původní verze bylo možné provést nastavení zvlášť pro
-    protokol HTTP i HTTPS, ale při standardním využití serveru Undertow lze nastavit tuto hodnotu pouze pro celý
-    server a tedy společnou pro oba protokoly. 
-    
-    Existuje možnost nevyužít veřejné API pro sestavení serveru 
-    a provést podstatně komplikovanější variantu jeho inicializace při které by bylo možné nastavit tyto hodnoty \cite{undertowAssembly}.
-    Tento přístup by byl překážkou při dalším vývoji servlet kontejneru, protože by bylo nutné tento
-    kód upravovat s přicházejícími novými verzemi Undertow (např. při přidání podpory SPDY). 
-    Z těchto důvodů bylo zvoleno kompromisní řešení, kdy je možné zadat hodnoty těchto parametrů, ale
-    jsou využity pro celý server. Pokud jsou zadány oba parametry, tak je jako prioritní zvolen
-    parametr pro protokol HTTP. Tato úprava by neměla negativně ovlivnit chování serveru a pokud
-    by se servlet kontejner ustálil, tak je možné provést zmíněné ruční sestavení serveru a poskytnout
-    podporu obou těchto parametrů.
-      
-    Kromě zde uvedených parametrů byly ostatní parametry původního servlet kontejneru zachovány.
+            \item Parametry \texttt{debug} a \texttt{logThrowingThread}, které pouze upravovaly vypisování průběhu
+                běhu aplikace, ale nemají žádný vliv na jeho funkčnost. Jejich implementace může být předmětem dalšího
+                vývoje.
+        \end{itemize}
+        
+        
+        Při implementaci dvou parametrů \texttt{httpKeepAliveTimeout}, \texttt{httpsKeepAliveTimeout}, které slouží 
+        k~určení doby uchovávání aktivních spojení při komunikaci (hodnota \emph{keep-alive}), nebylo možné jednoduchým způsobem
+        nastavit chování serveru jako u původní verze. U původní verze bylo možné provést nastavení zvlášť pro
+        protokol HTTP i HTTPS, ale při standardním využití serveru Undertow lze nastavit tuto hodnotu pouze pro celý
+        server a tedy společnou pro oba protokoly. 
+        
+        Existuje možnost nevyužít veřejné API pro sestavení serveru 
+        a provést podstatně komplikovanější variantu jeho inicializace při které by bylo možné nastavit tyto hodnoty \cite{undertowAssembly}.
+        Tento přístup by byl překážkou při dalším vývoji servlet kontejneru, protože by bylo nutné tento
+        kód upravovat s přicházejícími novými verzemi Undertow (např. při přidání podpory SPDY). 
+        Z těchto důvodů bylo zvoleno kompromisní řešení, kdy je možné zadat hodnoty těchto parametrů, ale
+        jsou využity pro celý server. Pokud jsou zadány oba parametry, tak je jako prioritní zvolen
+        parametr pro protokol HTTP. Tato úprava by neměla negativně ovlivnit chování serveru a pokud
+        by se servlet kontejner ustálil, tak je možné provést zmíněné ruční sestavení serveru a poskytnout
+        podporu obou těchto parametrů.
+          
+        Kromě zde uvedených parametrů byly ostatní parametry původního servlet kontejneru zachovány.
 
 
 
@@ -1440,6 +1443,9 @@ HttpHandler httpHandler = manager.start();
 
     %popsat scénáře a dát do přílohy
     %popsat něco málo o frameworku na testování
+    %kontroluje i kod odpovedi 200 je ok
+    %zrychleni cele aplikace merime, ale cast zpozdeni je dana samotnou aplikaci,
+    %takze zrychleni cinnosti servlet kontejneru je urcite vetsi nez ta procenta co vyjdou
 
     \section{Zhodnocení přínosu pro komunitu Jenkins CI}
     %výkonnost, čitelnější kód, odstranění nevyužívaných věcí, 
