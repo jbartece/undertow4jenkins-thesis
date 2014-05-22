@@ -1345,27 +1345,38 @@ HttpHandler httpHandler = manager.start();
                     a je možné jej rozšířit o další konfigurace, což může být předmětem dalšího vývoje,
                     ale není to nezbytné pro běh serveru Jenkins CI.
                 
-                \item Nastavení pro správu uživatelských účtů a ověřování
-                \item Přidání accessloggeru
-                \item Přidání konektorů HTTP, AJP a HTTPS
-                \item Spuštění servletu stapler
-                \item Vytvoření control portu a naslouchání na něm
+                \item \textbf{Nastavení servlet kontejneru v Undertow:} V tomto kroku
+                    jsou již připraveny všechny pomocné informace pro nastavení servlet kontejneru
+                    a spuštění Jenkins CI. Nejprve jsou všechny načtené konfigurace ze souboru \texttt{web.xml}
+                    nastaveny v třídě \texttt{DeploymentInfo}, která reprezentuje data pro vytvoření servlet
+                    kontejneru. Při konfiguracích jsou načítány třídy z archivu aplikace pomocí zavaděče vyvořeného
+                    v předcházejících krocích.
+
+                    Jednou ze standardních konfigurací servlet kontejneru je definování typů souborů tzv.
+                    \emph{MIME}. V původním servlet kontejneru bylo automaticky načítáno téměř tisíc těchto mapování
+                    a proto jsou tyto hodnoty načítány i v nové implementaci.
+                    
+                    Pro správu a statických zdrojů Jenkins CI je vytvořena instance třídy \\\texttt{FileResourceManager}
+                    tak, aby poskytovala zdroje z adresáře s extrahovaným archivem aplikace. Tato třída
+                    byla navíc zaobalena ještě objektem třídy \\\texttt{CachingResourceManager}, která
+                    pracuje jako vyrovnávací paměť (angl. \emph{cache}) a poskytuje lepší výkonnost
+                    při práci se zdroji.
+
+
+                \item \textbf{Nastavení správy uživatelských účtů:}
+                
+                \item \textbf{Nastavení zaznamnávání příchozích požadavků:} accesslogger implementovany jako handler na konci retezce handleru,    
+                
+                \item \textbf{Konfigurace webového serveru:} Přidání konektorů HTTP, AJP a HTTPS
+                    %pridavani prefixu k url adrese - vyreseno pridanim RedirectHandleru na zacatek weboveho serveru
+                
+                \item \textbf{Vytvoření kontrolního kanálu:} control port a naslouchání na něm, implementace kontrol portu,
+
             \end{enumerate}
 
 
-            %popis implementace jednotlivých částí funkčnosti - resourcemanager odkud bere veci, typ (mozna potom i caching), rozbalovani warka do webrootu
-                %nebo do tmp, accesslogger implementovany jako handler na konci retezce handleru,     
             %mapovani starych classname na nove, uzivatelske vytvareni trid,
-            %je mozne bez zmeny architektury a nastavovani servlet
-            %kontejneru a jeho porovnani s Jetty (ze tam je samozrejmosti) - v undertow by se casem mohlo taky vyskytnout (zdeleno pres irc),
-            %pridavani prefixu k url adrese - vyreseno pridanim RedirectHandleru na zacatek weboveho serveru
-            %classloading lib/classes pripadne slozky s knihovnami z adresare predaneho jako parametr, 
-            %jak je nastaveno security, pridavani listeneru, implementace kontrol portu,
-            %popis zpracovávání parametrů a přidání nových, příípadně změna default hodnot, nastavovani defaul mime-types ze souboru
 
-            
-            %načítání parametrů Apache commons: http://commons.apache.org/proper/commons-cli/
-            %logovaní slf4j a jako backend log4j - při přechodu by se dalo odstranit
 
 
         \subsection{Popis struktury programu}
