@@ -1223,7 +1223,7 @@ HttpHandler httpHandler = manager.start();
         Integrace serveru Undertow do Jenkins CI zahrnovala vytvoření nového projektu, který 
         jsem pojmenoval \emph{undertow4jenkins}. 
         Jak vyplývá z předchozích kapitol, tak program byl vytvořen v jazyce Java a pro správu a překlad projektu bylo nutné použít 
-        program Maven. 
+        program Maven. Z důvodu kompatibility se serverem Jenkins CI musela být využita starší verze jazyka a to verze 6.
         
         Projekt Jenkins CI je umístěn na serveru GitHub v několika oddělených repozitářích, které
         využívají verzovací program Git. Aby vývoj nového servlet kontejneru bylo možné následně předvést 
@@ -1279,16 +1279,83 @@ HttpHandler httpHandler = manager.start();
             nového servlet kontejneru. 
 
         
-        \subsection{Způsob realizace základních funkcionalit}
-            V této kapitole jsou popsány kličové části aplikace a způsob jakým byly implementovány. Většina těchoto
-            funkcionalit přímo koresponduje s uvedenými požadavky na zachování kompatibility, které jsou popsány v kapitole \ref{secKompatibilita}.
+
+
+        \subsection{Realizace základních funkcionalit}
+            V této kapitole jsou popsány kličové části vytvořené aplikace a způsob jakým byly implementovány. Většina těchoto
+            funkcionalit přímo koresponduje s uvedenými požadavky na zachování kompatibility s původní verzí, 
+            které jsou popsány v kapitole \ref{secKompatibilita}.
             Zde uváděné přístupy a komponenty serveru Undertow jsou blíže rozebrány v kapitole \ref{undertow}.
+
+            %moznost pridat diagram aktivit s optional vetví činností, které se nemusí zadat
+            Proces inicializace servlet kontejneru probíhá v několika krocích, které na sebe
+            navazují. V následujícím přehledu jsou jednotlivé činnosti seřazeny tak, jak
+            se po sobě vykonávají. 
+            Část činností se provádí při každém spuštění servlet kontejneru,
+            ale některé jsou volitelné a spouštějí se pouze pokud jsou při spuštění
+            zadány určité parametry. 
+
+            \begin{enumerate}
+                \item \textbf{Zpracování parametrů:} Jsou zkontolovány zadané parametry
+                    aplikace a přítomnost povinných parametrů. Při spuštění aplikace
+                    musí být zadán archiv \texttt{.war} s aplikací nebo předána cesta
+                    ke složce ve které je tento archiv extrahován. 
+                    Parametry aplikace
+                    přesně odpovídají parametrům, které jsou dostupné v nápovědě 
+                    serveru Jenkins CI. 
+                    
+                    V servlet kontejneru je dostupné velké množství parametrů a
+                    proto je jejich zpracování implementováno s důrazem na obecnost a jednoduché
+                    přidávání nových parametrů. 
+                    Pro přidání nového parametru stačí do třídy pro parametry přidat položku (tzv. \emph{field})
+                    a jeho datový typ (jsou podporovány datové typy \texttt{Boolean}, \texttt{String}, 
+                    \texttt{Integer}) a jeho zpracování bude probíhat patřičným
+                    způsobem. K dosažení této obecnosti bylo využito \emph{Java Reflection API}.
+                    Jako podpora pro zpracování parametrů byla použita knihovna \emph{Apache
+                    Commons CLI}\footnote{Knihovna \emph{Apache Commons CLI} je 
+                    dostupná na: \texttt{http://commons.apache.org/proper/commons-cli/}}
+                    
+                \item \textbf{Příprava adresáře s webovou aplikací:}  Webová aplikace
+                    je předávána servlet kontejneru ve formě 
+                    archivu \texttt{.war} (parametr \texttt{warfile}). Tento archiv je následně extrahován do 
+                    adresáře, který je specifikovaný jako další parametr servlet kontejneru (parametr \texttt{webroot}).
+                    
+                    Načítání aplikace bylo provedeno obecně a je ji možné spustit zadáním
+                    pouze adresáře, kde je archiv již extrahován. Tyto možnosti mohou posloužit
+                    např. při psaní testů.
+
+                \item \textbf{Připravení načítání tříd:} Jsou vyhledány knihovny 
+                    a přeložené třídy aplikace ve standardních adresářích 
+                    \texttt{/WEB-INF/lib} a \texttt{/WEB-INF/classes}, které jsou definovaným
+                    umístěním pro tyto zdroje (viz kapitola \ref{kapWebXml}). 
+                    Na základě dostupných knihoven a tříd je vytvořen instance třídy \texttt{URLClassLoader},
+                    která provádí inicializaci a zavádění tříd v programu. 
+                    
+                    Tento zavaděč je potřebný
+                    při vyhledávání tříd specifikovaných v souboru \texttt{web.xml} a jeho instance
+                    je předana serveru Undertow při inicializaci, aby bylo možné zavádět
+                    potřebné součásti aplikace za běhu.
+
+                \item \textbf{Analýza souboru web.xml:} Soubor \texttt{web.xml} je 
+                    zpracován za pomoci XML parseru \emph{StAX}, který je standardně dostupný v knihovně
+                    jazyka Java. Z analyzovaného souboru jsou načteny potřebné informace pro inicializaci
+                    Jenkins CI. Podpora všech možných konfigurací souboru \texttt{web.xml} je velmi rozsáhlá
+                    a proto byla implementována pouze podpora těch konfigurací, které jsou
+                    v systému Jenkins CI využité. Nicméně toto zpracování bylo vytvořeno obecně 
+                    a je možné jej rozšířit o další konfigurace, což může být předmětem dalšího vývoje,
+                    ale není to nezbytné pro běh serveru Jenkins CI.
+                
+                \item Nastavení pro správu uživatelských účtů a ověřování
+                \item Přidání accessloggeru
+                \item Přidání konektorů HTTP, AJP a HTTPS
+                \item Spuštění servletu stapler
+                \item Vytvoření control portu a naslouchání na něm
+            \end{enumerate}
 
 
             %popis implementace jednotlivých částí funkčnosti - resourcemanager odkud bere veci, typ (mozna potom i caching), rozbalovani warka do webrootu
                 %nebo do tmp, accesslogger implementovany jako handler na konci retezce handleru,     
-            %mapovani starych classname na nove, uzivatelske vytvareni trid, webXML parser(podporovani jen 
-            %casti ze specifikace verze 2.4, ktera je v jenkins, ale je to udelano obecne a pripadne rozsireni
+            %mapovani starych classname na nove, uzivatelske vytvareni trid,
             %je mozne bez zmeny architektury a nastavovani servlet
             %kontejneru a jeho porovnani s Jetty (ze tam je samozrejmosti) - v undertow by se casem mohlo taky vyskytnout (zdeleno pres irc),
             %pridavani prefixu k url adrese - vyreseno pridanim RedirectHandleru na zacatek weboveho serveru
@@ -1296,28 +1363,23 @@ HttpHandler httpHandler = manager.start();
             %jak je nastaveno security, pridavani listeneru, implementace kontrol portu,
             %popis zpracovávání parametrů a přidání nových, příípadně změna default hodnot, nastavovani defaul mime-types ze souboru
 
+            
+            %načítání parametrů Apache commons: http://commons.apache.org/proper/commons-cli/
+            %logovaní slf4j a jako backend log4j - při přechodu by se dalo odstranit
 
-            %3 maven projekty (repozitare), zmena v jenkins CI novych verzi extra-executables-war a noveho jarka s undertow4jenkins,
-            %což je název, kterým byl pojmenován tento projekt
 
         \subsection{Popis struktury programu}
                     
-        \begin{figure}[h!t]
-            \begin{center}
-                \scalebox{0.7}{\includegraphics{img/package.png}}
-                \caption{Diagram balíků zachycující architekturu servlet kontejneru rozšířený o tři nejdůležitější třídy }
-                \label{imgPackage}
-            \end{center}
-        \end{figure}
+            %package diagram - popis jednotlivých balíků a co vykonávají
+            \begin{figure}[h!t]
+                \begin{center}
+                    \scalebox{0.7}{\includegraphics{img/package.png}}
+                    \caption{Diagram balíků zachycující architekturu servlet kontejneru rozšířený o tři nejdůležitější třídy }
+                    \label{imgPackage}
+                \end{center}
+            \end{figure}
 
-        
-        %načítání parametrů Apache commons: http://commons.apache.org/proper/commons-cli/
-        %logovaní slf4j a jako backend log4j - při přechodu by se dalo odstranit
-        %jak distribuovano (maven), baleno do jar
-        %package diagram - popis jednotlivých balíků a co vykonávají
 
-        %zjistene problemy a jak resene?
-        %využit parametr setIgnoreFlush a jeho popis
 
 
     \section{Řešené problémy při implementaci}
