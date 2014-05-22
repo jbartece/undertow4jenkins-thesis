@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<scenario xmlns="urn:perfcake:scenario:2.0">
+
+  <generator class="DefaultMessageGenerator" threads="${perfcake.performance.thread.count:50}">
+    <run type="time" value="${perfcake.performance.duration:480000}"/>
+    <property name="threadQueueSize" value="50000"/>
+  </generator>
+  
+  <sender class="HTTPSender">
+    <property name="target" value="http://${server.url}:${server.port:8080}/job/testFreestyleJob/configure"/>
+    <property name="method" value="GET"/>                                                                                               
+  </sender>
+  
+  <reporting>
+    <reporter class="ResponseTimeReporter">
+      <destination class="CSVDestination">
+        <period type="time" value="1000"/>
+        <property name="path" value="perf-logs/getFreestyleJob/response-time.csv"/>
+      </destination>
+    </reporter>
+  </reporting>
+  
+</scenario>
