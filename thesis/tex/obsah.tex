@@ -725,22 +725,6 @@ HttpHandler httpHandler = manager.start();
                         Nicméně v~tomto aspektu je server Jetty zřejmě 
                         aktuálně lepší.}
 
-                \item{\textbf{Rychlost spuštění:}  Velmi často je u~serverů hodnocena hlavně
-                    jejich rychlost a~výkonnost v~zátěži. Je běžné, že nebývá kladen důraz na
-                    velmi rychlé spuštění serveru. Pro standardní běh serveru, kdy bývá 
-                    spuštěn jednou za několik týdnů či měsíců po nějakých úpravám aplikace,
-                    není doba spuštění zásadní. Pokud se na to podíváme z~pohledu testování
-                    aplikace, kdy jsou spouštěny integrační testy a~pro každý test musí být
-                    znovu spuštěn server, tak je rychlost nastartování serveru velmi podstatná.
-                    
-                    Cílem serveru Undertow je být minimalistickým a~velmi rychlým 
-                    řešením. Server Jetty poskytuje kompletnější podporu pro běh aplikací, ale je 
-                    rozsáhlejší. 
-                    Lze usuzovat, že rychlost spuštění bude u~serveru Undertow nižší
-                    než u~serveru Jetty. 
-                    }
-                                       
-
                 %Tato část by měla být pečlivě překontrolována
                 \item{\textbf{Konfigurovatelnost:} Server Undertow je velmi flexibilní a~způsob
                     jeho návrhu, který byl popsán výše, umožňuje provádět mnoho různých úpravy 
