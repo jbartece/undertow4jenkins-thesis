@@ -1,14 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <scenario xmlns="urn:perfcake:scenario:2.0">
 
-  <properties>
-    <property name="server.url" value="${server.url}"/>
-    <property name="server.port" value="${server.port}"/>
-  </properties>
-
   <generator class="DefaultMessageGenerator" threads="${perfcake.performance.thread.count:1}">
-    <run type="time" value="${perfcake.performance.duration:30000}"/>
-    <!-- run type="iteration" value="10"/ -->                                                                                              
+    <run type="time" value="${perfcake.performance.duration:30000}"/>                                                                                
     <property name="threadQueueSize" value="50000"/>                                                                                                                                                                                          
   </generator>
               
@@ -25,16 +19,8 @@
       </destination>
     </reporter>
     
-    <reporter class="AverageThroughputReporter">
-      <destination class="CSVDestination">
-        <period type="time" value="500"/>
-        <property name="path" value="perf-logs/createFreestyleJob/throughput-iter.csv"/>
-      </destination>
-    </reporter>
-  </reporting>
-  
   <messages>
-    <message uri="testFreestyle.xml"/>
+    <message uri="createFreestyle.xml"/>
   </messages>
 
 </scenario>
