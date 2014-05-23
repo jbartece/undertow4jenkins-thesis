@@ -948,7 +948,7 @@ HttpHandler httpHandler = manager.start();
         se výměnou servlet kontejneru nestala část aplikace nebo rozšiřujících modulů nefunkční.
         Také je potřeba zachovat výchozí hodnoty jednotlivých parametrů.
 
-        \subsection{Funkcionality servlet kontejneru}
+        \subsection{Funkcionality servlet kontejneru} \label{kapFunkcionality}
             Při spouštění aplikace je před předáním řízení aplikace servlet kontejneru
             část parametrů zpracována komponentou \texttt{extras-executable-war} (blíže 
             rozebrána v~kapitole \ref{secArchitecture}) a~zbylé parametry jsou přímo
@@ -1363,25 +1363,73 @@ HttpHandler httpHandler = manager.start();
                     při práci se zdroji.
 
 
-                \item \textbf{Nastavení správy uživatelských účtů:}
+                \item \textbf{Nastavení správy uživatelských účtů (volitelné):} Základem autentizace
+                    uživatelů je třída, která implementuje rozhraní \texttt{IdentityManager}, a ta musí
+                    být předána Undertow před jeho spuštěním. 
+                    V souladu s původní implementací servlet kontejneru byly vyvořeny dvě třídy pro autentizaci, které
+                    se liší pouze způsobem jak načítají data o uživatelích (uživatelské jméno, heslo a jeho role):
+                    \begin{itemize}
+                        \item \texttt{ArgumentsIdentityManager} -- načítá informace o uživatelích z parametrů předáných
+                            při spuštění aplikace
+                        \item \texttt{FileIdentityManager} -- načítá informace o uživatelích z XML souboru s definovaným formátem 
+                            (viz kapitola \ref{secSecurityArchitecture})
+                    \end{itemize}
+
+                    Jelikož tyto třídy se liší pouze způsobem načítání uživatelů, tak byly ostatní činnosti potřebné pro
+                    autentizaci uživatelů extrahovány 
+                    do abstraktní třídy \\\texttt{GenericIdentityManager}, kterou rozšiřují.
+                        
+                    Do servlet kontejneru je možné přidat vlastní třídu pro autentizaci pomocí parametru,
+                    který definuje její plně kvalifikované jméno. Je pouze nutné, aby tato třída implementavala
+                    rozraní \texttt{IdentityManager}.
+
+                    Volba třídy pro autentizaci se provádí zadáním jejího plně kvalifikovaného jména, což
+                    je způsob, který musel být zachován v souladu s původní implementací servlet kontejneru. 
+                    Zde ovšem vzniká problém, protože v původní implementaci byla jiná struktura balíků
+                    a názvy tříd. Z tohoto důvodu je v aplikaci kontrolováno, zda nebylo zadáno
+                    jméno třídy z původní implementace a je případně nahrazeno za třídu v současné implementaci.
+                    Stejný přístup byl použit při externím zadávání tříd v následujcím bodu.
                 
-                \item \textbf{Nastavení zaznamenávání příchozích požadavků:} accesslogger implementovany jako handler na konci retezce handleru,    
+                \item \textbf{Nastavení zaznamenávání příchozích požadavků (volitelné):}
+                     Tato funkcionalita je řešena přidáním vlastního \emph{handleru} na konec řetězce 
+                     těsně před tím než je vyvolán samotný servlet. V servlet kontejneru je 
+                     vytvořena jedna třída zajišťující tuto činnost (odpovídající implementaci v původním
+                     kontejneru), ale je opět možné přidat vlastní implementaci. Toto přidání
+                     je řešeno obdobně jako bylo popsáno v předchozím bodě, ale
+                     třída musí implementovat rozhraní \texttt{AccessLoggerHandler}.
+                     
                 
-                \item \textbf{Konfigurace webového serveru:} Přidání konektorů HTTP, AJP a HTTPS
-                    %pridavani prefixu k url adrese - vyreseno pridanim RedirectHandleru na zacatek weboveho serveru
+                \item \textbf{Konfigurace webového serveru:} 
+                    Po inicializaci servlet kontejneru zbývá patřičně nastavit 
+                    samotný webový server. Jsou incializovány konektory pro uživatelem zadané
+                    protokoly pro komunikaci (dostupnými protokoly jsou HTTP, HTTPS a AJP). 
+                    Jsou implementovány tři způsoby nastavení šifrované komunikace pomocí SSL, jejichž 
+                    implemetace je založena na implementaci v původním servlet kontejneru
+                    a odpovídá popisu v kapitole \ref{kapFunkcionality}.
+                    
+                    Pokud uživatel specifikoval při spuštění požadavek, aby před URL adresou
+                    aplikace byl nějaký řetězec (\emph{prefix}), tak je tento požadavek implementován
+                    přidáním \emph{handleru} \texttt{RedirectHandler} jako vstupního \emph{handleru}
+                    celé aplikace.
+
+                    Provedním těchto posledních konfigurací je webový server i servlet kontejner
+                    plně inicializován a následně je spuštěn.
                 
-                \item \textbf{Vytvoření kontrolního kanálu:} control port a naslouchání na něm, implementace kontrol portu,
+                \item \textbf{Vytvoření kontrolního kanálu (volitelné):} 
+                    V době kdy již províhá spouštění webového serveru, 
+                    tak je možné vytvořit rozhraní pro ukončení nebo restart aplikace.
+                    Je vytvořený standardní síťový \emph{socket} a až do ukončení aplikace
+                    na něm naslouchá příchozím požadavkům. Protokol, který akceptuje je popsaný
+                    v kapitole \ref{kapFunkcionality}.
 
             \end{enumerate}
 
 
-            %mapovani starych classname na nove, uzivatelske vytvareni trid,
-
 
 
         \subsection{Popis struktury programu}
+            
                     
-            %package diagram - popis jednotlivých balíků a co vykonávají
             \begin{figure}[h!t]
                 \begin{center}
                     \scalebox{0.7}{\includegraphics{img/package.png}}
