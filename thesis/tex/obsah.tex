@@ -1212,18 +1212,19 @@ HttpHandler httpHandler = manager.start();
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Implementace}  \label{kapImpl}
- IN PROGRESS
+    Tato kapitola popisuje způsob, jakým byla provedena samotná integrace serveru Undertow do Jenkins CI.
+    Jednotlivé kroky zde popisované se přímo vážou k informacím, které byly uvedeny v předchozích kapitolách.
 
-
-
-
+    
 
     
     \section{Základní informace}
         Integrace serveru Undertow do Jenkins CI zahrnovala vytvoření nového projektu, který 
         jsem pojmenoval \emph{undertow4jenkins}. 
-        Jak vyplývá z předchozích kapitol, tak program byl vytvořen v jazyce Java a pro správu a překlad projektu bylo nutné použít 
-        program Maven. Z důvodu kompatibility se serverem Jenkins CI musela být využita starší verze jazyka a to verze 6.
+        Jak vyplývá z předchozích kapitol, tak program byl vytvořen v jazyce Java a jeho základ 
+        tvoří server Undertow. 
+        Z důvodu kompatibility se serverem Jenkins CI musela být využita starší verze jazyka a to verze 6.
+        Pro správu a překlad projektu bylo nutné použít program Maven. 
         
         Projekt Jenkins CI je umístěn na serveru GitHub v několika oddělených repozitářích, které
         využívají verzovací program Git. Aby vývoj nového servlet kontejneru bylo možné následně předvést 
@@ -1247,7 +1248,7 @@ HttpHandler httpHandler = manager.start();
         například při volbě šifrovacích protokolů pro nastavení komunikaci pomocí protokolu HTTPS nebo nastavení zaznamenávání
         příchozích požadavků.
         
-     \section{Technické detaily implementace}
+     \section{Rozbor způsobu implementace}
         Tato kapitola se více zaměřuje na způsob, jakým byla implementace provedena. Jsou rozebrány nejdůležitější
         části implementace výsledného servlet kontejneru, způsob integrace do Jenkins CI
         a celé jeho architektura. V této kapitole se předpokládá, že čtenář je
@@ -1381,7 +1382,7 @@ HttpHandler httpHandler = manager.start();
                         
                     Do servlet kontejneru je možné přidat vlastní třídu pro autentizaci pomocí parametru,
                     který definuje její plně kvalifikované jméno. Je pouze nutné, aby tato třída implementavala
-                    rozraní \texttt{IdentityManager}.
+                    rozhraní \texttt{IdentityManager}.
 
                     Volba třídy pro autentizaci se provádí zadáním jejího plně kvalifikovaného jména, což
                     je způsob, který musel být zachován v souladu s původní implementací servlet kontejneru. 
@@ -1428,15 +1429,46 @@ HttpHandler httpHandler = manager.start();
 
 
         \subsection{Popis struktury programu}
-            
+            Tato kapitola se blíže zabývá vnitřní strukturou programu a jejím cílem je zjednodušit 
+            čtenáři orientaci ve zdrojových kódech aplikace.
+            Popis všech tříd aplikace by byl příliš rozsáhlý a neposkytoval by ucelený přehled o aplikaci.
+            Budou tedy popsány pouze balíky, do kterých je aplikace rozdělena a 
+            tří nejdůležitější třídy, které jsou významné tím, že spojují jednotlivé části aplikace.
+            Struktura aplikace je znázorněna na obrázku \ref{imgPackage}.
                     
             \begin{figure}[h!t]
                 \begin{center}
                     \scalebox{0.7}{\includegraphics{img/package.png}}
-                    \caption{Diagram balíků zachycující architekturu servlet kontejneru rozšířený o tři nejdůležitější třídy }
+                    \caption{Diagram balíků, rozšířený o tři nejdůležitější třídy, který zachycuje architekturu servlet kontejneru}
                     \label{imgPackage}
                 \end{center}
             \end{figure}
+
+            Hlavními třídami architektury programu jsou třídy:
+            \begin{itemize}
+                \item \texttt{Launcher} -- vstupní bod aplikace obsahující metodu \texttt{main}. 
+                    Zajišťuje kontrolu celého běhu servlet kontejneru. 
+
+                \item \texttt{UndertowCreator} -- stará se o inicializaci webového serveru
+                    a konfiguraci servlet kontejneru deleguje na třídu \texttt{DeploymentCreator}.
+
+                \item \texttt{DeploymentCreator} -- zajišťuje inicializaci servlet kontejneru 
+            \end{itemize}
+
+
+            V následujícím výčtu jsou stručně popsány balíky aplikace.
+            Některé obsahují i větší množství tříd a proto je uvedeno pouze o jaké činnosti
+            se třídy v daném balíku starají:
+            \begin{itemize}
+                \item \texttt{option} -- zpracování parametrů a jejich reprezentace za běhu programu
+                \item \texttt{parser} -- načtení souboru \emph{web.xml} a reprezetace načtených hodnot
+                \item \texttt{creator} -- vytvoření webového serveru a servlet kontejneru pomocí Undertow
+                \item \texttt{listener} -- vytvoření konektoru pro síťové protokoly HTTP, HTTPS a AJP
+                \item \texttt{handlers} -- vlastní vytvořené handlery pro běh aplikace
+                \item \texttt{loader} -- inicializace servlet kontejneru na základě načtených informací ze souboru \emph{web.xml}
+                \item \texttt{security} -- zajištění podpory autentizace uživatelů
+                \item \texttt{util} -- zpracování webového archivu a načítání informací z konfiguračních souborů
+            \end{itemize}
 
 
 
