@@ -734,32 +734,12 @@ HttpHandler httpHandler = manager.start();
                     znovu spuštěn server, tak je rychlost nastartování serveru velmi podstatná.
                     
                     Cílem serveru Undertow je být minimalistickým a~velmi rychlým 
-                    řešením. Server Jetty poskytuje kvalitní podporu pro běh aplikací, ale je 
+                    řešením. Server Jetty poskytuje kompletnější podporu pro běh aplikací, ale je 
                     rozsáhlejší. 
-                    Lze usuzovat, že rychlost spuštění bude u~serveru Undertow výrazně nižší
+                    Lze usuzovat, že rychlost spuštění bude u~serveru Undertow nižší
                     než u~serveru Jetty. 
-                    
-                    %TODO potřeba zvážit, ale spíše to není podstatné
-                    %Tato skutečnost bude testována při vyhodnocování
-                    %výsledků této diplomové práce.
-
-                    V~aktuálním stavu Jenkins CI běží integrační testy více než hodinu. Pokud 
-                    by byl servlet kontejner spuštěn za výrazně kratší dobu, tak by mohla být doba testování
-                     také výrazně zkrácena. 
                     }
-
-                \item{\textbf{Velikost:} Jelikož je servlet kontejner přímo integrován do archivu ve kterém
-                    je systém Jenkins CI distribuován, tak komunita dbá na to, aby přidávané komponenty
-                    nebyly příliš velké a~průběžně sleduje aktuální velikost
-                    výsledného archivu\footnote{Stránka, kde je v~systému Jenkins CI automatizovaně
-                    sledována velikost archivu aplikace:\\ 
-                    \texttt{https://wiki.jenkins-ci.org/display/JENKINS/Jenkins+WAR+Size+Tracker}}.  
                                        
-                    Po integraci Jetty vzrostla velikost servlet kontejneru o~1,5 MB na celkovou
-                    velikost 1,8 MB. U~serveru Undertow je uváděno, že jeho archiv má méně
-                    než 1 MB, ale~konečná velikost po integraci bude také záležet na využitých komponentách
-                    a~rozsahu implementace. Přesto z~pohledu velikosti výsledného archivu
-                    se jeví server Undertow jako výhodnější, ale rozdíl oproti serveru Jetty není zásadní.}
 
                 %Tato část by měla být pečlivě překontrolována
                 \item{\textbf{Konfigurovatelnost:} Server Undertow je velmi flexibilní a~způsob
@@ -1408,19 +1388,20 @@ HttpHandler httpHandler = manager.start();
                     implemetace je založena na implementaci v původním servlet kontejneru
                     a odpovídá popisu v kapitole \ref{kapFunkcionality}.
                     
-                    Pokud uživatel specifikoval při spuštění požadavek, aby před URL adresou
-                    aplikace byl nějaký řetězec (\emph{prefix}), tak je tento požadavek implementován
+                    Pokud uživatel specifikoval při spuštění požadavek (parametr \texttt{prefix}), 
+                    aby  URL adresa aplikace začínala 
+                    nějakým daným řetězecem, tak je tento požadavek implementován
                     přidáním \emph{handleru} \texttt{RedirectHandler} jako vstupního \emph{handleru}
                     celé aplikace.
 
                     Provedním těchto posledních konfigurací je webový server i servlet kontejner
                     plně inicializován a následně je spuštěn.
                 
-                \item \textbf{Vytvoření kontrolního kanálu (volitelné):} 
+                \item \textbf{Vytvoření řídícího portu (volitelné):} 
                     V době kdy již províhá spouštění webového serveru, 
                     tak je možné vytvořit rozhraní pro ukončení nebo restart aplikace.
                     Je vytvořený standardní síťový \emph{socket} a až do ukončení aplikace
-                    na něm naslouchá příchozím požadavkům. Protokol, který akceptuje je popsaný
+                    na něm naslouchá příchozím požadavkům (parametr \texttt{controlPort}). Protokol, který akceptuje je popsaný
                     v kapitole \ref{kapFunkcionality}.
 
             \end{enumerate}
@@ -1572,6 +1553,7 @@ HttpHandler httpHandler = manager.start();
     Bohužel tyto testy nevyužívají vestavěný servlet kontejner, takže jejich využití
     pro prokázání funkčnosti aplikace nebylo možné.
     Kromě spouštění vlastních vytvořených testů byla aplikace opakovaně testována používáním jejich různých součástí
+    v Jenkins CI
     a nebyly zjištěné žádné nefunkční prvky.
 
     
