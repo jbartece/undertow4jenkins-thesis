@@ -1550,7 +1550,11 @@ HttpHandler httpHandler = manager.start();
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Srovnání výkonu původní a~nové implementace}  \label{kapPerformance}
     %Různé scénáře, prootože rychlost určuje taky jak jsou rychle odpovědi servlet kontejneru na požadavky servletu
-    %proto i různé stránky, ale není to jen o servlet kontejneru, ale také o tom, jak je napsán kontejner
+    %proto i různé stránky, ale není to jen o servlet kontejneru, ale také o tom, jak je napsána aplikace
+
+    %scenare jsem si delal sam, ale vyuzil jsem plugin pro generovani nahodnych jmen jobu a definici zpravy pro vytvoreni jobu
+
+
     %
     %používá jen POST a GET, pro DELETE se dělá POST (získáno z popisu REST API /job/jobName/API)
     %Testovány nejpodstatnější části webserveru - komunikace pomocí HTTP a HTTPS
@@ -1559,6 +1563,9 @@ HttpHandler httpHandler = manager.start();
     %asynchronne ruzne cinnosti jako treba zjistovani novych aktualizaci. Tendence byla spustit to 
     %ve stejnou dobu, ale jelikoz se to spoustelo oddelene na dvou serverech, tak nebylo mozne dosahnout uplne
     %stejneho okamziku
+
+    %pred kazdym spustenim byla instance spustena znovu, pri vytvareni jobu byla vzdy
+    %vymazana cela slozka, aby to neovlivnovalo
 
     %popsat scénáře a dát do přílohy
     %popsat něco málo o frameworku na testování
