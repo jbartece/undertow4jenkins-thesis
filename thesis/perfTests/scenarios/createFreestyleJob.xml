@@ -18,6 +18,7 @@
         <property name="path" value="perf-logs/createFreestyleJob/response-time.csv"/>
       </destination>
     </reporter>
+  </reporting>
     
   <messages>
     <message uri="createFreestyle.xml"/>
