@@ -1583,9 +1583,20 @@ HttpHandler httpHandler = manager.start();
             s = \sqrt{\frac{1}{N} \sum_{i=1}^N (x_i - \overline{x})^2}      
         \end{equation}
 
+        Aritmetický průměr:
+        \begin{equation}\label{eqOdchylka}
+            \overline{x} = \frac{1}{N}\sum_{i=1}^Nx_i
+        \end{equation}
+
+
         Zrychlení:
         \begin{equation}\label{eqZrychleni}
             \left(\frac{Prumerna\_rychlost\_puvodni\_implementace}{Prumerna\_rychlost\_nove\_implementace} - 1\right)* 100
+        \end{equation}
+
+        Stabilní stav:
+        \begin{equation}\label{eqStabilni}
+            \frac{\mid predchozi\_hodnota - aktualni\_hodnota\mid}{predchozi\_hodnota} < 0,005
         \end{equation}
 
 
@@ -1634,7 +1645,7 @@ HttpHandler httpHandler = manager.start();
             \end{table}
 
 
-zrychlení: 13.78\%            
+        zrychlení: 13.78\%            
 		
                     
             \begin{figure}[h!t]
@@ -1651,9 +1662,44 @@ zrychlení: 13.78\%
 
         \subsection{Získání konfigurace úlohy}
 
+
+            \begin{table}[ht]
+             \catcode`\-=12
+             \begin{center}
+              \begin{tabular}{| c || c | c || c | c |} \hline
+                \multirow{3}{*}{} &  \multicolumn{2}{c||}{\textbf{Doba odezvy}} & \multicolumn{2}{c|}{\textbf{Stabilní stav}}\\ \cline{2-5}
+                &\textbf{Aritmetický} & \textbf{Směrodatná} & \textbf{Aritmetický}& \textbf{Směrodatná}\\ 
+                &\textbf{průměr} [ms] & \textbf{odchylka} [ms] & \textbf{průměr} [s] & \textbf{odchylka} [s]\\ \hline
+                Původní verze& & & & \\\hline
+                Nová verze& & & & \\\hline
+                Rozdíl& & & & \\\hline  
+              \end{tabular}
+              \caption{Tabulka}
+              \label{tab4}
+             \end{center}
+            \end{table}
+
+
         \subsection{Vytvoření nové úlohy}
 
-    \section{Zhodnocení výsledků testů}
+            \begin{table}[ht]
+             \catcode`\-=12
+             \begin{center}
+              \begin{tabular}{| c || c | c || c | c |} \hline
+                \multirow{3}{*}{} &  \multicolumn{2}{c||}{\textbf{Doba odezvy}} & \multicolumn{2}{c|}{\textbf{Stabilní stav}}\\ \cline{2-5}
+                &\textbf{Aritmetický} & \textbf{Směrodatná} & \textbf{Aritmetický}& \textbf{Směrodatná}\\ 
+                &\textbf{průměr} [ms] & \textbf{odchylka} [ms] & \textbf{průměr} [s] & \textbf{odchylka} [s]\\ \hline
+                Původní verze& & & & \\\hline
+                Nová verze& & & & \\\hline
+                Rozdíl& & & & \\\hline  
+              \end{tabular}
+              \caption{Tabulka}
+              \label{tab3}
+             \end{center}
+            \end{table}
+
+
+    \section{Zhodnocení výsledků testování}
         %zrychleni cele aplikace merime, ale cast zpozdeni je dana samotnou aplikaci,
         %takze zrychleni cinnosti servlet kontejneru je urcite vetsi nez ta procenta co vyjdou
 
