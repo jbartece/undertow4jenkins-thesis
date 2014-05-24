@@ -2,12 +2,15 @@
 
 
 if ! [  $1 ]; then
-    echo "Zadat slozku"
+    echo "Enter directory name"
+    exit 1
 fi
 
-i=1
+i=0
 for file in $1*.csv*; do
-    mv $file ${file%.csv*}-$i.csv
+    targetName=`echo ${file%.csv*} | sed 's/[0-9]//g'`
+    
+    mv $file "$targetName$i.csv"
     
     i=`expr $i + 1`
 done
