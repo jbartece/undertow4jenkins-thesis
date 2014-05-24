@@ -1549,20 +1549,16 @@ HttpHandler httpHandler = manager.start();
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Srovnání výkonu původní a~nové implementace}  \label{kapPerformance}
+
+    \section{Podmínky pro testování}
+    %PerfCake
     %Různé scénáře, prootože rychlost určuje taky jak jsou rychle odpovědi servlet kontejneru na požadavky servletu
     %proto i různé stránky, ale není to jen o servlet kontejneru, ale také o tom, jak je napsána aplikace
 
     %scenare jsem si delal sam, ale vyuzil jsem plugin pro generovani nahodnych jmen jobu a definici zpravy pro vytvoreni jobu
 
-
-    %
     %používá jen POST a GET, pro DELETE se dělá POST (získáno z popisu REST API /job/jobName/API)
     %Testovány nejpodstatnější části webserveru - komunikace pomocí HTTP a HTTPS
-
-    %Zacatek grafu muze byt ovlivnen tim za jak dlouho se to spusti po startu Jenkins. Jenkns provadi
-    %asynchronne ruzne cinnosti jako treba zjistovani novych aktualizaci. Tendence byla spustit to 
-    %ve stejnou dobu, ale jelikoz se to spoustelo oddelene na dvou serverech, tak nebylo mozne dosahnout uplne
-    %stejneho okamziku
 
     %pred kazdym spustenim byla instance spustena znovu, pri vytvareni jobu byla vzdy
     %vymazana cela slozka, aby to neovlivnovalo
@@ -1570,13 +1566,43 @@ HttpHandler httpHandler = manager.start();
     %popsat scénáře a dát do přílohy
     %popsat něco málo o frameworku na testování
     %kontroluje i kod odpovedi 200 je ok
-    %zrychleni cele aplikace merime, ale cast zpozdeni je dana samotnou aplikaci,
-    %takze zrychleni cinnosti servlet kontejneru je urcite vetsi nez ta procenta co vyjdou
+
+
+    \section{Testované případy}
+        %Zacatek grafu muze byt ovlivnen tim za jak dlouho se to spusti po startu Jenkins. Jenkns provadi
+        %asynchronne ruzne cinnosti jako treba zjistovani novych aktualizaci. Tendence byla spustit to 
+        %ve stejnou dobu, ale jelikoz se to spoustelo oddelene na dvou serverech, tak nebylo mozne dosahnout uplne
+        %stejneho okamziku
+
+        \subsection{Zobrezení hlavní stránky}
+
+            \medskip
+            \begin{table}[ht]
+             \begin{center}
+              \begin{tabular}{| c || c | c | c | c | c | c | c | c | c | c |} \hline
+               & \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} & \textbf{6} & \textbf{7} & \textbf{8} & \textbf{9} & \textbf{10} \\ \hline
+                Původní implementace [ms] & 3.096 & 3,100 & 3,096 & 3,099 & 3,113 & 3,102 & 3,101  & 3,333 & 3,333 & 3,333\\ \hline
+                Nová implementace  [ms] & 1,433 & 1,400 & 1,465 & 1,399 & 1,417 & 1,399 & 1,418  & & &\\ \hline
+              \end{tabular}
+              \caption{Tabulka}
+              \label{tab}
+             \end{center}
+            \end{table}
+
+
+
+        \subsection{Získání konfigurace úlohy}
+
+        \subsection{Vytvoření nové úlohy}
+
+    \section{Zhodnocení výsledků testů}
+        %zrychleni cele aplikace merime, ale cast zpozdeni je dana samotnou aplikaci,
+        %takze zrychleni cinnosti servlet kontejneru je urcite vetsi nez ta procenta co vyjdou
+
 
     \section{Zhodnocení přínosu pro komunitu Jenkins CI}
     %výkonnost, čitelnější kód, odstranění nevyužívaných věcí, 
-    %-je potřeba další testování a potenciálně úpravy než se provede začlenění
-    %zmínit velikost archivu
+    %je potřeba další testování a potenciálně úpravy než se provede začlenění
     
 
 
