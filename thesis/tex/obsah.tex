@@ -1576,13 +1576,25 @@ HttpHandler httpHandler = manager.start();
 
 
         %popis co je v sloupcich tabulek
+    
+
+        Směrodatná odchylka:
+        \begin{equation}\label{eqOdchylka}
+            s = \sqrt{\frac{1}{N} \sum_{i=1}^N (x_i - \overline{x})^2}      
+        \end{equation}
+
+        Zrychlení:
+        \begin{equation}\label{eqZrychleni}
+            \left(\frac{Prumerna\_rychlost\_puvodni\_implementace}{Prumerna\_rychlost\_nove\_implementace} - 1\right)* 100
+        \end{equation}
+
 
         \subsection{Zobrazení hlavní stránky}
 
             \medskip
             \begin{table}[ht]
              \catcode`\-=12
-             \begin{adjustwidth}{-0.5cm}{}
+             \begin{adjustwidth}{-0.4cm}{}
              \begin{center}
               \begin{tabular}{| c || c | c | c || c | c | c |} \hline
                 \multirow{4}{*}{Běh} &  \multicolumn{3}{c||}{\textbf{Původní verze}} & \multicolumn{3}{c|}{\textbf{Nová verze}}\\ \cline{2-7}
@@ -1602,9 +1614,9 @@ HttpHandler httpHandler = manager.start();
               \caption{Tabulka}
               \label{tab}
              \end{center}
-
             \end{adjustwidth}
             \end{table}
+
             \begin{table}[ht]
              \catcode`\-=12
              \begin{center}
@@ -1620,14 +1632,19 @@ HttpHandler httpHandler = manager.start();
               \label{tab2}
              \end{center}
             \end{table}
+
+
+zrychlení: 13.78\%            
 		
                     
             \begin{figure}[h!t]
+             \begin{adjustwidth}{-0.4cm}{}
                 \begin{center}
                     \scalebox{0.7}{\includegraphics{img/getMainPage.png}}
                     \caption{Graf}
                     \label{imggetMainPage}
                 \end{center}
+            \end{adjustwidth}
             \end{figure}
 
 
