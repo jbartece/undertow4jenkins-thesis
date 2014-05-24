@@ -115,11 +115,11 @@ class StatisticWorker:
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
-        flag = True
+        checkMaxResponseTime = True
     else:
-        flag = False
+        checkMaxResponseTime = False
     
-    worker = StatisticWorker(flag)
+    worker = StatisticWorker(checkMaxResponseTime)
     worker.run()
 
     
