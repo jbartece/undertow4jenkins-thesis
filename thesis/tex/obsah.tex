@@ -1574,23 +1574,41 @@ HttpHandler httpHandler = manager.start();
         %ve stejnou dobu, ale jelikoz se to spoustelo oddelene na dvou serverech, tak nebylo mozne dosahnout uplne
         %stejneho okamziku
 
+
+        %popis co je v sloupcich tabulek
+
         \subsection{Zobrezení hlavní stránky}
 
             \medskip
             \begin{table}[ht]
+             \catcode`\-=12
+             \begin{adjustwidth}{-0.5cm}{}
              \begin{center}
-              \begin{tabular}{| c || c | c | c | c | c | c |} \hline
-               & \textbf{1, 2} & \textbf{2, 3} & \textbf{3, 4} & \textbf{5, 6} & \textbf{7, 8} & \textbf{9, 10} \\ \hline
-                Původní verze  &  &  &  &  &  &  \\ 
-                 Průměrná odezva [ms] & 3.096 & 3,100 & 3,096 & 3,099 & 3,113 & 3,102 \\ \hline
-                Nová verze &  &  &  &  &  &  \\ 
-                 Průměrná odezva [ms] & 1,433 & 1,400 & 1,465 & 1,399 & 1,417 & 1,399 \\ \hline
+              \begin{tabular}{| c || c | c | c || c | c | c |} \hline
+                \multirow{4}{*}{Běh} &  \multicolumn{3}{c||}{\textbf{Původní verze}} & \multicolumn{3}{c|}{\textbf{Nová verze}}\\ \cline{2-7}
+                &\textbf{Prům.} & \textbf{Směr. odchylka} & \textbf{Stab.} & \textbf{Prům.} & \textbf{Směr. odchylka} & \textbf{Stab.} \\  
+                &\textbf{odezva} [ms] & \textbf{odezvy} [ms] & \textbf{stav} [s] & \textbf{odezva} [s]& \textbf{odezvy} [ms] & \textbf{stav} [s]\\\hline
+                1&30.362	&1.122	&124& 28.097 &1.433 &119\\\hline
+                2 &32.058&2.093&151&28.092&1.394&116\\\hline
+                3&32.018&1.786&147&29.819&1.946&113\\\hline
+                4&33.975&1.824&159&27.732&1.411&122\\\hline
+                5&32.206&2.158&104&28.135&1.119&119\\\hline
+                6&33.662&2.291&112&27.766&1.016&166\\\hline
+                7&32.553&2.580&100&27.682&1.112&159\\\hline
+                8&31.914&1.597&92&29.098&1.719&114\\\hline
+                9&30.798&1.278&163&27.748&1.337&119\\\hline
+                10&31.914&1.597&143&28.372&1.659&119\\\hline
               \end{tabular}
               \caption{Tabulka}
               \label{tab}
              \end{center}
+
+            \end{adjustwidth}
             \end{table}
 
+		
+
+            
 
 
         \subsection{Získání konfigurace úlohy}
