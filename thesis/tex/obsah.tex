@@ -1184,7 +1184,7 @@ v~serveru Undertow již proveden, ale ještě není začleněn do aktuální
     
     \section{Základní informace}
         Integrace serveru Undertow do Jenkins CI zahrnovala vytvoření nového projektu, který 
-        jsem pojmenoval \emph{undertow4jenkins}. 
+        jsem pojmenoval \emph{Undertow4Jenkins}. 
         Jak vyplývá z~předchozích kapitol, tak program byl vytvořen v~jazyce Java a~jeho základ 
         tvoří server Undertow. 
         Z~důvodu kompatibility se serverem Jenkins CI musela být využita starší verze jazyka a~to verze 6.
@@ -1225,7 +1225,7 @@ v~serveru Undertow již proveden, ale ještě není začleněn do aktuální
             do výsledného archivu \texttt{.war}.
             Jelikož je Jenkins CI překládán programem Maven, tak byla změněna závislost v~souboru \texttt{pom.xml} 
             (viz kapitola \ref{maven} o~programu Maven)
-            z~původního kontejneru \emph{winstone} na nový projekt \emph{undertow4jenkins}.
+            z~původního kontejneru \emph{winstone} na nový projekt \emph{Undertow4Jenkins}.
             Nastavení této konfigurace je uvedeno na příkladu \ref{prDep}. Jedná se o~zvolenou identifikaci nového servlet
             kontejneru pro program Maven, který provede vložení archivu \texttt{.jar} do Jenkins CI ze svého lokálního repozitáře.
 
@@ -1270,7 +1270,7 @@ v~serveru Undertow již proveden, ale ještě není začleněn do aktuální
                     serveru Jenkins CI. 
                     
                     V~servlet kontejneru je dostupné velké množství parametrů
-a~proto je jejich zpracování implementováno s~důrazem na obecnost a~jednoduché
+                    a~proto je jejich zpracování implementováno s~důrazem na obecnost a~jednoduché
                     přidávání nových parametrů. 
                     Pro přidání nového parametru stačí do třídy pro parametry přidat položku (tzv. \emph{field})
                     a~jeho datový typ (jsou podporovány datové typy \texttt{Boolean}, \texttt{String}, 
@@ -1398,7 +1398,7 @@ a~proto je jejich zpracování implementováno s~důrazem na obecnost a~jednoduc
             čtenáři orientaci ve zdrojových kódech aplikace.
             Popis všech tříd aplikace by byl příliš rozsáhlý a~neposkytoval by ucelený přehled o~aplikaci.
             Budou tedy popsány pouze balíky, do kterých je aplikace rozdělena
-a~tří nejdůležitější třídy, které jsou významné tím, že spojují jednotlivé části aplikace.
+            a~tří nejdůležitější třídy, které jsou významné tím, že spojují jednotlivé části aplikace.
             Struktura aplikace je znázorněna na obrázku \ref{imgPackage}.
                     
             \begin{figure}[h!t]
@@ -1514,7 +1514,7 @@ a~tří nejdůležitější třídy, které jsou významné tím, že spojují j
     \section{Spuštění a~testování}
         Nová implementace servlet kontejneru byla vyvíjena jako samostatný modul a~její přeložení
         a~uložení do lokálního Maven repozitáře provede následující příkaz (volaný z~adresáře projektu
-        undertow4jenkins):
+        Undertow4Jenkins):
 
 \begin{verbatim}
     mvn clean install -DskipTests
@@ -1550,8 +1550,11 @@ a~tří nejdůležitější třídy, které jsou významné tím, že spojují j
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Srovnání výkonu původní a~nové implementace}  \label{kapPerformance}
     V této kapitole je porovnána z hlediska výkonu upravená varianta Jenkins CI s jeho původní implementací.
+    Kapitoly \ref{kapPodminky} a \ref{testovanePripady} se zabývají samotným testování
+    výkoností obou implementací. Výsledky testování jsou shrnuty v kapitole \ref{kapPerfVysledky}
+    a na závěr této části jsou diskutovány přínosy tohoto projektu pro komunitu Jenkins CI \ref{kapPrinos}.
 
-    \section{Podmínky pro testování}
+    \section{Podmínky pro testování}\label{kapPodminky}
         Testování probíhalo na dvou serverech, které jsou používány pro běh Jenkins CI ve firmě RedHat, ale
         v průběhu testování byly dané instance Jenkins CI vypnuté. 
         Oba servery se nacházejí ve stejné laboratoři, což umožnilo minimalizovat
@@ -1891,7 +1894,7 @@ a~tří nejdůležitější třídy, které jsou významné tím, že spojují j
             Podobnost krajních hodnoty průměrné doba odezvy je také vidět na grafu \ref{imgCreateFreestyleCast}.
 
 
-    \section{Zhodnocení výsledků testování}
+    \section{Zhodnocení výsledků testování} \label{kapPerfVysledky}
         Ve třech testovacích případech byly otestovány původní implementace Jenkins CI
         a implementace s novým vestavěným servlet kontejnerem.
 
@@ -1918,9 +1921,37 @@ a~tří nejdůležitější třídy, které jsou významné tím, že spojují j
         že zrychlení samotného servlet kontejneru bylo v daných případech vyšší než
         je výsledek těchto měření.
 
-    \section{Zhodnocení přínosu pro komunitu Jenkins CI}
-    %výkonnost, čitelnější kód, odstranění nevyužívaných věcí, 
-    %je potřeba další testování a potenciálně úpravy než se provede začlenění
+    \section{Zhodnocení přínosu pro komunitu Jenkins CI} \label{kapPrinos}
+        Vytvořená nová implementace servlet kontejneru pro Jenkins CI
+        může pomoci nahradit zastaralou implementaci stávajícího servlet kontejneru.
+        Kód původní implementace již značně degeneroval
+        a je obtížně čitelný, což by tato nová verze servlet kontejneru pomohla vyřešit.
+
+        Hlavním možným přínosem tohoto servlet kontejneru je jeho vyšší
+        rychlost a výkonnost, která se v testech prokázala, ale
+        určitě by bylo vhodné ještě pokračovat v dalším testování.
+
+        Jenkins CI využívá verzi 6 jazyka Java a ještě donedávna
+        udržoval kompatibilitu s verzí 5. Nedá se tedy předpokládat,
+        že v brzké době proběhne změna využívané verze jazyka.
+        Nejnovější verze serveru Jetty odpovídá verzi Java 7.
+        Z tohoto důvodu je v Jenkins CI používána
+        starší verze serveru Jetty a nebude možné přistoupit k jeho
+        nahrazení verzí novější.
+        Naopak server Undertow a servlet kontejner vytvořený v rámci této práce
+        je kompatibilní s verzí Java 6
+        a může být do budoucna dále vylepšován. 
+
+        Cíl vytvořit servlet kontejneru založený na serveru Undertow, který bude
+        funkčně kompatibiltní se stávajícím servlet kontejnerem, se podařilo
+        naplnit. Tento vytvořený servlet kontejner bude v následujících dnech
+        představen komunitě Jenkins CI.
+    
+        Pokud by se komunita rozhodla, že chce tento servlet kontejner
+        začlenit do Jenkins CI, tak by bylo nutné provést ještě
+        komplexnější testování nové implementace servlet kontejneru, 
+        ale nebyly zjištěny žádné
+        problémy které by začlenění bránily.
     
 
 
