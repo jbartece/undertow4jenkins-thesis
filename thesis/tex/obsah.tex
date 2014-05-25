@@ -1672,22 +1672,14 @@ a~tří nejdůležitější třídy, které jsou významné tím, že spojují j
                 9 & 29.323 & 163 & 26.528 & 119\\\hline
                 10 & 29.839 & 143 & 26.786 & 119\\\hline
               \end{tabular}
-              \caption{Tabulka zobrazující aritmetický průměr doby odezvy serverů a čas za jaký se změna doby odezvy ustálí 
+              \caption{Tabulka zobrazující aritmetický průměr doby odezvy serverů a čas, za který se změna průměrné doby odezvy ustálí 
                 (definováno v kapitole \ref{zpusobVyhodnoceniVysledku}) }
               \label{tabMainPageMain}
              \end{center}
             \end{adjustwidth}
             \end{table}
 
-
-
-
-
-
-
-
-
-            \begin{table}[ht]
+            \begin{table}[h!t]
              \catcode`\-=12
              \begin{adjustwidth}{-0.5cm}{}
              \begin{center}
@@ -1706,7 +1698,34 @@ a~tří nejdůležitější třídy, které jsou významné tím, že spojují j
             \end{table}
 
 
-        zrychlení: 11.73\%            
+
+            Průběh průměrné doby odezvy serverů je zobrazen v grafu \ref{imgGetMainPageCely} a v grafu
+            \ref{imgGetMainPageCast} je zachycen detail pozdější fáze testu, kdy se už průměrná doba odezvy téměř neměnila.
+            Z důvodu lepší čitelnosti grafů jsou vyneseny ty experimenty, kdy byly naměřené nejlepší a nejhorší hodnoty
+            pro danou variantu serveru.
+            Pro vyhodnocení byly z naměřených dat vypočítány hodnoty aritmetického průměru a směrodatné odchylky,
+            které shrnují naměřená data v experimentech (tabulka \ref{tabMainPageFinal}).
+
+            \medskip
+            Na počátku testů byla odezva serveru vždy vysoká, ale v průběhu docházelo k rapidnímu poklesu.
+            Tento pokles a stabilní stav nastával u nové varianty serveru mírně dříve, ale ze
+            směrodatné odchylky vidíme, že jeho okamžik se příliš nelišil. Hlavním
+            zjištěním testu je pokles průměrné doby odezvy serveru Jenkins CI o asi $3,141$ milisekund,
+            což představuje zrychlení celé aplikace v průměru o $11.73\%$ (dle vztahu pro výpočet \ref{eqZrychleni}).
+            Z pohledu stability jednotlivých spuštění měla nová varianta Jenkins CI výrazně sníženou
+            směrodatnou odchylku průměrné doby odezvy, což naznačuje konstantnější výkonnost celé aplikace.
+            Tento fakt můžeme pozorovat i na grafu \ref{imgGetMainPageCast}, kde je křivka běhů nové implementace
+            také stabilnější.
+
+            Z pohledu zrychlení je důležité zdůraznit, že se jedná o zrychlení celé aplikace, takže
+            zrychlení samotného servlet kontejneru bude oproti původní variantě ještě vyšší než naměřených $11,73\%$.
+            
+            
+
+
+
+
+
 		
                     
             \begin{figure}[h!t]
