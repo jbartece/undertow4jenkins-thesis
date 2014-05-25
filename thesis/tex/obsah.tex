@@ -1589,9 +1589,10 @@ a~tří nejdůležitější třídy, které jsou významné tím, že spojují j
         Obě varianty aplikace byly vždy testovány za stejných podmínek a následně byly naměřené údaje analyzovány
         a vyhodnoceny.
 
-        \subsection{Popis způsobu vyhodnocování výsledků}
+        \subsection{Popis způsobu vyhodnocování výsledků} \label{zpusobVyhodnoceniVysledku}
             Při testování a vyhodnocení výsledků byly sledovány především průměrná odezva serveru na požadavky a
-            doba za jakou se rychlost odpovědi ustálí pod určitou hranici.
+            doba za jakou se rychlost odpovědi ustálí pod určitou hranici, 
+            která sloužila jako pomocný ukazatel.
             
             Doba odpovědi
             serveru na požadavek postupně rapidně klesá především z těchto důvodů:
@@ -1640,12 +1641,16 @@ a~tří nejdůležitější třídy, které jsou významné tím, že spojují j
             varianty serveru Jenkins CI a bylo spočítáno zrychlení aplikace (případně zpomalení) pomocí vzorce~\ref{eqZrychleni}.
 
             \begin{equation}\label{eqZrychleni}
-                \left(\frac{Prumerna\_rychlost\_puvodni\_implementace}{Prumerna\_rychlost\_nove\_implementace} - 1\right)* 100
+                \left(\frac{Prumerna\_rychlost\_puvodni\_implementace}{Prumerna\_rychlost\_nove\_implementace} - 1\right)* 100 ~~ [\%]
             \end{equation}
             \medskip
 
 
         \subsection{Zobrazení hlavní stránky}
+            V tomto scénáři byly pomocí metody \texttt{GET} posílány požadavky na zobrazení hlavní 
+            stránky serveru Jenkins CI. Testovací skript posílal požadavky pomocí \textbf{padesáti} vláken po dobu \textbf{osmi} minut.
+            Pro každou variantu serveru bylo uskutečněno \textbf{10 běhů}, 
+            jejichž zpracované výsledky jsou zobrazeny v tabulce \ref{tabMainPageMain}.
 
             \medskip
             \begin{table}[ht]
@@ -1667,8 +1672,9 @@ a~tří nejdůležitější třídy, které jsou významné tím, že spojují j
                 9 & 29.323 & 163 & 26.528 & 119\\\hline
                 10 & 29.839 & 143 & 26.786 & 119\\\hline
               \end{tabular}
-              \caption{Tabulka}
-              \label{tab}
+              \caption{Tabulka zobrazující aritmetický průměr doby odezvy serverů a čas za jaký se změna doby odezvy ustálí 
+                (definováno v kapitole \ref{zpusobVyhodnoceniVysledku}) }
+              \label{tabMainPageMain}
              \end{center}
             \end{adjustwidth}
             \end{table}
@@ -1691,10 +1697,10 @@ a~tří nejdůležitější třídy, které jsou významné tím, že spojují j
                  & \textbf{průměr} [ms]  &  \textbf{odchylka} [ms]  &  \textbf{průměr} [s]  &  \textbf{odchylka} [s]\\ \hline
                 Původní verze & 29.914 &  0.741 &  129.5 &  24.913 \\\hline
                 Nová verze & 26.772 &  0.477 &  126.6 &  18.195\\\hline
-                Rozdíl &  3.141  &  0.265  &  2.9  &  6.718\\\hline  
+                \textbf{Rozdíl} &  \textbf{3.141}  &  \textbf{0.265}  &  \textbf{2.9}  &  \textbf{6.718}\\\hline  
               \end{tabular}
-              \caption{Tabulka}
-              \label{tab2}
+              \caption{Tabulka shrnující výsledky měřeného experimentu, které jsou zobrazeny v tabulce~\ref{tabMainPageMain}}
+              \label{tabMainPageFinal}
              \end{center}
              \end{adjustwidth}
             \end{table}
