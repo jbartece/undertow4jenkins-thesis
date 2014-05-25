@@ -1549,57 +1549,100 @@ a~tří nejdůležitější třídy, které jsou významné tím, že spojují j
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Srovnání výkonu původní a~nové implementace}  \label{kapPerformance}
+    V této kapitole je porovnána z hlediska výkonu upravená varianta Jenkins CI s jeho původní implementací.
 
     \section{Podmínky pro testování}
-    %PerfCake
-    %Různé scénáře, prootože rychlost určuje taky jak jsou rychle odpovědi servlet kontejneru na požadavky servletu
-    %proto i různé stránky, ale není to jen o servlet kontejneru, ale také o tom, jak je napsána aplikace
+        Testování probíhalo na dvou serverech, které jsou používány pro běh Jenkins CI ve firmě RedHat, ale
+        v průběhu testování byly dané instance Jenkins CI vypnuté. 
+        Oba servery se nacházejí ve stejné laboratoři, což umožnilo minimalizovat
+        ovlivnění výsledků zpožděním na síti. Testování nemohlo probhat pouze na jednom
+        serveru, protože by se instance aplikace a testovací skripty navzájem ovlivňovaly.
+        
+        V průběhu testování na jedno serveru běžela testovaná aplikace Jenkins CI a na druhém běžely testovací
+        skripty, které zasílaly požadavky na server a měřily zpoždění odpovědí.
+        Před každou iterací testování byl server vždy vypnut a znovu spuštěn, aby se jednotlivé
+        iterace navzájem neovlivňovaly.
+        \medskip
 
-    %scenare jsem si delal sam, ale vyuzil jsem plugin pro generovani nahodnych jmen jobu a definici zpravy pro vytvoreni jobu
+        K testování aplikace byl využit framework \emph{PerfCake 2.0}\footnote{Stránky projektu \emph{PerfCake}: 
+        \texttt{https://www.perfcake.org/}}. Tento framework je jednoduchým \emph{open source} testovacím nástrojem
+        ovládaným z příkazové řádky, 
+        který poskytuje podporu pro testování aplikací. Způsob testování aplikace se definuje pomocí
+        souboru XML \cite{perfcake}.
+        Pro potřeby této práce byly definovány tři testovací případy, jejichž popisem i vyhodnocením se 
+        zabývá následující kapitola.
+             
+        
 
-    %používá jen POST a GET, pro DELETE se dělá POST (získáno z popisu REST API /job/jobName/API)
-    %Testovány nejpodstatnější části webserveru - komunikace pomocí HTTP a HTTPS
+    \section{Testované případy} \label{testovanePripady}
+        Byly formulovány tři scénáře pro otestování aplikace, jejichž cílem bylo testovat různorodé
+        činnosti serveru.        
+        Jako protokol pro komunikaci
+        se serverem byl zvolen protokol HTTP, jelikož je to výchozí protokol v Jenkins CI.
+        Typy požadavků \texttt{DELETE} a \texttt{PUT} nejsou v aplikaci Jenkins CI používány (i mazání
+        se děje požadavkem \texttt{POST}\footnote{Mazání úlohy (angl. \emph{job}) je popsáno v REST API aplikace,
+        které se zobrazí po zadání adresy: \texttt{<adresa\_serveru>/job/<nazev\_ulohy>/API}}), 
+        proto nebyly testovány tyto typy požadavků, ale pouze typy \texttt{GET} (2 scénáře) a \texttt{POST} (1 scénář). 
 
-    %pred kazdym spustenim byla instance spustena znovu, pri vytvareni jobu byla vzdy
-    %vymazana cela slozka, aby to neovlivnovalo
+        Jednotlivé testované scénáře jsou popsány v následujících kapitolách. Jejich zápis
+        pro framework PerfCake je umístěn v příloze \ref{prilohaScenare}.
+        Obě varianty aplikace byly vždy testovány za stejných podmínek a následně byly naměřené údaje analyzovány
+        a vyhodnoceny.
 
-    %popsat scénáře a dát do přílohy
-    %popsat něco málo o frameworku na testování
-    %kontroluje i kod odpovedi 200 je ok
+        \subsection{Popis způsobu vyhodnocování výsledků}
+            Při testování a vyhodnocení výsledků byly sledovány především průměrná odezva serveru na požadavky a
+            doba za jakou se rychlost odpovědi ustálí pod určitou hranici.
+            
+            Doba odpovědi
+            serveru na požadavek postupně rapidně klesá především z těchto důvodů:
+            
+            \begin{itemize}
+                \item Na počátku běhu serveru je aplikace brzděna inicializacema svých jednotlivých částí
+                \item Po prvním načtení dat z disku jsou data ukládána do vyrovnávacích pamětí
+                \item V průběhu své činnosti je aplikace optimalizována interpretem jazyka Java,
+                    který dokáže znatelně ovlivnit její výkonnost
+            \end{itemize}
 
+            Samotný server Jenkins CI na počátku provádí asynchronně různé činnosti (např. zjišťování aktualizací),
+            což může ovlivnit především počátek testování. Při testování byla tendence spustit testovací 
+            skript okamžitě po spuštění, ale jelikož neběžel na stejném serveru jako testovaná
+            aplikace, tak nebylo možné dosáhnou stejného okamžiku. 
 
-    \section{Testované případy}
-        %Zacatek grafu muze byt ovlivnen tim za jak dlouho se to spusti po startu Jenkins. Jenkns provadi
-        %asynchronne ruzne cinnosti jako treba zjistovani novych aktualizaci. Tendence byla spustit to 
-        %ve stejnou dobu, ale jelikoz se to spoustelo oddelene na dvou serverech, tak nebylo mozne dosahnout uplne
-        %stejneho okamziku
+            \medskip
+            Z těchto důvodů byla zkoumána především průměrná odezva serveru v dlouhém časovém
+            úseku, kdy byly na server odeslány až desítky miliónů dotazů.
 
+            Druhým zkoumaným kritériem, byla doba, kdy dojde k ustálení
+            doby odpovědi serveru (v tabulkách dále označován jako \emph{Stabilní stav}).
+            Tento stav byl definován jako okamžik, kdy ve třech po sobě měřených okamžicích (po 3 sekundách)
+            klesne průměrná doba odezvy serveru
+            o méně než $0,5\%$ (definováno v rovnici \ref{eqStabilni}).
 
-        %popis co je v sloupcich tabulek
+            \begin{equation}\label{eqStabilni}
+                \frac{\mid predchozi\_hodnota - aktualni\_hodnota\mid}{predchozi\_hodnota} < 0,005
+            \end{equation}
+            \medskip
 
-        \ref{prilohaScenare}
-    
+        
+            Při analýze naměřených hodnot byla počítána směrodatná odchylka hodnot, která je
+            definováná v rovnici \ref{eqOdchylka} a aritmetický průměr souboru hodnot
+            definovaný v rovnici \ref{eqPrumer}.
+            \begin{equation}\label{eqOdchylka}
+                s~= \sqrt{\frac{1}{N} \sum_{i=1}^N (x_i - \overline{x})^2}      
+            \end{equation}
 
-        Směrodatná odchylka:
-        \begin{equation}\label{eqOdchylka}
-            s~= \sqrt{\frac{1}{N} \sum_{i=1}^N (x_i - \overline{x})^2}      
-        \end{equation}
+            \begin{equation}\label{eqPrumer}
+                \overline{x} = \frac{1}{N}\sum_{i=1}^Nx_i
+            \end{equation}
+            \medskip
 
-        Aritmetický průměr:
-        \begin{equation}\label{eqOdchylka}
-            \overline{x} = \frac{1}{N}\sum_{i=1}^Nx_i
-        \end{equation}
+            V každém scénáři byly porovnány průměrné doby odezvy původní a nové
+            varianty serveru Jenkins CI a bylo spočítáno zrychlení aplikace (případně zpomalení) pomocí vzorce~\ref{eqZrychleni}.
 
-
-        Zrychlení:
-        \begin{equation}\label{eqZrychleni}
-            \left(\frac{Prumerna\_rychlost\_puvodni\_implementace}{Prumerna\_rychlost\_nove\_implementace} - 1\right)* 100
-        \end{equation}
-
-        Stabilní stav:
-        \begin{equation}\label{eqStabilni}
-            \frac{\mid predchozi\_hodnota - aktualni\_hodnota\mid}{predchozi\_hodnota} < 0,005
-        \end{equation}
+            \begin{equation}\label{eqZrychleni}
+                \left(\frac{Prumerna\_rychlost\_puvodni\_implementace}{Prumerna\_rychlost\_nove\_implementace} - 1\right)* 100
+            \end{equation}
+            \medskip
 
 
         \subsection{Zobrazení hlavní stránky}
@@ -1706,6 +1749,9 @@ a~tří nejdůležitější třídy, které jsou významné tím, že spojují j
 
 
         \subsection{Vytvoření nové úlohy}
+            Jelikož v průběhu testování tohoto scénáře na serveru vznikalo velmi velké množství úloh v Jenkins CI (řádově stovky tisíc)
+            tak byla před každým spuštěním smazána domovská složka aplikace. Pokud by smazání neproběhlo,
+            tak by mohly být ovlivňovány pozdější běhy testování narůstajícím množstvím dat.
 
         Zpomalení aplikace: 0.11 \%
 
@@ -1732,6 +1778,8 @@ a~tří nejdůležitější třídy, které jsou významné tím, že spojují j
         %zrychleni cele aplikace merime, ale cast zpozdeni je dana samotnou aplikaci,
         %takze zrychleni cinnosti servlet kontejneru je urcite vetsi nez ta procenta co vyjdou
 
+        Všechny testované činnosti ovlivňuje rychlost servlet kontejneru, ale podstatná část
+        zpoždění je ovlivněna samotnou implementací webové aplikace.
 
     \section{Zhodnocení přínosu pro komunitu Jenkins CI}
     %výkonnost, čitelnější kód, odstranění nevyužívaných věcí, 
