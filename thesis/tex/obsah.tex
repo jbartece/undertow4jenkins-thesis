@@ -1619,7 +1619,7 @@ a~tří nejdůležitější třídy, které jsou významné tím, že spojují j
             doby odpovědi serveru (v tabulkách dále označován jako \emph{Stabilní stav}).
             Tento stav byl definován jako okamžik, kdy je v aktuálním stavu
             pokles průměrné doby odezvy serveru 
-            menší než $0,5\%$ (definováno v rovnici \ref{eqStabilni})
+            menší než $0,5\%$ (definováno ve vzorci \ref{eqStabilni})
             oproti třem předcházejícím naměřeným hodnotám (období 3 sekund).
             
             \begin{equation}\label{eqStabilni}
@@ -1655,7 +1655,6 @@ a~tří nejdůležitější třídy, které jsou významné tím, že spojují j
             Pro každou variantu serveru bylo uskutečněno \textbf{10 běhů}, 
             jejichž zpracované výsledky jsou zobrazeny v tabulce \ref{tabMainPageMain}.
 
-            \medskip
             \begin{table}[ht]
              \catcode`\-=12
              \begin{adjustwidth}{-0.5cm}{}
@@ -1694,7 +1693,8 @@ a~tří nejdůležitější třídy, které jsou významné tím, že spojují j
                 Nová verze & 26.772 &  0.477 &  126.6 &  18.195\\\hline
                 \textbf{Rozdíl} &  \textbf{3.141}  &  \textbf{0.265}  &  \textbf{2.9}  &  \textbf{6.718}\\\hline  
               \end{tabular}
-              \caption{Tabulka shrnující výsledky měřeného experimentu, které jsou zobrazeny v tabulce~\ref{tabMainPageMain}}
+              \caption{Tabulka shrnující výsledky měřeného experimentu, kdy byla zobrazována hlavní stránka Jenkins CI. 
+                    Naměřené hodnoty jsou zobrazeny v tabulce~\ref{tabMainPageMain}}
               \label{tabMainPageFinal}
              \end{center}
              \end{adjustwidth}
@@ -1753,11 +1753,15 @@ a~tří nejdůležitější třídy, které jsou významné tím, že spojují j
             V tomto testu byly pomocí metody \texttt{GET} posílány požadavky na získání
             konfigurace jedné vytvořené úlohy na serveru (tzv. \emph{freestyle job}). 
             Testovací skript posílal požadavky pomocí \textbf{padesáti} vláken po dobu \textbf{osmi} minut.
-            Pro každou variantu serveru bylo uskutečněno \textbf{10 běhů}.
+            Pro každou variantu serveru bylo uskutečněno \textbf{10 běhů}. 
 
             Výsledky tohoto testu jsou zobrazeny v grafech \ref{imgGetFreestyleCely} a \ref{imgGetFreestyleCast}.
             Z naměřených dat vypočítány hodnoty aritmetického průměru a směrodatné odchylky,
             které shrnují naměřená data v experimentech (tabulka \ref{tabGetFreestyleFinal}).
+            Jelikož na
+            počátku testů nedocházelo vždy k poklesům hodnot okamžitě zřejmě z důvodu
+            náročnosti operace, tak pro určení stabilního stavu (vzorec \ref{eqStabilni}) byla přidána
+            podmínka, že průměrná hodnota doby odezvy musí být nižší než 4s.
 
             \begin{table}[ht]
              \catcode`\-=12
@@ -1771,7 +1775,7 @@ a~tří nejdůležitější třídy, které jsou významné tím, že spojují j
                 Nová verze &  1768.139 &  20.229 &  97.300 &  5.496\\\hline
                 Rozdíl &  66.516 &  10.098 &  7.400 &  5.339\\\hline  
               \end{tabular}
-              \caption{Tabulka}
+              \caption{Tabulka shrnující výsledky měřeného experimentu, kdy byla získávána konfigurace úlohy.}
               \label{tabGetFreestyleFinal}
              \end{center}
              \end{adjustwidth}
@@ -1799,7 +1803,6 @@ a~tří nejdůležitější třídy, které jsou významné tím, že spojují j
                 \end{center}
              \end{adjustwidth}
             \end{figure}
-            \medskip
 
             V průběhu tohoto testu byl opět zaznamenán velký pokles doby odezvy na začátků experimentů.
             Z grafů vidíme, že k ustálení stavu v nové variantě docházelo v nejlepším případě v obdobné době.
@@ -1818,8 +1821,9 @@ a~tří nejdůležitější třídy, které jsou významné tím, že spojují j
 
 
         \subsection{Vytvoření nové úlohy}
-            V tomto testu byly pomocí metody \texttt{POST} posílány požadavky vytvoření
-            nové úlohy na serveru (tzv. \emph{freestyle job}). 
+            V tomto testu byly pomocí metody \texttt{POST} posílány požadavky na vytvoření
+            nové úlohy na serveru (tzv. \emph{freestyle job}). Tento požadavek
+            byl prováděn pomocí \emph{REST API} serveru Jenkins CI.
             Testovací skript posílal požadavky pomocí \textbf{dvou} vláken po dobu \textbf{jedné} minuty.
             Pro každou variantu serveru bylo uskutečněno \textbf{10 běhů}.
 
@@ -1831,9 +1835,6 @@ a~tří nejdůležitější třídy, které jsou významné tím, že spojují j
             Výsledky tohoto testu jsou zobrazeny v grafech \ref{imgCreateFreestyleCely} a \ref{imgCreateFreestyleCast}.
             V tabulce \ref{tabCreateFreestyleFinal} jsou uvedené vypočítané statistické hodnoty z
             naměřených dat.
-
-
-        Zpomalení aplikace: $0.11 \%$
 
             \begin{table}[ht]
              \catcode`\-=12
@@ -1847,11 +1848,47 @@ a~tří nejdůležitější třídy, které jsou významné tím, že spojují j
                 Nová verze &  19.665 &  0.282 &  15.900 & 1.814 \\\hline
                 Rozdíl & $-$0.021  &  0.099 &  $-$5.000 & 1.100 \\\hline  
               \end{tabular}
-              \caption{Tabulka}
+              \caption{Tabulka shrnující výsledky měřeného experimentu, kdy byla vytvářena nová úloha.}
               \label{tabCreateFreestyleFinal}
              \end{center}
              \end{adjustwidth}
             \end{table}
+
+
+            \begin{figure}[h!t]
+             \begin{adjustwidth}{-0.5cm}{}
+                \begin{center}
+                    \scalebox{0.65}{\includegraphics{img/createFreestyleJob_cely.png}}
+                    \caption{Průběh naměřených hodnot při testu vytváření nové úlohy na serveru.
+                        Graf zobrazuje nejlepší a nejhorší naměřené případ pro každý server.  
+                        Na svislé ose je použito logaritmické měřítko.}
+                    \label{imgCreateFreestyleCely}
+                \end{center}
+             \end{adjustwidth}
+            \end{figure}
+
+            \begin{figure}[h!t]
+             \begin{adjustwidth}{-0.5cm}{}
+                \begin{center}
+                    \scalebox{0.65}{\includegraphics{img/createFreestyleJob_cast.png}}
+                    \caption{Průběh naměřených hodnot při testu vytváření nové úlohy na serveru.
+                        Graf zobrazuje nejlepší a nejhorší naměřené případ pro každý server.}
+                    \label{imgCreateFreestyleCast}
+                \end{center}
+             \end{adjustwidth}
+            \end{figure}
+
+            Na počátku experimentů došlo opět k výraznému poklesu doby odezvy, ale oproti
+            zbylým dvou případům se rychleji do stabilního stavu dostávala původní implementace Jenkins CI.
+            Tento trend vidíme jak na grafu \ref{imgCreateFreestyleCast}, tak z průměrných
+            hodnot stabilního stavu.
+
+            V tomto testovaném případě se nepotvrdilo zrychlení nové implementace Jenkins CI,
+            které bylo naměřeno v předchozích testovaných případech. Bylo naměřeno
+            mírné zpomalení o $-0.021$ milisekund, což je vyjádřeno procenty $0.11\%$.
+            Tato hodnota je velmi nízká a můžeme tedy prohlásit, že v tomto experimentu
+            byly z pohledu doby odezvy obě varianty rovnocené.
+            Podobnost krajních hodnoty průměrné doba odezvy je také vidět na grafu \ref{imgCreateFreestyleCast}.
 
 
     \section{Zhodnocení výsledků testování}
