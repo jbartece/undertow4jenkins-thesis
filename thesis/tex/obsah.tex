@@ -1735,15 +1735,15 @@ a~tří nejdůležitější třídy, které jsou významné tím, že spojují j
             Na počátku testů byla odezva serveru vždy vysoká, ale v průběhu docházelo k rapidnímu poklesu.
             Tento pokles a stabilní stav nastával u nové varianty serveru mírně dříve, ale ze
             směrodatné odchylky vidíme, že jeho okamžik se příliš nelišil. Hlavním
-            zjištěním testu je pokles průměrné doby odezvy serveru Jenkins CI o asi $3,141$ milisekund,
-            což představuje zrychlení celé aplikace v průměru o $11.73\%$ (dle vztahu pro výpočet \ref{eqZrychleni}).
+            zjištěním testu je pokles průměrné doby odezvy serveru Jenkins CI o asi 3.141 milisekund,
+            což představuje zrychlení celé aplikace v průměru o \textbf{11.73\%} (dle vztahu pro výpočet \ref{eqZrychleni}).
             Z pohledu stability jednotlivých spuštění měla nová varianta Jenkins CI výrazně sníženou
             směrodatnou odchylku průměrné doby odezvy, což naznačuje konstantnější výkonnost celé aplikace.
             Tento fakt můžeme pozorovat i na grafu \ref{imgGetMainPageCast}, kde je křivka běhů nové implementace
             také stabilnější.
 
             Z pohledu zrychlení je důležité zdůraznit, že se jedná o zrychlení celé aplikace, takže
-            zrychlení samotného servlet kontejneru bude oproti původní variantě ještě vyšší než naměřených $11,73\%$.
+            zrychlení samotného servlet kontejneru bude oproti původní variantě ještě vyšší než naměřených 11.73\%.
             
 
 
@@ -1810,7 +1810,7 @@ a~tří nejdůležitější třídy, které jsou významné tím, že spojují j
             že v nejhorší variantě byla doba ustálení u původní implementace Jenkins CI horší.
 
             Z pohledu naměřených hodnot průměrné doby odezvy byl zaznamenán pokles
-            u nové varianty asi o $66.516$ milisekund, což činí zrychlení o $3.76\%$.
+            u nové varianty asi o 66.516 milisekund, což činí zrychlení o \textbf{3.76\%}.
             Na grafu \ref{imgGetFreestyleCast} lze vidět, že v obou variantách 
             docházelo k mírným záchvěvům v průběhu testů. Tyto stavy byly zřejmě 
             způsobeny tím, že požadavků na server docházelo velké množství
@@ -1885,18 +1885,38 @@ a~tří nejdůležitější třídy, které jsou významné tím, že spojují j
 
             V tomto testovaném případě se nepotvrdilo zrychlení nové implementace Jenkins CI,
             které bylo naměřeno v předchozích testovaných případech. Bylo naměřeno
-            mírné zpomalení o $-0.021$ milisekund, což je vyjádřeno procenty $0.11\%$.
+            mírné zpomalení o -0.021 milisekund, což je vyjádřeno procenty \textbf{0.11\%}.
             Tato hodnota je velmi nízká a můžeme tedy prohlásit, že v tomto experimentu
             byly z pohledu doby odezvy obě varianty rovnocené.
             Podobnost krajních hodnoty průměrné doba odezvy je také vidět na grafu \ref{imgCreateFreestyleCast}.
 
 
     \section{Zhodnocení výsledků testování}
-        %zrychleni cele aplikace merime, ale cast zpozdeni je dana samotnou aplikaci,
-        %takze zrychleni cinnosti servlet kontejneru je urcite vetsi nez ta procenta co vyjdou
+        Ve třech testovacích případech byly otestovány původní implementace Jenkins CI
+        a implementace s novým vestavěným servlet kontejnerem.
+
+        V prvních dvou případech dosáhla nová implementace lepších výsledků
+        výkonnosti z pohledu doby odezvy aplikace. V prvním případě zrychlení činilo téměř 12\%
+        a ve druhém případě téměř 4\%. V těchto dvou případech u nové varianty
+        docházelo ke stabilnějším výsledkům mezi měřeními. O trochu dříve docházelo
+        také k ustálení odpovědí serveru, ale zlepšení nebylo výrazné.
+
+        V posledním testovaném případě nebylo prokázáno zrychlení, ale mírné zpomalení o
+        0.1\%. Nicméně tato hodnota je velmi nízká a lze prohlásit, že
+        byly obě implementace v tomto testovaném případě stejně rychlé. 
+        Z pohledu rychlosti ustálení serveru byla v tomto případě mírně lepší původní
+        implementace Jenkins CI.
+
+        \medskip
+        V provedených měřeních byla tedy implementace Jenkins CI s novým
+        servlet kontejnerem rychlejší než původní verze. Průměrné zrychlení
+        aplikace činilo asi 5.1\% (počítáno jako aritmetický průměr ze tří hodnot zrychlení).
+        Nová implementace také poskytovala stabilnější hodnoty mezi jednotlivými měřeními.
 
         Všechny testované činnosti ovlivňuje rychlost servlet kontejneru, ale podstatná část
-        zpoždění je ovlivněna samotnou implementací webové aplikace.
+        zpoždění je také ovlivněna samotnou implementací webové aplikace. Tedy je zřejmé, 
+        že zrychlení samotného servlet kontejneru bylo v daných případech vyšší než
+        je výsledek těchto měření.
 
     \section{Zhodnocení přínosu pro komunitu Jenkins CI}
     %výkonnost, čitelnější kód, odstranění nevyužívaných věcí, 
