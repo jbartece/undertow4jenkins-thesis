@@ -1570,7 +1570,9 @@ a~tří nejdůležitější třídy, které jsou významné tím, že spojují j
         který poskytuje podporu pro testování aplikací. Způsob testování aplikace se definuje pomocí
         souboru XML \cite{perfcake}.
         Pro potřeby této práce byly definovány tři testovací případy, jejichž popisem i vyhodnocením se 
-        zabývá následující kapitola.
+        zabývá následující kapitola. 
+
+        Výsledky, které byly naměřené v rpůběhu testování, jsou uloženy na přiloženém DVD.
              
         
 
@@ -1697,11 +1699,9 @@ a~tří nejdůležitější třídy, které jsou významné tím, že spojují j
              \end{adjustwidth}
             \end{table}
 
-
-
             Průběh průměrné doby odezvy serverů je zobrazen v grafu \ref{imgGetMainPageCely} a v grafu
             \ref{imgGetMainPageCast} je zachycen detail pozdější fáze testu, kdy se už průměrná doba odezvy téměř neměnila.
-            Z důvodu lepší čitelnosti grafů jsou vyneseny ty experimenty, kdy byly naměřené nejlepší a nejhorší hodnoty
+            Z důvodu lepší čitelnosti grafů jsou vyneseny pouze ty experimenty, kdy byly naměřené nejlepší a nejhorší hodnoty
             pro danou variantu serveru.
             Pro vyhodnocení byly z naměřených dat vypočítány hodnoty aritmetického průměru a směrodatné odchylky,
             které shrnují naměřená data v experimentech (tabulka \ref{tabMainPageFinal}).
@@ -1720,19 +1720,13 @@ a~tří nejdůležitější třídy, které jsou významné tím, že spojují j
             Z pohledu zrychlení je důležité zdůraznit, že se jedná o zrychlení celé aplikace, takže
             zrychlení samotného servlet kontejneru bude oproti původní variantě ještě vyšší než naměřených $11,73\%$.
             
-            
-
-
-
-
-
-		
-                    
             \begin{figure}[h!t]
              \begin{adjustwidth}{-0.5cm}{}
                 \begin{center}
                     \scalebox{0.65}{\includegraphics{img/getMainPage_cely.png}}
-                    \caption{Graf}
+                    \caption{Průběh naměřench hodnot při testu získávání hlavní stránky projektu.
+                        Graf zobrazuje nejlepší a nejhorší naměřené případ pro každý server.  
+                        Na svislé ose je použito logaritmické měřítko.}
                     \label{imgGetMainPageCely}
                 \end{center}
              \end{adjustwidth}
@@ -1742,7 +1736,8 @@ a~tří nejdůležitější třídy, které jsou významné tím, že spojují j
              \begin{adjustwidth}{-0.5cm}{}
                 \begin{center}
                     \scalebox{0.65}{\includegraphics{img/getMainPage_cast.png}}
-                    \caption{Graf}
+                    \caption{Průběh naměřench hodnot při testu získávání hlavní stránky projektu.
+                        Graf zobrazuje nejlepší a nejhorší naměřené případ pro každý server.}
                     \label{imgGetMainPageCast}
                 \end{center}
              \end{adjustwidth}
