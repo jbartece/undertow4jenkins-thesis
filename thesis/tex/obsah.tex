@@ -1576,6 +1576,8 @@ HttpHandler httpHandler = manager.start();
 
 
         %popis co je v sloupcich tabulek
+
+        \ref{prilohaScenare}
     
 
         Směrodatná odchylka:
@@ -1605,12 +1607,12 @@ HttpHandler httpHandler = manager.start();
             \medskip
             \begin{table}[ht]
              \catcode`\-=12
-             \begin{adjustwidth}{-0.4cm}{}
+             \begin{adjustwidth}{-0.5cm}{}
              \begin{center}
               \begin{tabular}{| c || c | c || c | c |} \hline
                 \multirow{4}{*}{Běh}  &   \multicolumn{2}{c||}{\textbf{Původní verze}}  &  \multicolumn{2}{c|}{\textbf{Nová verze}}\\ \cline{2-5}
-                 & \textbf{Prům.}   &  \textbf{Stab.}  &  \textbf{Prům.}  &  \textbf{Stab.} \\  
-                 & \textbf{odezva} [ms]  &   \textbf{stav} [s]  &  \textbf{odezva} [s] &  \textbf{stav} [s]\\\hline
+                 & \textbf{Aritmetický} &  \textbf{Stabilní} &  \textbf{Aritmetický}  &  \textbf{Stabilní}\\  
+                 & \textbf{průměr odezvy} [ms]  &   \textbf{stav} [s]  &  \textbf{průměr odezvy} [s] &  \textbf{stav} [s]\\\hline
                 1 & 28.797 & 124 &  26.595 & 119\\\hline
                 2  & 29.754 & 151 & 26.577 & 116\\\hline
                 3 & 29.764 & 147 & 27.921 & 113\\\hline
@@ -1638,6 +1640,7 @@ HttpHandler httpHandler = manager.start();
 
             \begin{table}[ht]
              \catcode`\-=12
+             \begin{adjustwidth}{-0.5cm}{}
              \begin{center}
               \begin{tabular}{| c || c | c || c | c |} \hline
                 \multirow{3}{*}{}   &    \multicolumn{2}{c||}{\textbf{Doba odezvy}}  &  \multicolumn{2}{c|}{\textbf{Stabilní stav}}\\ \cline{2-5}
@@ -1650,6 +1653,7 @@ HttpHandler httpHandler = manager.start();
               \caption{Tabulka}
               \label{tab2}
              \end{center}
+             \end{adjustwidth}
             \end{table}
 
 
@@ -1657,60 +1661,70 @@ HttpHandler httpHandler = manager.start();
 		
                     
             \begin{figure}[h!t]
+             \begin{adjustwidth}{-0.5cm}{}
                 \begin{center}
                     \scalebox{0.65}{\includegraphics{img/getMainPage_cely.png}}
                     \caption{Graf}
                     \label{imgGetMainPageCely}
                 \end{center}
+             \end{adjustwidth}
             \end{figure}
 
             \begin{figure}[h!t]
+             \begin{adjustwidth}{-0.5cm}{}
                 \begin{center}
                     \scalebox{0.65}{\includegraphics{img/getMainPage_cast.png}}
                     \caption{Graf}
                     \label{imgGetMainPageCast}
                 \end{center}
+             \end{adjustwidth}
             \end{figure}
 
 
 
 
         \subsection{Získání konfigurace úlohy}
-
+        Zrychlení 3.76\%
 
             \begin{table}[ht]
              \catcode`\-=12
+             \begin{adjustwidth}{-0.5cm}{}
              \begin{center}
               \begin{tabular}{| c || c | c || c | c |} \hline
                 \multirow{3}{*}{}  &   \multicolumn{2}{c||}{\textbf{Doba odezvy}}  &  \multicolumn{2}{c|}{\textbf{Stabilní stav}}\\ \cline{2-5}
                  & \textbf{Aritmetický}  &  \textbf{Směrodatná}  &  \textbf{Aritmetický} &  \textbf{Směrodatná}\\ 
                  & \textbf{průměr} [ms]  &  \textbf{odchylka} [ms]  &  \textbf{průměr} [s]  &  \textbf{odchylka} [s]\\ \hline
-                Původní verze &   &   &   &  \\\hline
-                Nová verze &   &   &   &  \\\hline
-                Rozdíl &   &   &   &  \\\hline  
+                Původní verze &  1834.655 &  30.328 &  104.700 & 10.836 \\\hline
+                Nová verze &  1768.139 &  20.229 &  97.300 &  5.496\\\hline
+                Rozdíl &  66.516 &  10.098 &  7.400 &  5.339\\\hline  
               \end{tabular}
               \caption{Tabulka}
               \label{tab4}
              \end{center}
+             \end{adjustwidth}
             \end{table}
 
 
         \subsection{Vytvoření nové úlohy}
 
+        Zpomalení aplikace: 0.11 \%
+
             \begin{table}[ht]
              \catcode`\-=12
+             \begin{adjustwidth}{-0.5cm}{}
              \begin{center}
               \begin{tabular}{| c || c | c || c | c |} \hline
                 \multirow{3}{*}{}  &   \multicolumn{2}{c||}{\textbf{Doba odezvy}}  &  \multicolumn{2}{c|}{\textbf{Stabilní stav}}\\ \cline{2-5}
                  & \textbf{Aritmetický}  &  \textbf{Směrodatná}  &  \textbf{Aritmetický} &  \textbf{Směrodatná}\\ 
                  & \textbf{průměr} [ms]  &  \textbf{odchylka} [ms]  &  \textbf{průměr} [s]  &  \textbf{odchylka} [s]\\ \hline
-                Původní verze &   &   &   &  \\\hline
-                Nová verze &   &   &   &  \\\hline
-                Rozdíl &   &   &   &  \\\hline  
+                Původní verze & 19.644  &  0.381 &  10.900 & 2.914 \\\hline
+                Nová verze &  19.665 &  0.282 &  15.900 & 1.814 \\\hline
+                Rozdíl & $-$0.021  &  0.099 &  $-$5.000 & 1.100 \\\hline  
               \end{tabular}
               \caption{Tabulka}
               \label{tab3}
              \end{center}
+             \end{adjustwidth}
             \end{table}
 
 
