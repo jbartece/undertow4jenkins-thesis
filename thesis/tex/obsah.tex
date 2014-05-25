@@ -1607,20 +1607,20 @@ HttpHandler httpHandler = manager.start();
              \catcode`\-=12
              \begin{adjustwidth}{-0.4cm}{}
              \begin{center}
-              \begin{tabular}{| c || c | c | c || c | c | c |} \hline
-                \multirow{4}{*}{Běh} &  \multicolumn{3}{c||}{\textbf{Původní verze}} & \multicolumn{3}{c|}{\textbf{Nová verze}}\\ \cline{2-7}
-                &\textbf{Prům.} & \textbf{Směr. odchylka} & \textbf{Stab.} & \textbf{Prům.} & \textbf{Směr. odchylka} & \textbf{Stab.} \\  
-                &\textbf{odezva} [ms] & \textbf{odezvy} [ms] & \textbf{stav} [s] & \textbf{odezva} [s]& \textbf{odezvy} [ms] & \textbf{stav} [s]\\\hline
-                1&30.362	&1.122	&124& 28.097 &1.433 &119\\\hline
-                2 &32.058&2.093&151&28.092&1.394&116\\\hline
-                3&32.018&1.786&147&29.819&1.946&113\\\hline
-                4&33.975&1.824&159&27.732&1.411&122\\\hline
-                5&32.206&2.158&104&28.135&1.119&119\\\hline\hline
-                6&33.662&2.291&112&27.766&1.016&166\\\hline
-                7&32.553&2.580&100&27.682&1.112&159\\\hline
-                8&31.914&1.597&92&29.098&1.719&114\\\hline
-                9&30.798&1.278&163&27.748&1.337&119\\\hline
-                10&31.914&1.597&143&28.372&1.659&119\\\hline
+              \begin{tabular}{| c || c | c || c | c |} \hline
+                \multirow{4}{*}{Běh}  &   \multicolumn{2}{c||}{\textbf{Původní verze}}  &  \multicolumn{2}{c|}{\textbf{Nová verze}}\\ \cline{2-5}
+                 & \textbf{Prům.}   &  \textbf{Stab.}  &  \textbf{Prům.}  &  \textbf{Stab.} \\  
+                 & \textbf{odezva} [ms]  &   \textbf{stav} [s]  &  \textbf{odezva} [s] &  \textbf{stav} [s]\\\hline
+                1 & 28.797 & 124 &  26.595 & 119\\\hline
+                2  & 29.754 & 151 & 26.577 & 116\\\hline
+                3 & 29.764 & 147 & 27.921 & 113\\\hline
+                4 & 31.513  & 159 & 26.202 & 122\\\hline
+                5 & 29.652 & 104 & 26.809 & 119\\\hline\hline
+                6 & 30.989 & 112 & 26.509 & 166\\\hline
+                7 & 29.668 & 100 & 26.453 & 159\\\hline
+                8 & 29.839 & 92 & 27.343 & 114\\\hline
+                9 & 29.323 & 163 & 26.528 & 119\\\hline
+                10 & 29.839 & 143 & 26.786 & 119\\\hline
               \end{tabular}
               \caption{Tabulka}
               \label{tab}
@@ -1628,16 +1628,24 @@ HttpHandler httpHandler = manager.start();
             \end{adjustwidth}
             \end{table}
 
+
+
+
+
+
+
+
+
             \begin{table}[ht]
              \catcode`\-=12
              \begin{center}
               \begin{tabular}{| c || c | c || c | c |} \hline
-                \multirow{3}{*}{} &  \multicolumn{2}{c||}{\textbf{Doba odezvy}} & \multicolumn{2}{c|}{\textbf{Stabilní stav}}\\ \cline{2-5}
-                &\textbf{Aritmetický} & \textbf{Směrodatná} & \textbf{Aritmetický}& \textbf{Směrodatná}\\ 
-                &\textbf{průměr} [ms] & \textbf{odchylka} [ms] & \textbf{průměr} [s] & \textbf{odchylka} [s]\\ \hline
-                Původní verze&32.1460& 1.8327& 129.5& 24.9128 \\\hline
-                Nová verze&28.2540& 1.4145& 126.6& 18.1945\\\hline
-                Rozdíl& 3.8920& 0.4182& 2.9& 6.7183\\\hline  
+                \multirow{3}{*}{}   &    \multicolumn{2}{c||}{\textbf{Doba odezvy}}  &  \multicolumn{2}{c|}{\textbf{Stabilní stav}}\\ \cline{2-5}
+                 & \textbf{Aritmetický}  &  \textbf{Směrodatná}  &  \textbf{Aritmetický} &  \textbf{Směrodatná}\\ 
+                 & \textbf{průměr} [ms]  &  \textbf{odchylka} [ms]  &  \textbf{průměr} [s]  &  \textbf{odchylka} [s]\\ \hline
+                Původní verze & 29.914 &  0.741 &  129.5 &  24.913 \\\hline
+                Nová verze & 26.772 &  0.477 &  126.6 &  18.195\\\hline
+                Rozdíl &  3.141  &  0.265  &  2.9  &  6.718\\\hline  
               \end{tabular}
               \caption{Tabulka}
               \label{tab2}
@@ -1645,7 +1653,7 @@ HttpHandler httpHandler = manager.start();
             \end{table}
 
 
-        zrychlení: 13.78\%            
+        zrychlení: 11.73\%            
 		
                     
             \begin{figure}[h!t]
@@ -1674,12 +1682,12 @@ HttpHandler httpHandler = manager.start();
              \catcode`\-=12
              \begin{center}
               \begin{tabular}{| c || c | c || c | c |} \hline
-                \multirow{3}{*}{} &  \multicolumn{2}{c||}{\textbf{Doba odezvy}} & \multicolumn{2}{c|}{\textbf{Stabilní stav}}\\ \cline{2-5}
-                &\textbf{Aritmetický} & \textbf{Směrodatná} & \textbf{Aritmetický}& \textbf{Směrodatná}\\ 
-                &\textbf{průměr} [ms] & \textbf{odchylka} [ms] & \textbf{průměr} [s] & \textbf{odchylka} [s]\\ \hline
-                Původní verze& & & & \\\hline
-                Nová verze& & & & \\\hline
-                Rozdíl& & & & \\\hline  
+                \multirow{3}{*}{}  &   \multicolumn{2}{c||}{\textbf{Doba odezvy}}  &  \multicolumn{2}{c|}{\textbf{Stabilní stav}}\\ \cline{2-5}
+                 & \textbf{Aritmetický}  &  \textbf{Směrodatná}  &  \textbf{Aritmetický} &  \textbf{Směrodatná}\\ 
+                 & \textbf{průměr} [ms]  &  \textbf{odchylka} [ms]  &  \textbf{průměr} [s]  &  \textbf{odchylka} [s]\\ \hline
+                Původní verze &   &   &   &  \\\hline
+                Nová verze &   &   &   &  \\\hline
+                Rozdíl &   &   &   &  \\\hline  
               \end{tabular}
               \caption{Tabulka}
               \label{tab4}
@@ -1693,12 +1701,12 @@ HttpHandler httpHandler = manager.start();
              \catcode`\-=12
              \begin{center}
               \begin{tabular}{| c || c | c || c | c |} \hline
-                \multirow{3}{*}{} &  \multicolumn{2}{c||}{\textbf{Doba odezvy}} & \multicolumn{2}{c|}{\textbf{Stabilní stav}}\\ \cline{2-5}
-                &\textbf{Aritmetický} & \textbf{Směrodatná} & \textbf{Aritmetický}& \textbf{Směrodatná}\\ 
-                &\textbf{průměr} [ms] & \textbf{odchylka} [ms] & \textbf{průměr} [s] & \textbf{odchylka} [s]\\ \hline
-                Původní verze& & & & \\\hline
-                Nová verze& & & & \\\hline
-                Rozdíl& & & & \\\hline  
+                \multirow{3}{*}{}  &   \multicolumn{2}{c||}{\textbf{Doba odezvy}}  &  \multicolumn{2}{c|}{\textbf{Stabilní stav}}\\ \cline{2-5}
+                 & \textbf{Aritmetický}  &  \textbf{Směrodatná}  &  \textbf{Aritmetický} &  \textbf{Směrodatná}\\ 
+                 & \textbf{průměr} [ms]  &  \textbf{odchylka} [ms]  &  \textbf{průměr} [s]  &  \textbf{odchylka} [s]\\ \hline
+                Původní verze &   &   &   &  \\\hline
+                Nová verze &   &   &   &  \\\hline
+                Rozdíl &   &   &   &  \\\hline  
               \end{tabular}
               \caption{Tabulka}
               \label{tab3}
