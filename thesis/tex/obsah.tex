@@ -1922,7 +1922,12 @@ v~serveru Undertow již proveden, ale ještě není začleněn do aktuální
         je výsledek těchto měření.
 
     \section{Zhodnocení přínosu pro komunitu Jenkins CI} \label{kapPrinos}
-        Vytvořená nová implementace servlet kontejneru pro Jenkins CI
+        Cíl vytvořit servlet kontejneru založený na serveru Undertow, který bude
+        funkčně kompatibiltní se stávajícím servlet kontejnerem, se podařilo
+        naplnit. Tento vytvořený servlet kontejner bude v následujících dnech
+        představen komunitě Jenkins CI.
+
+        Vytvořená nová implementace servlet kontejneru  
         může pomoci nahradit zastaralou implementaci stávajícího servlet kontejneru.
         Kód původní implementace již značně degeneroval
         a je obtížně čitelný, což by tato nová verze servlet kontejneru pomohla vyřešit.
@@ -1931,22 +1936,21 @@ v~serveru Undertow již proveden, ale ještě není začleněn do aktuální
         rychlost a výkonnost, která se v testech prokázala, ale
         určitě by bylo vhodné ještě pokračovat v dalším testování.
 
-        Jenkins CI využívá verzi 6 jazyka Java a ještě donedávna
-        udržoval kompatibilitu s verzí 5. Nedá se tedy předpokládat,
+        Pro svůj běh Jenkins CI využívá verzi jazyka Java 6 a ještě donedávna
+        udržoval kompatibilitu s verzí Java 5. Komunita
+        velmi dbá na udržování zpětné kompatibility
+        a nedá se tedy předpokládat,
         že v brzké době proběhne změna využívané verze jazyka.
-        Nejnovější verze serveru Jetty odpovídá verzi Java 7.
-        Z tohoto důvodu je v Jenkins CI používána
+        Problémem stávajícího servlet kontejneru je, že 
+        nejnovější verze serveru Jetty odpovídá verzi Java 7.
+        Z tohoto důvodu je aktuálně v Jenkins CI používána
         starší verze serveru Jetty a nebude možné přistoupit k jeho
         nahrazení verzí novější.
         Naopak server Undertow a servlet kontejner vytvořený v rámci této práce
         je kompatibilní s verzí Java 6
-        a může být do budoucna dále vylepšován. 
+        a může být do budoucna dále vylepšován, což je jistá výhoda oproti stávajícímu
+        stavu. 
 
-        Cíl vytvořit servlet kontejneru založený na serveru Undertow, který bude
-        funkčně kompatibiltní se stávajícím servlet kontejnerem, se podařilo
-        naplnit. Tento vytvořený servlet kontejner bude v následujících dnech
-        představen komunitě Jenkins CI.
-    
         Pokud by se komunita rozhodla, že chce tento servlet kontejner
         začlenit do Jenkins CI, tak by bylo nutné provést ještě
         komplexnější testování nové implementace servlet kontejneru, 
