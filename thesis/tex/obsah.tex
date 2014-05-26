@@ -7,7 +7,7 @@
 
 \chapter{Úvod}
     Tato diplomová práce se zabývá vylepšením serveru Jenkins CI, který je v~praxi využíván pro potřeby průběžného testování softwaru
-    a~jeho kontinuální integraci. Vylepšení se týká především webového serveru a~\emph{servlet} kontejneru, který je v~Jenkins CI integrován. 
+    a~jeho kontinuální integraci. Vylepšení se týká především webového serveru a~\emph{servlet kontejneru}, který je v~Jenkins CI integrován. 
     V~současném stavu tyto funkce vykonává kombinace serverů Winstone a~Jetty. 
     
     Server Winstone je již neudržovaný a~zastaralý nástroj a~z~tohoto důvodu
@@ -18,16 +18,26 @@
     a~vhodný pro Jenkins CI. Jelikož tento server je nový a~je sponzorován firmou Red Hat, tak lze předpokládat, že jeho vývoj
     bude nadále pokračovat a~nebude zastarávat.
 
-    Cílem této práce je nahradit server Jetty a~případně i~server Winstone pomocí serveru Undertow 
+    Cílem této práce je nahradit server Jetty a~případně i~\emph{servlet kontejner} Winstone pomocí serveru Undertow 
     a~integrovat jej se serverem Jenkins CI. Při integraci je kladen důraz na snahu
     zachovat zpětnou kompatibilitu s~původním řešením. 
 
     V~rámci této diplomové práce jsou nejprve rozebírány potřebné informace týkající se jednotlivých nástrojů a~plánované integrace.
-    Následně je detailně analyzována architektura Jenkins CI a~způsob jeho integrace se servery Winstone a~Jetty. V~navazující části
-    je diskutována varianta nahrazení pouze serveru Jetty a~varianta nahrazení serveru Jetty i~Winstone pomocí serveru Undertow. 
-    Z~provedené analýzy byla zvolena jedna varianta, která byla vybrána pro následnou integraci. 
+    Následně je detailně analyzována architektura Jenkins CI a~způsob jeho integrace se servery Winstone a~Jetty. 
+    Je diskutována varianta nahrazení pouze serveru Jetty a~varianta nahrazení serverů Jetty i~Winstone pomocí serveru Undertow. 
+    Z~provedené analýzy byla zvolena jedna varianta, která byla vybrána pro integraci. 
 
-    %TODO popis implementace a performance testování
+    Následně je popsán způsob provedení navržené integrace serveru Undertow do Jenkins~CI. 
+    Poslední část této práce je věnována zhodnocení výkonu původní a upravené verze serveru Jenkins CI. Výkon
+    je porovnáván ve třech zvolených testovaných případech. Na základě získaných informací o výkonnosti 
+    a výsledku celé integrace, je na
+    závěr této práce zhodnocen její přínos pro komunitu projektu Jenkins CI.
+
+    Diplomová práce navazuje na předcházející semestrální projekt, v rámci něhož byla provedena studie všech
+    souvisejících nástrojů (kapitola \ref{kapJenkins}),  analýza architektury Jenkins CI
+    a návrh způsobu integrace (kapitola \ref{kapAnalyza}). Nicméně uvedené kapitoly byly následně
+    upravovány především z důvodu změn, které nastaly v průběhu vývoje serveru Undertow.
+    
 
     
 
@@ -35,7 +45,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{Jenkins CI a~související nástroje}
+\chapter{Jenkins CI a~související nástroje} \label{kapJenkins}
     Tato kapitola se zaměřuje na teoretické základy práce, které je nutné nebo vhodné znát pro pochopení zpracovávané problematiky.
     Je zde detailněji popsán systém Jenkins CI (kapitola~\ref{jenkins}) ke kterému se tato práce přímo váže. S~ním je spojeno seznámení
     se servery Winstone (kapitola \ref{winstone}) a~Jetty (kapitola \ref{jetty}), jejichž kombinace je současně v~Jenkins CI integrována.
@@ -766,7 +776,7 @@ HttpHandler httpHandler = manager.start();
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{Analýza současného stavu servlet kontejneru a~návrh integrace}
+\chapter{Analýza současného stavu servlet kontejneru a~návrh integrace} \label{kapAnalyza}
     Tato kapitola se zabývá důkladnější analýzou a~zkoumáním architektury aplikace Jenkins~CI
     z~pohledu jejího vestavěného kontejneru a~jeho možných úprav (kapitola \ref{secArchitecture}). 
     Jsou konkretizovány jednotlivé činnosti, které současný servlet kontejner provádí
