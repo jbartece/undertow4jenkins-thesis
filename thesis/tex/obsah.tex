@@ -28,15 +28,15 @@
     Z~provedené analýzy byla zvolena jedna varianta, která byla vybrána pro integraci. 
 
     Následně je popsán způsob provedení navržené integrace serveru Undertow do Jenkins~CI. 
-    Poslední část této práce je věnována zhodnocení výkonu původní a upravené verze serveru Jenkins CI. Výkon
-    je porovnáván ve třech zvolených testovaných případech. Na základě získaných informací o výkonnosti 
-    a výsledku celé integrace, je na
+    Poslední část této práce je věnována zhodnocení výkonu původní a~upravené verze serveru Jenkins CI. Výkon
+    je porovnáván ve třech zvolených testovaných případech. Na základě získaných informací o~výkonnosti 
+    a~výsledku celé integrace, je na
     závěr této práce zhodnocen její přínos pro komunitu projektu Jenkins CI.
 
-    Diplomová práce navazuje na předcházející semestrální projekt, v rámci něhož byla provedena studie všech
+    Diplomová práce navazuje na předcházející semestrální projekt, v~rámci něhož byla provedena studie všech
     souvisejících nástrojů (kapitola \ref{kapJenkins}),  analýza architektury Jenkins CI
-    a návrh způsobu integrace (kapitola \ref{kapAnalyza}). Nicméně uvedené kapitoly byly následně
-    upravovány především z důvodu změn, které nastaly v průběhu vývoje serveru Undertow.
+    a~návrh způsobu integrace (kapitola \ref{kapAnalyza}). Nicméně uvedené kapitoly byly následně
+    upravovány především z~důvodu změn, které nastaly v~průběhu vývoje serveru Undertow.
     
 
     
@@ -1559,33 +1559,33 @@ v~serveru Undertow již proveden, ale ještě není začleněn do aktuální
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Srovnání výkonu původní a~nové implementace}  \label{kapPerformance}
-    V této kapitole je porovnána z hlediska výkonu upravená varianta Jenkins CI s jeho původní implementací.
-    Kapitoly \ref{kapPodminky} a \ref{testovanePripady} se zabývají samotným testování
-    výkoností obou implementací. Výsledky testování jsou shrnuty v kapitole \ref{kapPerfVysledky}
-    a na závěr této části jsou diskutovány přínosy tohoto projektu pro komunitu Jenkins CI \ref{kapPrinos}.
+    V~této kapitole je porovnána z~hlediska výkonu upravená varianta Jenkins CI s~jeho původní implementací.
+    Kapitoly \ref{kapPodminky} a~\ref{testovanePripady} se zabývají samotným testování
+    výkoností obou implementací. Výsledky testování jsou shrnuty v~kapitole \ref{kapPerfVysledky}
+    a~na závěr této části jsou diskutovány přínosy tohoto projektu pro komunitu Jenkins CI \ref{kapPrinos}.
 
     \section{Podmínky pro testování}\label{kapPodminky}
         Testování probíhalo na dvou serverech, které jsou používány pro běh Jenkins CI ve firmě RedHat, ale
-        v průběhu testování byly dané instance Jenkins CI vypnuté. 
+        v~průběhu testování byly dané instance Jenkins CI vypnuté. 
         Oba servery se nacházejí ve stejné laboratoři, což umožnilo minimalizovat
         ovlivnění výsledků zpožděním na síti. Testování nemohlo probhat pouze na jednom
-        serveru, protože by se instance aplikace a testovací skripty navzájem ovlivňovaly.
+        serveru, protože by se instance aplikace a~testovací skripty navzájem ovlivňovaly.
         
-        V průběhu testování na jedno serveru běžela testovaná aplikace Jenkins CI a na druhém běžely testovací
-        skripty, které zasílaly požadavky na server a měřily zpoždění odpovědí.
-        Před každou iterací testování byl server vždy vypnut a znovu spuštěn, aby se jednotlivé
+        V~průběhu testování na jedno serveru běžela testovaná aplikace Jenkins CI a~na druhém běžely testovací
+        skripty, které zasílaly požadavky na server a~měřily zpoždění odpovědí.
+        Před každou iterací testování byl server vždy vypnut a~znovu spuštěn, aby se jednotlivé
         iterace navzájem neovlivňovaly.
         \medskip
 
-        K testování aplikace byl využit framework \emph{PerfCake 2.0}\footnote{Stránky projektu \emph{PerfCake}: 
+        K~testování aplikace byl využit framework \emph{PerfCake 2.0}\footnote{Stránky projektu \emph{PerfCake}: 
         \texttt{https://www.perfcake.org/}}. Tento framework je jednoduchým \emph{open source} testovacím nástrojem
-        ovládaným z příkazové řádky, 
+        ovládaným z~příkazové řádky, 
         který poskytuje podporu pro testování aplikací. Způsob testování aplikace se definuje pomocí
         souboru XML \cite{perfcake}.
-        Pro potřeby této práce byly definovány tři testovací případy, jejichž popisem i vyhodnocením se 
+        Pro potřeby této práce byly definovány tři testovací případy, jejichž popisem i~vyhodnocením se 
         zabývá následující kapitola. 
 
-        Výsledky, které byly naměřené v rpůběhu testování, jsou uloženy na přiloženém DVD.
+        Výsledky, které byly naměřené v~rpůběhu testování, jsou uloženy na přiloženém DVD.
              
         
 
@@ -1593,29 +1593,29 @@ v~serveru Undertow již proveden, ale ještě není začleněn do aktuální
         Byly formulovány tři scénáře pro otestování aplikace, jejichž cílem bylo testovat různorodé
         činnosti serveru.        
         Jako protokol pro komunikaci
-        se serverem byl zvolen protokol HTTP, jelikož je to výchozí protokol v Jenkins CI.
-        Typy požadavků \texttt{DELETE} a \texttt{PUT} nejsou v aplikaci Jenkins CI používány (i mazání
-        se děje požadavkem \texttt{POST}\footnote{Mazání úlohy (angl. \emph{job}) je popsáno v REST API aplikace,
+        se serverem byl zvolen protokol HTTP, jelikož je to výchozí protokol v~Jenkins CI.
+        Typy požadavků \texttt{DELETE} a~\texttt{PUT} nejsou v~aplikaci Jenkins CI používány (i~mazání
+        se děje požadavkem \texttt{POST}\footnote{Mazání úlohy (angl. \emph{job}) je popsáno v~REST API aplikace,
         které se zobrazí po zadání adresy: \texttt{<adresa\_serveru>/job/<nazev\_ulohy>/API}}), 
-        proto nebyly testovány tyto typy požadavků, ale pouze typy \texttt{GET} (2 scénáře) a \texttt{POST} (1 scénář). 
+        proto nebyly testovány tyto typy požadavků, ale pouze typy \texttt{GET} (2 scénáře) a~\texttt{POST} (1 scénář). 
 
-        Jednotlivé testované scénáře jsou popsány v následujících kapitolách. Jejich zápis
-        pro framework PerfCake je umístěn v příloze \ref{prilohaScenare}.
-        Obě varianty aplikace byly vždy testovány za stejných podmínek a následně byly naměřené údaje analyzovány
-        a vyhodnoceny.
+        Jednotlivé testované scénáře jsou popsány v~následujících kapitolách. Jejich zápis
+        pro framework PerfCake je umístěn v~příloze \ref{prilohaScenare}.
+        Obě varianty aplikace byly vždy testovány za stejných podmínek a~následně byly naměřené údaje analyzovány
+        a~vyhodnoceny.
 
         \subsection{Popis způsobu vyhodnocování výsledků} \label{zpusobVyhodnoceniVysledku}
-            Při testování a vyhodnocení výsledků byly sledovány především průměrná odezva serveru na požadavky a
-            doba za jakou se rychlost odpovědi ustálí pod určitou hranici, 
+            Při testování a~vyhodnocení výsledků byly sledovány především průměrná odezva serveru na požadavky
+a~doba za jakou se rychlost odpovědi ustálí pod určitou hranici, 
             která sloužila jako pomocný ukazatel.
             
             Doba odpovědi
-            serveru na požadavek postupně rapidně klesá především z těchto důvodů:
+            serveru na požadavek postupně rapidně klesá především z~těchto důvodů:
             
             \begin{itemize}
                 \item Na počátku běhu serveru je aplikace brzděna inicializacema svých jednotlivých částí
-                \item Po prvním načtení dat z disku jsou data ukládána do vyrovnávacích pamětí
-                \item V průběhu své činnosti je aplikace optimalizována interpretem jazyka Java,
+                \item Po prvním načtení dat z~disku jsou data ukládána do vyrovnávacích pamětí
+                \item V~průběhu své činnosti je aplikace optimalizována interpretem jazyka Java,
                     který dokáže znatelně ovlivnit její výkonnost
             \end{itemize}
 
@@ -1625,12 +1625,12 @@ v~serveru Undertow již proveden, ale ještě není začleněn do aktuální
             aplikace, tak nebylo možné dosáhnou stejného okamžiku. 
 
             \medskip
-            Z těchto důvodů byla zkoumána především průměrná odezva serveru v dlouhém časovém
+            Z~těchto důvodů byla zkoumána především průměrná odezva serveru v~dlouhém časovém
             úseku, kdy byly na server odeslány až desítky miliónů dotazů.
 
-            Druhým zkoumaným kritériem, byla doba, kdy dojde k ustálení
-            doby odpovědi serveru (v tabulkách dále označován jako \emph{Stabilní stav}).
-            Tento stav byl definován jako okamžik, kdy je v aktuálním stavu
+            Druhým zkoumaným kritériem, byla doba, kdy dojde k~ustálení
+            doby odpovědi serveru (v~tabulkách dále označován jako \emph{Stabilní stav}).
+            Tento stav byl definován jako okamžik, kdy je v~aktuálním stavu
             pokles průměrné doby odezvy serveru 
             menší než $0,5\%$ (definováno ve vzorci \ref{eqStabilni})
             oproti třem předcházejícím naměřeným hodnotám (období 3 sekund).
@@ -1642,8 +1642,8 @@ v~serveru Undertow již proveden, ale ještě není začleněn do aktuální
 
         
             Při analýze naměřených hodnot byla počítána směrodatná odchylka hodnot, která je
-            definováná v rovnici \ref{eqOdchylka} a aritmetický průměr souboru hodnot
-            definovaný v rovnici \ref{eqPrumer}.
+            definováná v~rovnici \ref{eqOdchylka} a~aritmetický průměr souboru hodnot
+            definovaný v~rovnici \ref{eqPrumer}.
             \begin{equation}\label{eqOdchylka}
                 s~= \sqrt{\frac{1}{N} \sum_{i=1}^N (x_i - \overline{x})^2}      
             \end{equation}
@@ -1653,8 +1653,8 @@ v~serveru Undertow již proveden, ale ještě není začleněn do aktuální
             \end{equation}
             \medskip
 
-            V každém scénáři byly porovnány průměrné doby odezvy původní a nové
-            varianty serveru Jenkins CI a bylo spočítáno zrychlení aplikace (případně zpomalení) pomocí vzorce~\ref{eqZrychleni}.
+            V~každém scénáři byly porovnány průměrné doby odezvy původní a~nové
+            varianty serveru Jenkins CI a~bylo spočítáno zrychlení aplikace (případně zpomalení) pomocí vzorce~\ref{eqZrychleni}.
 
             \begin{equation}\label{eqZrychleni}
                 \left(\frac{Prumerna\_rychlost\_puvodni\_implementace}{Prumerna\_rychlost\_nove\_implementace} - 1\right)* 100 ~~ [\%]
@@ -1663,10 +1663,10 @@ v~serveru Undertow již proveden, ale ještě není začleněn do aktuální
 
 
         \subsection{Zobrazení hlavní stránky}
-            V tomto scénáři byly pomocí metody \texttt{GET} posílány požadavky na zobrazení hlavní 
+            V~tomto scénáři byly pomocí metody \texttt{GET} posílány požadavky na zobrazení hlavní 
             stránky serveru Jenkins CI. Testovací skript posílal požadavky pomocí \textbf{padesáti} vláken po dobu \textbf{osmi} minut.
             Pro každou variantu serveru bylo uskutečněno \textbf{10 běhů}, 
-            jejichž zpracované výsledky jsou zobrazeny v tabulce \ref{tabMainPageMain}.
+            jejichž zpracované výsledky jsou zobrazeny v~tabulce \ref{tabMainPageMain}.
 
             \begin{table}[ht]
              \catcode`\-=12
@@ -1687,8 +1687,8 @@ v~serveru Undertow již proveden, ale ještě není začleněn do aktuální
                 9 & 29.323 & 163 & 26.528 & 119\\\hline
                 10 & 29.839 & 143 & 26.786 & 119\\\hline
               \end{tabular}
-              \caption{Tabulka zobrazující aritmetický průměr doby odezvy serverů a čas, za který se změna průměrné doby odezvy ustálí 
-                (definováno v kapitole \ref{zpusobVyhodnoceniVysledku}) }
+              \caption{Tabulka zobrazující aritmetický průměr doby odezvy serverů a~čas, za který se změna průměrné doby odezvy ustálí 
+                (definováno v~kapitole \ref{zpusobVyhodnoceniVysledku}) }
               \label{tabMainPageMain}
              \end{center}
             \end{adjustwidth}
@@ -1707,25 +1707,25 @@ v~serveru Undertow již proveden, ale ještě není začleněn do aktuální
                 \textbf{Rozdíl} &  \textbf{3.141}  &  \textbf{0.265}  &  \textbf{2.9}  &  \textbf{6.718}\\\hline  
               \end{tabular}
               \caption{Tabulka shrnující výsledky měřeného experimentu, kdy byla zobrazována hlavní stránka Jenkins CI. 
-                    Naměřené hodnoty jsou zobrazeny v tabulce~\ref{tabMainPageMain}}
+                    Naměřené hodnoty jsou zobrazeny v~tabulce~\ref{tabMainPageMain}}
               \label{tabMainPageFinal}
              \end{center}
              \end{adjustwidth}
             \end{table}
 
-            Průběh průměrné doby odezvy serverů je zobrazen v grafu \ref{imgGetMainPageCely} a v grafu
+            Průběh průměrné doby odezvy serverů je zobrazen v~grafu \ref{imgGetMainPageCely} a~v~grafu
             \ref{imgGetMainPageCast} je zachycen detail pozdější fáze testu, kdy se už průměrná doba odezvy téměř neměnila.
-            Z důvodu lepší čitelnosti grafů jsou vyneseny pouze ty experimenty, kdy byly naměřené nejlepší a nejhorší hodnoty
+            Z~důvodu lepší čitelnosti grafů jsou vyneseny pouze ty experimenty, kdy byly naměřené nejlepší a~nejhorší hodnoty
             pro danou variantu serveru.
-            Pro vyhodnocení byly z naměřených dat vypočítány hodnoty aritmetického průměru a směrodatné odchylky,
-            které shrnují naměřená data v experimentech (tabulka \ref{tabMainPageFinal}).
+            Pro vyhodnocení byly z~naměřených dat vypočítány hodnoty aritmetického průměru a~směrodatné odchylky,
+            které shrnují naměřená data v~experimentech (tabulka \ref{tabMainPageFinal}).
 
             \begin{figure}[h!t]
              \begin{adjustwidth}{-0.5cm}{}
                 \begin{center}
                     \scalebox{0.65}{\includegraphics{img/getMainPage_cely.png}}
                     \caption{Průběh naměřených hodnot při testu získávání hlavní stránky projektu.
-                        Graf zobrazuje nejlepší a nejhorší naměřené případ pro každý server.  
+                        Graf zobrazuje nejlepší a~nejhorší naměřené případ pro každý server.  
                         Na svislé ose je použito logaritmické měřítko.}
                     \label{imgGetMainPageCely}
                 \end{center}
@@ -1737,7 +1737,7 @@ v~serveru Undertow již proveden, ale ještě není začleněn do aktuální
                 \begin{center}
                     \scalebox{0.65}{\includegraphics{img/getMainPage_cast.png}}
                     \caption{Průběh naměřených hodnot při testu získávání hlavní stránky projektu.
-                        Graf zobrazuje nejlepší a nejhorší naměřené případ pro každý server.}
+                        Graf zobrazuje nejlepší a~nejhorší naměřené případ pro každý server.}
                     \label{imgGetMainPageCast}
                 \end{center}
              \end{adjustwidth}
@@ -1745,17 +1745,17 @@ v~serveru Undertow již proveden, ale ještě není začleněn do aktuální
 
 
             \medskip
-            Na počátku testů byla odezva serveru vždy vysoká, ale v průběhu docházelo k rapidnímu poklesu.
-            Tento pokles a stabilní stav nastával u nové varianty serveru mírně dříve, ale ze
+            Na počátku testů byla odezva serveru vždy vysoká, ale v~průběhu docházelo k~rapidnímu poklesu.
+            Tento pokles a~stabilní stav nastával u~nové varianty serveru mírně dříve, ale ze
             směrodatné odchylky vidíme, že jeho okamžik se příliš nelišil. Hlavním
-            zjištěním testu je pokles průměrné doby odezvy serveru Jenkins CI o asi 3.141 milisekund,
-            což představuje zrychlení celé aplikace v průměru o \textbf{11.73\%} (dle vztahu pro výpočet \ref{eqZrychleni}).
-            Z pohledu stability jednotlivých spuštění měla nová varianta Jenkins CI výrazně sníženou
+            zjištěním testu je pokles průměrné doby odezvy serveru Jenkins CI o~asi 3.141 milisekund,
+            což představuje zrychlení celé aplikace v~průměru o~\textbf{11.73\%} (dle vztahu pro výpočet \ref{eqZrychleni}).
+            Z~pohledu stability jednotlivých spuštění měla nová varianta Jenkins CI výrazně sníženou
             směrodatnou odchylku průměrné doby odezvy, což naznačuje konstantnější výkonnost celé aplikace.
-            Tento fakt můžeme pozorovat i na grafu \ref{imgGetMainPageCast}, kde je křivka běhů nové implementace
+            Tento fakt můžeme pozorovat i~na grafu \ref{imgGetMainPageCast}, kde je křivka běhů nové implementace
             také stabilnější.
 
-            Z pohledu zrychlení je důležité zdůraznit, že se jedná o zrychlení celé aplikace, takže
+            Z~pohledu zrychlení je důležité zdůraznit, že se jedná o~zrychlení celé aplikace, takže
             zrychlení samotného servlet kontejneru bude oproti původní variantě ještě vyšší než naměřených 11.73\%.
             
 
@@ -1763,16 +1763,16 @@ v~serveru Undertow již proveden, ale ještě není začleněn do aktuální
 
 
         \subsection{Získání konfigurace úlohy}
-            V tomto testu byly pomocí metody \texttt{GET} posílány požadavky na získání
+            V~tomto testu byly pomocí metody \texttt{GET} posílány požadavky na získání
             konfigurace jedné vytvořené úlohy na serveru (tzv. \emph{freestyle job}). 
             Testovací skript posílal požadavky pomocí \textbf{padesáti} vláken po dobu \textbf{osmi} minut.
             Pro každou variantu serveru bylo uskutečněno \textbf{10 běhů}. 
 
-            Výsledky tohoto testu jsou zobrazeny v grafech \ref{imgGetFreestyleCely} a \ref{imgGetFreestyleCast}.
-            Z naměřených dat vypočítány hodnoty aritmetického průměru a směrodatné odchylky,
-            které shrnují naměřená data v experimentech (tabulka \ref{tabGetFreestyleFinal}).
+            Výsledky tohoto testu jsou zobrazeny v~grafech \ref{imgGetFreestyleCely} a~\ref{imgGetFreestyleCast}.
+            Z~naměřených dat vypočítány hodnoty aritmetického průměru a~směrodatné odchylky,
+            které shrnují naměřená data v~experimentech (tabulka \ref{tabGetFreestyleFinal}).
             Jelikož na
-            počátku testů nedocházelo vždy k poklesům hodnot okamžitě zřejmě z důvodu
+            počátku testů nedocházelo vždy k~poklesům hodnot okamžitě zřejmě z~důvodu
             náročnosti operace, tak pro určení stabilního stavu (vzorec \ref{eqStabilni}) byla přidána
             podmínka, že průměrná hodnota doby odezvy musí být nižší než 4s.
 
@@ -1799,7 +1799,7 @@ v~serveru Undertow již proveden, ale ještě není začleněn do aktuální
                 \begin{center}
                     \scalebox{0.65}{\includegraphics{img/getFreestyleJob_cely.png}}
                     \caption{Průběh naměřených hodnot při testu získávání konfigurace úlohy ze serveru.
-                        Graf zobrazuje nejlepší a nejhorší naměřené případ pro každý server.  
+                        Graf zobrazuje nejlepší a~nejhorší naměřené případ pro každý server.  
                         Na svislé ose je použito logaritmické měřítko.}
                     \label{imgGetFreestyleCely}
                 \end{center}
@@ -1811,43 +1811,43 @@ v~serveru Undertow již proveden, ale ještě není začleněn do aktuální
                 \begin{center}
                     \scalebox{0.65}{\includegraphics{img/getFreestyleJob_cast.png}}
                     \caption{Průběh naměřených hodnot při testu získávání konfigurace úlohy ze serveru.
-                        Graf zobrazuje nejlepší a nejhorší naměřené případ pro každý server.}
+                        Graf zobrazuje nejlepší a~nejhorší naměřené případ pro každý server.}
                     \label{imgGetFreestyleCast}
                 \end{center}
              \end{adjustwidth}
             \end{figure}
 
-            V průběhu tohoto testu byl opět zaznamenán velký pokles doby odezvy na začátků experimentů.
-            Z grafů vidíme, že k ustálení stavu v nové variantě docházelo v nejlepším případě v obdobné době.
-            Naopak z grafův i hodnot směrodatné odchylky vidíme,
-            že v nejhorší variantě byla doba ustálení u původní implementace Jenkins CI horší.
+            V~průběhu tohoto testu byl opět zaznamenán velký pokles doby odezvy na začátků experimentů.
+            Z~grafů vidíme, že k~ustálení stavu v~nové variantě docházelo v~nejlepším případě v~obdobné době.
+            Naopak z~grafův i~hodnot směrodatné odchylky vidíme,
+            že v~nejhorší variantě byla doba ustálení u~původní implementace Jenkins CI horší.
 
-            Z pohledu naměřených hodnot průměrné doby odezvy byl zaznamenán pokles
-            u nové varianty asi o 66.516 milisekund, což činí zrychlení o \textbf{3.76\%}.
-            Na grafu \ref{imgGetFreestyleCast} lze vidět, že v obou variantách 
-            docházelo k mírným záchvěvům v průběhu testů. Tyto stavy byly zřejmě 
+            Z~pohledu naměřených hodnot průměrné doby odezvy byl zaznamenán pokles
+            u~nové varianty asi o~66.516 milisekund, což činí zrychlení o~\textbf{3.76\%}.
+            Na grafu \ref{imgGetFreestyleCast} lze vidět, že v~obou variantách 
+            docházelo k~mírným záchvěvům v~průběhu testů. Tyto stavy byly zřejmě 
             způsobeny tím, že požadavků na server docházelo velké množství
-            a požadovaný úkon je výpočetně náročný. 
-            Nicméně z pohledu rozptylu naměřených hodnot mezi jednotlivými
+            a~požadovaný úkon je výpočetně náročný. 
+            Nicméně z~pohledu rozptylu naměřených hodnot mezi jednotlivými
             běhy poskytovala nová varianta Jenkins CI lepší hodnoty,
-            což svědčí o větší stabilitě.
+            což svědčí o~větší stabilitě.
 
 
         \subsection{Vytvoření nové úlohy}
-            V tomto testu byly pomocí metody \texttt{POST} posílány požadavky na vytvoření
+            V~tomto testu byly pomocí metody \texttt{POST} posílány požadavky na vytvoření
             nové úlohy na serveru (tzv. \emph{freestyle job}). Tento požadavek
             byl prováděn pomocí \emph{REST API} serveru Jenkins CI.
             Testovací skript posílal požadavky pomocí \textbf{dvou} vláken po dobu \textbf{jedné} minuty.
             Pro každou variantu serveru bylo uskutečněno \textbf{10 běhů}.
 
-            Jelikož v průběhu testování tohoto scénáře na serveru vznikalo velmi velké množství dat v Jenkins CI (řádově stovky tisíc),
-            tak musela být stanovena nižší doba testování i počet serverů, které posílají požadavky.
+            Jelikož v~průběhu testování tohoto scénáře na serveru vznikalo velmi velké množství dat v~Jenkins CI (řádově stovky tisíc),
+            tak musela být stanovena nižší doba testování i~počet serverů, které posílají požadavky.
             Navíc před každým spuštěním byla smazána domovská složka aplikace. Pokud by smazání neproběhlo,
             tak by mohly být ovlivňovány pozdější běhy testování narůstajícím množstvím dat.
 
-            Výsledky tohoto testu jsou zobrazeny v grafech \ref{imgCreateFreestyleCely} a \ref{imgCreateFreestyleCast}.
-            V tabulce \ref{tabCreateFreestyleFinal} jsou uvedené vypočítané statistické hodnoty z
-            naměřených dat.
+            Výsledky tohoto testu jsou zobrazeny v~grafech \ref{imgCreateFreestyleCely} a~\ref{imgCreateFreestyleCast}.
+            V~tabulce \ref{tabCreateFreestyleFinal} jsou uvedené vypočítané statistické hodnoty
+z~naměřených dat.
 
             \begin{table}[ht]
              \catcode`\-=12
@@ -1873,7 +1873,7 @@ v~serveru Undertow již proveden, ale ještě není začleněn do aktuální
                 \begin{center}
                     \scalebox{0.65}{\includegraphics{img/createFreestyleJob_cely.png}}
                     \caption{Průběh naměřených hodnot při testu vytváření nové úlohy na serveru.
-                        Graf zobrazuje nejlepší a nejhorší naměřené případ pro každý server.  
+                        Graf zobrazuje nejlepší a~nejhorší naměřené případ pro každý server.  
                         Na svislé ose je použito logaritmické měřítko.}
                     \label{imgCreateFreestyleCely}
                 \end{center}
@@ -1885,80 +1885,80 @@ v~serveru Undertow již proveden, ale ještě není začleněn do aktuální
                 \begin{center}
                     \scalebox{0.65}{\includegraphics{img/createFreestyleJob_cast.png}}
                     \caption{Průběh naměřených hodnot při testu vytváření nové úlohy na serveru.
-                        Graf zobrazuje nejlepší a nejhorší naměřené případ pro každý server.}
+                        Graf zobrazuje nejlepší a~nejhorší naměřené případ pro každý server.}
                     \label{imgCreateFreestyleCast}
                 \end{center}
              \end{adjustwidth}
             \end{figure}
 
-            Na počátku experimentů došlo opět k výraznému poklesu doby odezvy, ale oproti
+            Na počátku experimentů došlo opět k~výraznému poklesu doby odezvy, ale oproti
             zbylým dvou případům se rychleji do stabilního stavu dostávala původní implementace Jenkins CI.
-            Tento trend vidíme jak na grafu \ref{imgCreateFreestyleCast}, tak z průměrných
+            Tento trend vidíme jak na grafu \ref{imgCreateFreestyleCast}, tak z~průměrných
             hodnot stabilního stavu.
 
-            V tomto testovaném případě se nepotvrdilo zrychlení nové implementace Jenkins CI,
-            které bylo naměřeno v předchozích testovaných případech. Bylo naměřeno
-            mírné zpomalení o -0.021 milisekund, což je vyjádřeno procenty \textbf{0.11\%}.
-            Tato hodnota je velmi nízká a můžeme tedy prohlásit, že v tomto experimentu
-            byly z pohledu doby odezvy obě varianty rovnocené.
+            V~tomto testovaném případě se nepotvrdilo zrychlení nové implementace Jenkins CI,
+            které bylo naměřeno v~předchozích testovaných případech. Bylo naměřeno
+            mírné zpomalení o~-0.021 milisekund, což je vyjádřeno procenty \textbf{0.11\%}.
+            Tato hodnota je velmi nízká a~můžeme tedy prohlásit, že v~tomto experimentu
+            byly z~pohledu doby odezvy obě varianty rovnocené.
             Podobnost krajních hodnoty průměrné doba odezvy je také vidět na grafu \ref{imgCreateFreestyleCast}.
 
 
     \section{Zhodnocení výsledků testování} \label{kapPerfVysledky}
         Ve třech testovacích případech byly otestovány původní implementace Jenkins CI
-        a implementace s novým vestavěným servlet kontejnerem.
+        a~implementace s~novým vestavěným servlet kontejnerem.
 
-        V prvních dvou případech dosáhla nová implementace lepších výsledků
-        výkonnosti z pohledu doby odezvy aplikace. V prvním případě zrychlení činilo téměř 12\%
-        a ve druhém případě téměř 4\%. V těchto dvou případech u nové varianty
-        docházelo ke stabilnějším výsledkům mezi měřeními. O trochu dříve docházelo
-        také k ustálení odpovědí serveru, ale zlepšení nebylo výrazné.
+        V~prvních dvou případech dosáhla nová implementace lepších výsledků
+        výkonnosti z~pohledu doby odezvy aplikace. V~prvním případě zrychlení činilo téměř 12\%
+        a~ve druhém případě téměř 4\%. V~těchto dvou případech u~nové varianty
+        docházelo ke stabilnějším výsledkům mezi měřeními. O~trochu dříve docházelo
+        také k~ustálení odpovědí serveru, ale zlepšení nebylo výrazné.
 
-        V posledním testovaném případě nebylo prokázáno zrychlení, ale mírné zpomalení o
-        0.1\%. Nicméně tato hodnota je velmi nízká a lze prohlásit, že
-        byly obě implementace v tomto testovaném případě stejně rychlé. 
-        Z pohledu rychlosti ustálení serveru byla v tomto případě mírně lepší původní
+        V~posledním testovaném případě nebylo prokázáno zrychlení, ale mírné zpomalení
+o~0.1\%. Nicméně tato hodnota je velmi nízká a~lze prohlásit, že
+        byly obě implementace v~tomto testovaném případě stejně rychlé. 
+        Z~pohledu rychlosti ustálení serveru byla v~tomto případě mírně lepší původní
         implementace Jenkins CI.
 
         \medskip
-        V provedených měřeních byla tedy implementace Jenkins CI s novým
+        V~provedených měřeních byla tedy implementace Jenkins CI s~novým
         servlet kontejnerem rychlejší než původní verze. Průměrné zrychlení
         aplikace činilo asi 5.1\% (počítáno jako aritmetický průměr ze tří hodnot zrychlení).
         Nová implementace také poskytovala stabilnější hodnoty mezi jednotlivými měřeními.
 
         Všechny testované činnosti ovlivňuje rychlost servlet kontejneru, ale podstatná část
         zpoždění je také ovlivněna samotnou implementací webové aplikace. Tedy je zřejmé, 
-        že zrychlení samotného servlet kontejneru bylo v daných případech vyšší než
+        že zrychlení samotného servlet kontejneru bylo v~daných případech vyšší než
         je výsledek těchto měření.
 
     \section{Zhodnocení přínosu pro komunitu Jenkins CI} \label{kapPrinos}
         Cíl vytvořit servlet kontejneru založený na serveru Undertow, který bude
         funkčně kompatibiltní se stávajícím servlet kontejnerem, se podařilo
-        naplnit. Tento vytvořený servlet kontejner bude v následujících dnech
+        naplnit. Tento vytvořený servlet kontejner bude v~následujících dnech
         představen komunitě Jenkins CI.
 
         Vytvořená nová implementace servlet kontejneru  
         může pomoci nahradit zastaralou implementaci stávajícího servlet kontejneru.
         Kód původní implementace již značně degeneroval
-        a je obtížně čitelný, což by tato nová verze servlet kontejneru pomohla vyřešit.
+        a~je obtížně čitelný, což by tato nová verze servlet kontejneru pomohla vyřešit.
 
         Hlavním možným přínosem tohoto servlet kontejneru je jeho vyšší
-        rychlost a výkonnost, která se v testech prokázala, ale
-        určitě by bylo vhodné ještě pokračovat v dalším testování.
+        rychlost a~výkonnost, která se v~testech prokázala, ale
+        určitě by bylo vhodné ještě pokračovat v~dalším testování.
 
-        Pro svůj běh Jenkins CI využívá verzi jazyka Java 6 a ještě donedávna
-        udržoval kompatibilitu s verzí Java 5. Komunita
+        Pro svůj běh Jenkins CI využívá verzi jazyka Java 6 a~ještě donedávna
+        udržoval kompatibilitu s~verzí Java 5. Komunita
         velmi dbá na udržování zpětné kompatibility
-        a nedá se tedy předpokládat,
-        že v brzké době proběhne změna využívané verze jazyka.
+        a~nedá se tedy předpokládat,
+        že v~brzké době proběhne změna využívané verze jazyka.
         Problémem stávajícího servlet kontejneru je, že 
         nejnovější verze serveru Jetty odpovídá verzi Java 7.
-        Z tohoto důvodu je aktuálně v Jenkins CI používána
-        starší verze serveru Jetty a nebude možné přistoupit k jeho
+        Z~tohoto důvodu je aktuálně v~Jenkins CI používána
+        starší verze serveru Jetty a~nebude možné přistoupit k~jeho
         nahrazení verzí novější.
-        Naopak server Undertow a servlet kontejner vytvořený v rámci této práce
-        je kompatibilní s verzí Java 6
-        a může být do budoucna dále vylepšován, což je jistá výhoda oproti stávajícímu
+        Naopak server Undertow a~servlet kontejner vytvořený v~rámci této práce
+        je kompatibilní s~verzí Java 6
+        a~může být do budoucna dále vylepšován, což je jistá výhoda oproti stávajícímu
         stavu. 
 
         Pokud by se komunita rozhodla, že chce tento servlet kontejner
@@ -1978,12 +1978,12 @@ v~serveru Undertow již proveden, ale ještě není začleněn do aktuální
 
     Po seznámení se s~podmínkami pro integraci byly
     zkoumány možnosti provedení samotné integrace serveru Undertow do Jenkins CI.
-    Byly zkoumány dva způsoby integrace. Jednou možností je nahrazení pouze komponenty
-    Jetty, která vykonává většinu práce v~aktuálním kontejneru, zatímco druhou variantou je
+    Jednou možností bylo nahrazení pouze komponenty
+    Jetty, která vykonává většinu práce v~aktuálním kontejneru, zatímco druhou variantou bylo
     nahrazení obou součástí. 
     Po důkladném zvážení různých aspektů integrace byla 
-    zvolena varianta, kdy budou nahrazeny obě komponenty současného 
-    servlet kontejneru a~tudíž proběhne zcela nová implementace.
+    zvolena varianta nahrazení obou komponent současného 
+    servlet kontejneru a~tudíž vytvoření zcela nové implementace.
 
 
 
