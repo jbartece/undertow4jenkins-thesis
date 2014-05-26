@@ -1771,10 +1771,38 @@ a~doba za jakou se rychlost odpovědi ustálí pod určitou hranici,
             Výsledky tohoto testu jsou zobrazeny v~grafech \ref{imgGetFreestyleCely} a~\ref{imgGetFreestyleCast}.
             Z~naměřených dat vypočítány hodnoty aritmetického průměru a~směrodatné odchylky,
             které shrnují naměřená data v~experimentech (tabulka \ref{tabGetFreestyleFinal}).
-            Jelikož na
+            +Jelikož na
             počátku testů nedocházelo vždy k~poklesům hodnot okamžitě zřejmě z~důvodu
             náročnosti operace, tak pro určení stabilního stavu (vzorec \ref{eqStabilni}) byla přidána
             podmínka, že průměrná hodnota doby odezvy musí být nižší než 4s.
+
+
+            \begin{table}[ht]
+             \catcode`\-=12
+             \begin{adjustwidth}{-0.5cm}{}
+             \begin{center}
+              \begin{tabular}{| c || c | c || c | c |} \hline
+                \multirow{4}{*}{Běh}  &   \multicolumn{2}{c||}{\textbf{Původní verze}}  &  \multicolumn{2}{c|}{\textbf{Nová verze}}\\ \cline{2-5}
+                 & \textbf{Aritmetický} &  \textbf{Stabilní} &  \textbf{Aritmetický}  &  \textbf{Stabilní}\\  
+                 & \textbf{průměr odezvy} [ms]  &   \textbf{stav} [s]  &  \textbf{průměr odezvy} [s] &  \textbf{stav} [s]\\\hline
+                1 & 1834.752 & 112 &  1780.747 & 102\\\hline
+                2  & 1821.016 & 100 & 1753.001 & 96\\\hline
+                3 & 1797.174 & 89 & 1763.485 & 93\\\hline
+                4 & 1800.974  & 88 & 1734.458 & 92\\\hline
+                5 & 1833.579 & 104 & 1756.754 & 101\\\hline\hline
+                6 & 1833.173 & 105 & 1758.102 & 100\\\hline
+                7 & 1876.958 & 109 & 1771.095 & 85\\\hline
+                8 & 1898.825 & 128 & 1763.257 & 100\\\hline
+                9 & 1838.782 & 108 & 1810.809 & 100\\\hline
+                10 & 1811.317 & 104 & 1789.687 & 104\\\hline
+              \end{tabular}
+              \caption{Tabulka zobrazující výsledky jednotlivých běhů experimentu, kdy byla získávána konfigurace úlohy.}
+              \label{tabgetFreestyleMain}
+             \end{center}
+            \end{adjustwidth}
+            \end{table}
+
+		
 
             \begin{table}[ht]
              \catcode`\-=12
@@ -1847,7 +1875,7 @@ a~doba za jakou se rychlost odpovědi ustálí pod určitou hranici,
 
             Výsledky tohoto testu jsou zobrazeny v~grafech \ref{imgCreateFreestyleCely} a~\ref{imgCreateFreestyleCast}.
             V~tabulce \ref{tabCreateFreestyleFinal} jsou uvedené vypočítané statistické hodnoty
-z~naměřených dat.
+            z~naměřených dat.
 
             \begin{table}[ht]
              \catcode`\-=12
@@ -1915,7 +1943,7 @@ z~naměřených dat.
         také k~ustálení odpovědí serveru, ale zlepšení nebylo výrazné.
 
         V~posledním testovaném případě nebylo prokázáno zrychlení, ale mírné zpomalení
-o~0.1\%. Nicméně tato hodnota je velmi nízká a~lze prohlásit, že
+        o~0.1\%. Nicméně tato hodnota je velmi nízká a~lze prohlásit, že
         byly obě implementace v~tomto testovaném případě stejně rychlé. 
         Z~pohledu rychlosti ustálení serveru byla v~tomto případě mírně lepší původní
         implementace Jenkins CI.
@@ -1926,10 +1954,10 @@ o~0.1\%. Nicméně tato hodnota je velmi nízká a~lze prohlásit, že
         aplikace činilo asi 5.1\% (počítáno jako aritmetický průměr ze tří hodnot zrychlení).
         Nová implementace také poskytovala stabilnější hodnoty mezi jednotlivými měřeními.
 
-        Všechny testované činnosti ovlivňuje rychlost servlet kontejneru, ale podstatná část
+        Rychlost servlet kontejneru ovlivňuje všechny testované činnosti, ale podstatná část
         zpoždění je také ovlivněna samotnou implementací webové aplikace. Tedy je zřejmé, 
         že zrychlení samotného servlet kontejneru bylo v~daných případech vyšší než
-        je výsledek těchto měření.
+        je výsledek těchto měření pro celou aplikaci.
 
     \section{Zhodnocení přínosu pro komunitu Jenkins CI} \label{kapPrinos}
         Cíl vytvořit servlet kontejneru založený na serveru Undertow, který bude
@@ -1970,12 +1998,12 @@ o~0.1\%. Nicméně tato hodnota je velmi nízká a~lze prohlásit, že
 
 
 \chapter{Závěr}
-    %asi upravit
-    Začátek této práce se věnoval seznámení s~integračním serverem Jenkins CI,
+    V této práci proběhlo seznámení se~integračním serverem Jenkins CI,
     se servery Jetty a~Winstone, které jsou součástí jeho servlet kontejneru,
     a~se serverem Undertow, jehož integrace do Jenkins CI je hlavní
-    náplní této práce. V~následující části byla analyzována architektura aplikace Jenkins CI
-    a~také stav servlet kontejneru, který je v~něm integrován.
+    náplní této práce. Architektura aplikace Jenkins CI byla
+    důkladně analyzována se zaměřením na integrovaný
+    servlet kontejner.
 
     Po seznámení se s~podmínkami pro integraci byly
     zkoumány možnosti provedení samotné integrace serveru Undertow do Jenkins CI.
@@ -1985,14 +2013,36 @@ o~0.1\%. Nicméně tato hodnota je velmi nízká a~lze prohlásit, že
     Po důkladném zvážení různých aspektů integrace byla 
     zvolena varianta nahrazení obou komponent současného 
     servlet kontejneru a~tudíž vytvoření zcela nové implementace.
-    %provedena implementace
 
-    %testování výkonu
-    %získané zrychlení
-    %plně funkční a neobjeveny žádné problémy se zpětnou kompatibilitou
-    %bude předloženo komunitě Jenkins CI
-    %další vývoj: přidání podpory SPDY až bude přidána do Undertow, 
-    %zpracování zbytku web.xml?
+    Dle návrhu byla vytvořena nová implementace servlet kontejneru
+    pro Jenkins CI. Při implementaci byl kladen důraz na zpětnou kompatibilitu
+    vytvářeného řešení s původní variantou. Povedlo se implementovat všechny podstatné
+    funkcionality původní verze servlet kontejneru. Upravená
+    aplikace byla testována a zkoumána a nebyly zjištěny žádné problémy
+    při jejím běhu.
+
+    Výkon původní a upravené verze Jenkins CI byl otestován ve třech 
+    definovaných případech a bylo naměřeno průměrné zrychlení celé aplikace o 
+    5.1\%. 
+    Jelikož tato hodnota udává zrychlení celé aplikace, tak je 
+    zřejmé, že zrychlení samotného servlet kontejneru bylo ještě větší.
+    Kromě vyší rychlosti dosahovala nová implemetace také stabilnějšího
+    výkonu, což je pro práci serveru podstatná informace.
+    
+    Výsledek této práce má potenciál být dlouhodobě rychlejším
+    a spolehlivějším řešením servlet kontejneru pro Jenkins CI než současná implementace
+    a bude prezentován komunitě projektu.
+    Jistou výhodou je také skutečnost, že implementace byla provedena
+    odznovu a byl odstraněn přebytečný kód ze zastaralé původní varianty.
+    
+    Stanovených cílů bylo v rámci této diplomové práce dosaženo.
+    Předmětem pro následující vývoj projektu je 
+    přidání podpory komunikace pomocí protokolu SPDY, 
+    která může být v blízké době přidána až skončí beta testování
+    nové verze serveru Undertow.
+
+    
+
 
 
 %=========================================================================
