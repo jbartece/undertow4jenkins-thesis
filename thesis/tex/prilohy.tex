@@ -13,23 +13,116 @@
     \end{itemize}
 
 \chapter{Vytvořené scénáře pro testování} \label{prilohaScenare}
-    Scénáře pro perf-cake
-    scenare jsem si delal sam, ale vyuzil jsem plugin pro generovani nahodnych jmen jobu a definici zpravy pro vytvoreni jobu
+    Pro potřeby testování byly vytvořeny 3 testovací scénáře pro framework PerfCake. 
+    Při tvorbě scénářů byly využity zdroje, které byly v minulosti vytvořené pro testování 
+    Jenkins~CI\footnote{Adresa repozitáře projektu: 
+    \texttt{https://github.com/vjuranek/jenkins-perf-tests}}.
+    Jedná se o zásuvný modul (angl. \emph{plugin}) pro 
+    generování náhodných jmen a obsah zprávy pro vytvoření nové úlohy v Jenkins CI. 
 
+    \medskip
+
+    Pro některé URL adresy nebyl rozsah stránky dostatečný a proto byly
+    rozděleny na dvě části, ale ve skutečnosti musí být spojeny.
+    Vytvořené scénáře jsou také uložené na přiloženém DVD a jejich text je následující:
+       \begin{itemize}
+        \item Scénář pro testování zobrazení hlavní stránky:
 \begin{verbatim}
+<?xml version="1.0" encoding="utf-8"?>
+<scenario xmlns="urn:perfcake:scenario:2.0">
+  <generator class="DefaultMessageGenerator" 
+        threads="${perfcake.performance.thread.count:50}">
+    <run type="time" value="${perfcake.performance.duration:480000}"/>
+    <property name="threadQueueSize" value="50000"/>
+  </generator>
+  
+  <sender class="HTTPSender">
+    <property name="target" 
+        value="http://${server.url}:${server.port:8080}"/>
+    <property name="method" value="GET"/>                                                                                               
+  </sender>
+  
+  <reporting>
+    <reporter class="ResponseTimeReporter">
+      <destination class="CSVDestination">
+        <period type="time" value="1000"/>
+        <property name="path" 
+            value="perf-logs/getMainPage/response-time.csv"/>
+      </destination>
+    </reporter>
+  </reporting>
+</scenario>
 \end{verbatim}
 
-
-
+        \newpage
+        \item Scénář pro testování vytvoření nové úlohy v Jenkins CI:
 \begin{verbatim}
+<?xml version="1.0" encoding="utf-8"?>
+<scenario xmlns="urn:perfcake:scenario:2.0">
+  <generator class="DefaultMessageGenerator" 
+        threads="${perfcake.performance.thread.count:2}">
+    <run type="time" value="${perfcake.performance.duration:60000}"/>                                                                         
+    <property name="threadQueueSize" value="50000"/>                                                                                         
+  </generator>
+              
+  <sender class="org.perfcake.plugins.jenkins_tools.RandomTargetSender">
+    <property name="target" 
+        value="http://${server.url}:${server.port:8080}
+            /createItem?name=$RANDOM"/>
+    <property name="method" value="POST"/>
+  </sender>
+
+  <reporting>
+    <reporter class="ResponseTimeReporter">
+      <destination class="CSVDestination">
+        <period type="time" value="500"/>
+        <property name="path" 
+            value="perf-logs/createFreestyleJob/response-time.csv"/>
+      </destination>
+    </reporter>
+  </reporting>
+    
+  <messages>
+    <message uri="createFreestyle.xml"/>
+  </messages>
+</scenario>
 \end{verbatim}
 
+        \item Scénář pro testování zobrazení konfigurace úlohy v Jenkins CI
 \begin{verbatim}
-\end{verbatim}
+<?xml version="1.0" encoding="utf-8"?>
+<scenario xmlns="urn:perfcake:scenario:2.0">
+  <generator class="DefaultMessageGenerator" 
+        threads="${perfcake.performance.thread.count:50}">
+    <run type="time" value="${perfcake.performance.duration:480000}"/>
+    <property name="threadQueueSize" value="50000"/>
+  </generator>
+  
+  <sender class="HTTPSender">
+    <property name="target" 
+        value="http://${server.url}:${server.port:8080}
+            /job/testFreestyleJob/configure"/>
+    <property name="method" value="GET"/>                                                                                               
+  </sender>
+  
+  <reporting>
+    <reporter class="ResponseTimeReporter">
+      <destination class="CSVDestination">
+        <period type="time" value="1000"/>
+        <property name="path" 
+            value="perf-logs/getFreestyleJob/response-time.csv"/>
+      </destination>
+    </reporter>
+  </reporting>
+</scenario>
 
-%\chapter{Manual}
-%\chapter{Konfigrační soubor}
-%\chapter{RelaxNG Schéma konfiguračního soboru}
-%\chapter{Plakat}
+\end{verbatim}
+    \end{itemize}
+
+
+\chapter{Návod na přeložení a spuštění výsledné aplikace}
+    Jak přeložit a spustit ucelene
+
+
 
 
