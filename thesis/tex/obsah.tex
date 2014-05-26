@@ -319,39 +319,38 @@ webapp.war
          
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     \section{Nástroj Maven} \label{maven}
-         %TODO zkontrolovat, jestli to dává smysl a není to moc rozvláčné
         Pro vývoj a~práci se serverem Jenkins CI v~podobě zdrojových kódů je zapotřebí nástroj Maven. 
-        Jeho využití je také nutné při vytváření programu, který provede integraci serveru Undertow do Jenkins CI. 
-        V~této kapitole budou o~něm poskytnuty základní informace. Pro případné bližší
-        seznámení s~tímto nástrojem lze další informace získat z~webových stránek projektu \cite{mavenWeb}
+        Jeho využití je také nutné pro provedení integrace serveru Undertow do Jenkins CI. 
+        V~této kapitole budou o~něm poskytnuty pouze základní informace. Pro případné bližší
+        seznámení se s~tímto nástrojem lze další informace získat z~webových stránek projektu \cite{mavenWeb},
         z~kterých byly čerpány informace v~této kapitole. 
         
-        Maven je nástroj, který provádí činnosti spojené s~vytváření spustitelných aplikací ze zdrojových kódů 
-        Je zaměřen na aplikace vytvářené v~jazyce Java. Hlavním cílem je umožnit uživatelům v~co nejkratším
+        Maven je nástroj, který provádí činnosti spojené s~vytváření spustitelných aplikací ze zdrojových kódů
+        a je zaměřen na aplikace vytvářené v~jazyce Java. Jeho hlavním cílem je umožnit uživatelům v~co nejkratším
         čase provádět běžné a~opakující se úkony při překladu aplikace. Především umožňuje
-        provádění překladu aplikací, jejich spouštění automatizovaných jednotkových
-a~integračních testů, uložení spustitelné podoby aplikace do lokálního repozitáře 
+        provádění překladu aplikací, spuštění jejich automatizovaných jednotkových
+        a~integračních testů, uložení spustitelné podoby aplikace do lokálního repozitáře 
         a~případně i~nahrání vytvořené aplikace na nějaký server. 
 
         Je dodáván jako aplikace, která se spouští z~příkazové řádky příkazem \texttt{mvn}. Veškeré
         informace o~projektu a~definice činnosti, které má Maven provést, se specifikuje 
         v~XML souboru \texttt{pom.xml}. Mezi nejdůležitější patří definice výsledné podoby aplikace
         a~způsob jejího překladu, informace o~závislostech
-        projektu na jiných knihovnách a~definice serverů z~kterých má stahovat potřebné knihovny pro svůj 
-        běh i~pro běh aplikace. Po spuštění aplikace jsou tedy lokalizovány knihovny, na kterých projekt
-        závisí a~uloženy v~lokálním repozitáři aniž by se o~tuto činnost uživatel musel dále starat.
-        Kromě těchto praktických činností také umožňuje zveřejnit podrobnější informace o~projektu,         
-        jako jsou informace o~licenci, vývojářích, adrese systému pro správu verzí, atp.
+        projektu na jiných knihovnách a~definice serverů z~kterých má stahovat potřebné knihovny pro běh aplikace. 
+        Po spuštění aplikace jsou tedy lokalizovány knihovny, na kterých projekt
+        závisí, a~uloženy v~lokálním repozitáři aniž by se o~tuto činnost uživatel musel dále starat.
 
         Zmíněný lokální repozitář neslouží pouze ke stahování knihoven ze serveru, ale
-        také pro ukládání lokálně vyvíjený aplikací.
+        také pro ukládání lokálně vyvíjených aplikací.
         Pokud je aplikace vyvíjena lokálně a~skládá se z~více nezávislých modulů, tak je potřeba
         postupně tyto moduly přidávat do lokálního repozitáře, aby je při sestavování
         výsledného programu Maven mohl najít (na serveru je totiž nenajde). Pro přidání modulu či aplikace do 
-        lokálního Maven repozitáře slouží parametr \texttt{install}.
+        lokálního repozitáře slouží parametr \texttt{install}.
 
 
         Na příkladu \ref{jenkinsPom} je ukázka části souboru \texttt{pom.xml}, který je vytvořen pro Jenkins~CI:
+        
+        \newpage
         \begin{priklad} \label{jenkinsPom} 
             Ukázka souboru \texttt{pom.xml}
 \begin{verbatim}
@@ -371,7 +370,7 @@ a~integračních testů, uložení spustitelné podoby aplikace do lokálního r
         \end{priklad}
 
         V~části \texttt{repository} je definována cesta k~serveru, z~kterého má Maven stahovat potřebné soubory
-        a~v~těle značky \texttt{dependency} je pomocí hodnot \texttt{groupId, artifactId, version} jednoznačně
+        a~v~těle značky \texttt{dependency} je pomocí hodnot \emph{groupId, artifactId} a \emph{version} jednoznačně
         definována potřebná knihovna. Na základě těchto informací poté Maven při překladu stáhne požadovanou
         knihovnu a~při distribuci aplikace nemusí být tato knihovna k~programu přibalena. 
 
@@ -379,24 +378,19 @@ a~integračních testů, uložení spustitelné podoby aplikace do lokálního r
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     \section{Server Jetty} \label{jetty}
         Jednou z~komponent, které jsou aktuálně integrovány do serveru Jenkins CI, je webový server Jetty.
-        Tento server je open source projektem vyvíjeným pod licencemi 
-        Eclipse\footnote{Licence Eclipse je dostupná na adrese \texttt{http://www.eclipse.org/legal/epl-v10.html}}
+        Tento server je \emph{open source} projektem vyvíjeným pod licencemi 
+        Eclipse\footnote{Licence Eclipse je dostupná na adrese: \texttt{http://www.eclipse.org/legal/epl-v10.html}}
         a~Apache\footnote{Licence Apache je dostupná 
-        na adrese \texttt{http://www.apache.org/licenses/LICENSE-2.0.html}}. 
-            Je využíván velkým množstvím nástrojů jako jsou například \emph{Eclipse IDE}\footnote{Webové stránky nástroje Eclipse IDE 
-        \texttt{http://www.eclipse.org/}} nebo \emph{Google AppEngine}\footnote{Webové stránky platformy Google AppEngine
+        na adrese: \texttt{http://www.apache.org/licenses/LICENSE-2.0.html}}. 
+            Je využíván velkým množstvím nástrojů jako jsou například \emph{Eclipse IDE}\footnote{Webové stránky projektu Eclipse IDE:
+        \texttt{http://www.eclipse.org/}} nebo \emph{Google AppEngine}\footnote{Webové stránky platformy Google AppEngine:
         \texttt{https://developers.google.com/appengine/}}.
 
-        Jetty je webový server a~poskytuje funkcionalitu servlet kontejneru dle specifikace verze 3.0. 
-        Je jej možné využít také jako webového klienta pro komunikaci se servery. Komunikace
-        klientů i~serverů využívajících Jetty probíhá asynchronně. 
+        Jetty je webový server a~poskytuje funkcionalitu servlet kontejneru dle specifikace verze~3.0. 
         Návrh serveru umožňuje samostatné spouštění aplikací i~jeho integraci do jiné aplikace. 
-
-        %TODO nějaké reference na ty tachnologie, možná popsat SPDY a AJP13
         Kromě těchto základních možností obsahuje
         řadu souvisejících technologií, jako jsou SPDY, webové sokety\footnote{Oficiální stránky 
-            specifikace webových soketů: \texttt{http://www.websocket.org/}}(angl. \emph{websocket}),
-        JNDI, OSGi, JMX a~další. 
+            specifikace webových soketů: \texttt{http://www.websocket.org/}}(angl. \emph{websocket}) a~další. 
         Informace v~této kapitole byly čerpány z~webových stránek serveru Jetty \cite{jettyWeb}, kde lze nalézt 
         další informace o~zmíněných technologiích a~o~tomto serveru.
         
@@ -415,7 +409,7 @@ a~integračních testů, uložení spustitelné podoby aplikace do lokálního r
         webového serveru odpovídající popisu v~kapitole \ref{servletWebserver}.
 
         Hlavními cíli projektu bylo poskytovat funkcionalitu servlet kontejneru pouze pro jednu aplikaci,
-        což je opačný přístup než u~běžných aplikačních serverů jako jsou Glasfish, JBoss, aj.
+        což je opačný přístup než u~běžných aplikačních serverů jako jsou Glasfish, JBoss a~jiné.
         Díky jeho omezeným službám je jeho velikost velmi malá a~umožňuje jednoduchou integraci
         s~cílovou aplikací.
 
@@ -423,7 +417,7 @@ a~integračních testů, uložení spustitelné podoby aplikace do lokálního r
 
         \subsection{Nedostatky servlet kontejneru Winstone}
             Původní myšlenka jednoduchého servlet kontejneru byla pro projekt Jenkins CI zajímavá, ale
-            kontejner Winstone má několik zásadních nedostatků kvůli kterým bylo časem jeho využití
+            kontejner Winstone má několik zásadních nedostatků, kvůli kterým bylo časem jeho využití
             v~Jenkins CI problematické \cite{kohsukeTopic}. 
 
             Vývoj projektu Winstone již před delší dobou ustal a~tím pádem nebyla poskytována 
@@ -431,7 +425,7 @@ a~integračních testů, uložení spustitelné podoby aplikace do lokálního r
             Značné množství bezpečnostních chyb objevených v~projektu Jenkins CI bylo právě
             způsobeno tímto servlet kontejnerem.
 
-            Zpočátku možnosti servlet kontejneru postačovaly, ale časem je potřeba, aby 
+            Zpočátku možnosti servlet kontejneru postačovaly, ale časem bylo potřeba, aby 
             byly přidávány nové funkcionality, které odpovídají aktuálním trendům
             a~novým specifikacím. Příkladem mohou být nové specifikace servlet kontejneru nebo
             vývoj nových technologií jako webové sokety.
@@ -444,7 +438,7 @@ a~integračních testů, uložení spustitelné podoby aplikace do lokálního r
         a~naprosto neefektivní. Byly prováděny především nutné opravy bezpečnostních chyb v~kontejneru,
         ale jinak aplikace dále degenerovala. Pro tento vývoj vznikl v~projektu Jenkins CI nový 
         repozitář, který vycházel z~původní verze servlet kontejneru 
-        Winstone\footnote{Repozitář, kde komunita Jenkins CI provádí úpravy projektu Winstone:
+        Winstone\footnote{Repozitář, kde komunita Jenkins CI provádí úpravy servlet kontejneru Winstone:
         \texttt{https://github.com/jenkinsci/winstone}}. Z~tohoto zdroje
         a~z~článku o~integraci Jetty s~kontejnerem Winstone \cite{kohsukeTopic} jsou čerpány uváděné informace. 
         
@@ -456,13 +450,12 @@ a~integračních testů, uložení spustitelné podoby aplikace do lokálního r
         interní verze servlet kontejneru \emph{Winstone 2.0}. Velká část kódu 
         kontejneru Winstone byla odstraněna a~veškerá činnost webového serveru a~servlet 
         kontejneru je nyní vykonávána pomocí serveru Jetty. Z~původního kontejneru Winstone
-        zůstal způsob zpracovávání a~nastavování parametrů. 
+        zůstaly pomocné činnosti jako zpracování vstupních parametrů.
         Tato změna proběhla poměrně narychlo
         a~nebyla detailně otestována. Obsahuje zřejmě ještě množství nepotřebného kódu
         a~samotná implementace je dosti nepřehledná.
 
         
-        %%%%%%%%%%%%%% TODO DŮLEŽITÉ KONTROLOVAT SMYSL %%%%%%%%%%%%%%%%%%%%
         \medskip
         Těsně před integrací serveru Jetty s~Jenkins CI
         vznikalo zadání tohoto diplomového projektu, které mělo za cíl
@@ -471,7 +464,7 @@ a~integračních testů, uložení spustitelné podoby aplikace do lokálního r
         muselo být zadání upraveno. I~po této změně byly stále důvody pro 
         nahrazení stávajícího servlet kontejneru serverem Undertow.
         Aktuální situace již není tak kritická jako v~předchozí verzi,
-        ale může přinést ještě další zlepšení.
+        ale server Undertow může přinést ještě další zlepšení.
                 
 
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -479,8 +472,8 @@ a~integračních testů, uložení spustitelné podoby aplikace do lokálního r
         Undertow je webový server napsaný v~jazyce Java, 
         který vzniká za podpory firmy Red Hat a~její sekce JBoss.
         Primárním účelem serveru Undertow je být výchozím webovým serverem v~aplikačním serveru WildFly.
-        Jeho první verze finální byla vydána teprve před nedávnem, takže se jedná
-o~nově vytvořený server a~jeho vývoj stále usilovně 
+        Jeho první finální verze byla vydána teprve před nedávnem, takže se jedná
+        o~nově vytvořený server a~jeho vývoj stále usilovně 
         probíhá\footnote{Aktuální verzi serveru, lze najít na serveru GitHub: 
         \texttt{https://github.com/undertow-io/undertow}}. Pro stažení a~využití tohoto serveru
         je nejjednodušší využít aplikaci Maven (kapitola \ref{maven}) a~nastavit patřičnou 
@@ -488,7 +481,7 @@ o~nově vytvořený server a~jeho vývoj stále usilovně
         \texttt{http://undertow.io/downloads.html} }.
 
         Informace v~této kapitole byly čerpány především z~webových stránek projektu \cite{undertowWeb}
-a~jeho dokumentace \cite{undertowDocs},
+        a~dokumentace serveru \cite{undertowDocs},
         ale jelikož je aplikace poměrně nová, tak zveřejněná dokumentace je poměrně nedostatečná. 
         Některé informace z~této kapitoly musely být čerpány
         z~vygenerované projektové dokumentace a~z~komunikace s~vývojáři projektu
