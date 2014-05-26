@@ -968,15 +968,14 @@ HttpHandler httpHandler = manager.start();
             komunikaci, pro kterou již protokol HTTP není ideální \cite{spdyArticle}.
             Jeho využití v~budoucnu může přinést zrychlení aplikace, ale 
             tento protokol ještě není 
-            v~Jenkins CI více využíván a~tudíž jeho podpora v~servlet kontejneru není pro činnost Jenkins CI zásadní~\cite{kohsukeTopic}.
+            v~Jenkins~CI více využíván a~tudíž jeho podpora v~servlet kontejneru není pro činnost Jenkins CI zásadní~\cite{kohsukeTopic}.
         
         \subsection{Zabezpečení v~Jenkins CI} \label{secSecurityArchitecture}
             Zabezpečení serveru Jenkins CI z~pohledu autentizace a~autorizace je poměrně komplikované,
             ale pouze část se týká servlet kontejneru a~vyžaduje jeho činnost. 
-            
             Autorizace a~autentizace je v~Jenkins CI založena na tzv. filtrech (angl. \emph{filters})
             (prvky webové aplikace upravující příchozí požadavky než je začne zpracovávat servlet) 
-            a~na dalších metodikách, jejich většina není pro činnost servlet kontejneru podstatná~\cite{securityArchitectureJenkins}. 
+            a~na dalších metodikách, jejichž většina není pro činnost servlet kontejneru podstatná~\cite{securityArchitectureJenkins}. 
             
             Kontrolu přístupu k~jednotlivým prvkům aplikace provádí 
             Jenkins CI samostatně, ale pro provádění autentizace využívá několik externích zdrojů. Pro nastavení autentizace
@@ -997,7 +996,7 @@ HttpHandler httpHandler = manager.start();
             \begin{itemize}
                 \item \emph{security-role} umožňuje specifikovat různé typy rolí pro uživatele v~systému,
                     které je jim možné přidělit
-                \item \emph{security-constraint} definuje části aplikace mají chráněný přístup a~role, které k~nim
+                \item \emph{security-constraint} definuje části aplikace mající chráněný přístup a~role, které k~nim
                     mohou přistupovat. V~Jenkins CI je tato kontrola prováděná interně a~je specifikován
                     omezený přístup pouze k~přihlašovacímu formuláři.
                 \item \emph{login-config} umožňuje určit způsob jakým se má po uživateli vyžadovat zadání přistupových
@@ -1008,9 +1007,9 @@ HttpHandler httpHandler = manager.start();
     
             \subsubsection{Autentizace pomocí servlet kontejneru}
                 Jedním z~výše uvedených způsobů autentizace v~Jenkins CI je využít servlet kontejneru pro autentizaci.
-                Princip tohoto způsobu autentizace v~Jenkins CI je znázorněn na obrázku \ref{imgSecurity}. 
+                Princip tohoto způsobu autentizace je znázorněn na obrázku \ref{imgSecurity}. 
                 Tento způsob funguje následovně. Příchozí 
-                požadavek je předán servlet kontejnerem do Jenkins CI k~normálnímu zpracování. 
+                požadavek je předán servlet kontejnerem do Jenkins~CI k~normálnímu zpracování. 
                 Pokud Jenkins CI zjistí, že uživatel
                 není autentizován, tak pošle požadavek servlet kontejneru pro ověření uživatele. Servlet
                 kontejner provede ověření a~vrátí buď identitu ověřeného uživatele nebo jeho ověření zamítne (z~důvodu
@@ -1024,7 +1023,7 @@ HttpHandler httpHandler = manager.start();
                     \end{center}
                 \end{figure}
 
-                Při použití tohoto způsobu autentizace je nutné správně nakonfigurovat servlet kontejneru před spuštěním.
+                Při použití tohoto způsobu autentizace je nutné správně nakonfigurovat servlet kontejner před spuštěním:
                 
                 \begin{enumerate}
                     \item Definovat dostupné bezpečnostní role pro systém v~souboru \emph{web.xml}
@@ -1037,9 +1036,9 @@ HttpHandler httpHandler = manager.start();
                 Dostupné třídy poskytují tyto dva způsoby přidávání uživatelů \cite{securityArchitectureWinstone}:
 
                 \begin{itemize}
-                    \item Přidávání uživatelů pomocí parametrů při spuštění příkazové řádky při spuštění servlet kontejneru 
-                    \item Definování uživatelů v~XML souboru s~implicitním jménem \emph{users.xml} nebo 
-                        lze specifikovat umístění tohoto souboru pomocí parametru. Formát položky
+                    \item Přidávání uživatelů pomocí parametrů příkazové řádky při spuštění servlet kontejneru 
+                    \item Definování uživatelů v~XML souboru s~implicitním jménem \emph{users.xml} (název
+                    lze upravit pomocí parametru). Formát položky
                         pro zadání uživatele je uveden v~příkladu \ref{prUsers}
                 \end{itemize}
 
@@ -1060,7 +1059,7 @@ HttpHandler httpHandler = manager.start();
         takže by neměl být problém, kdyby nová implementace neobsahovala tuto volbu.
         
         Je důležité poznamenat, že základ implementace tohoto protokolu byl
-v~serveru Undertow již proveden, ale ještě není začleněn do aktuální 
+        v~serveru Undertow již proveden, ale ještě není začleněn do aktuální 
         verze. Takže z~dlouhodobého hlediska bude možné tento problém odstranit.
 
     \section{Návrh způsobu integrace serveru Undertow} \label{secNavrh}
@@ -1068,7 +1067,7 @@ v~serveru Undertow již proveden, ale ještě není začleněn do aktuální
         je v~této kapitole zvolen způsob
         integrace serveru Undertow do systému Jenkins CI. 
         Obě navržené možné varianty integrace jsou porovnány z~různých
-        hledisek a~je zvolen způsob, kterým bude následně implementace provedena.
+        hledisek a~je zvolen způsob implementace.
 
                 
         \subsection{Varianty integrace}
@@ -1104,7 +1103,7 @@ v~serveru Undertow již proveden, ale ještě není začleněn do aktuální
                                          
                     V~tomto případě je úprava stávajícího kódu aplikace
                     zřejmě snazším přístupem a~také umožňuje provedení rychlejší
-                    implementace, protože není nutné návrhovat celý modul,
+                    implementace, protože není nutné navrhovat celý modul,
                     ale pouze jeho části, a~je možné využít některé stávající části aplikace
                     jako zpracovávání parametrů, rozbalování archivů, apod.}
 
@@ -1115,7 +1114,7 @@ v~serveru Undertow již proveden, ale ještě není začleněn do aktuální
                     stejné úrovně zpětné kompatibility jako u~první varianty.}
 
                 \item{\textbf{Další hlediska:} Jelikož dlouhodobý vývoj servlet kontejneru
-                    v~Jenkins CI je na okraji zájmu a~jsou prováděny především nejnutnější úpravy, 
+                    v~Jenkins CI je na okraji zájmu a~jsou prováděny především nejnutnější opravy, 
                     tak celý kód poněkud zdegeneroval a~je obtížně čitelný. Toto
                     je u~\emph{open source} projektu velká závada 
                     a~může bránit dalším přispěvovatelům k~provádění potřebných změn.
@@ -1143,7 +1142,7 @@ v~serveru Undertow již proveden, ale ještě není začleněn do aktuální
 
             \medskip
             Architekturu spouštění a~integrace servlet kontejneru v~aplikaci není potřeba měnit a~při integraci bude
-            zachován stávající stav tak, který byl popsán při analýze architektury (kapitola \ref{secArchitecture})
+            zachován stávající stav tak, který byl popsán při analýze architektury (kapitola \ref{secArchitecture}).
             Zvolený způsob integrace vyžaduje vytvoření úplně nového projektu a~jeho začlenění do stávající
             verze serveru Jenkins CI. Nový servlet kontejner musí být vyvíjen jako samostatný modul,
             který bude zabalen v~archivu \texttt{.jar}, aby jej bylo možné následně vložit jako externí modul do Jenkins CI.
