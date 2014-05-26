@@ -10,12 +10,12 @@
     kontinuální integrace softwaru. Vylepšení se týká především webového serveru a~servlet kontejneru, který je v~Jenkins CI integrován. 
     V~současném stavu tyto funkce vykonává kombinace serverů Winstone a~Jetty. 
         
-    Server Winstone je již neudržovaný a~zastaralý nástroj a~z~tohoto důvodu
+    Server Winstone je již neudržovaný a~zastaralý nástroj, proto
     byl z~velké části nahrazen serverem Jetty, který potřebnou funkcionalitu poskytuje. Server Jetty je poměrně komplexní projekt a~nabízí
-    mnoho funkcionality, ale na druhou stranu jeho rozsah nedovoluje poskytovat maximální rychlost.
+    mnoho funkcí, ale na druhou stranu jeho rozsah neumožňuje dosažení maximální rychlosti.
     
-    V~současné době vznikl nový webový server Undertow, který si klade za cíl být co nejjednodušší a~nejrychlejší a~mohl by být přínosný
-    a~vhodný pro Jenkins CI. Jelikož tento server je nový a~je sponzorován firmou Red Hat, tak lze předpokládat, že jeho vývoj
+    Nedávno vznikl nový webový server Undertow, který si klade za cíl být co nejjednodušší a~nejrychlejší. Mohl by být přínosný
+    a~vhodný pro Jenkins CI. Vzhledem k tomu, že je tento server a~je sponzorován firmou Red Hat, tak lze předpokládat, že jeho vývoj
     bude nadále pokračovat a~nebude zastarávat.
 
     Cílem této práce je nahradit server Jetty a~případně i~server Winstone pomocí serveru Undertow 
@@ -23,15 +23,15 @@
     zachovat zpětnou kompatibilitu s~původním řešením. 
 
     V~rámci této diplomové práce jsou nejprve rozebírány potřebné informace týkající se jednotlivých nástrojů a~plánované integrace.
-    Poté je detailně analyzována architektura Jenkins CI a~způsob jeho integrace se servery Winstone a~Jetty. 
-    Je diskutována varianta nahrazení pouze serveru Jetty a~varianta nahrazení serverů Jetty i~Winstone pomocí serveru Undertow. 
+    Poté je detailně analyzována architektura Jenkins~CI a~způsob jeho integrace se servery Winstone a~Jetty. 
+    Je diskutována varianta nahrazení pouze serveru Jetty a~varianta nahrazení obou serverů pomocí Undertow. 
     Z~provedené analýzy byla zvolena jedna varianta, která byla vybrána pro integraci. 
 
     Následně je popsán způsob provedení navržené integrace serveru Undertow do Jenkins~CI
     a~poslední část této práce je věnována zhodnocení výkonu původní a~upravené verze serveru Jenkins CI. Výkon
-    je porovnáván ve třech zvolených testovaných případech. Na základě získaných informací o~výkonnosti 
-    a~výsledku celé integrace, je na
-    závěr této práce zhodnocen její přínos pro komunitu projektu Jenkins CI.
+    obou variant je porovnáván ve třech zvolených testovaných případech. Na základě získaných informací o~výkonnosti 
+    a~výsledku celé integrace je v
+    závěru této práce zhodnocen její přínos pro komunitu projektu Jenkins CI.
 
     Diplomová práce navazuje na předcházející semestrální projekt, v~rámci něhož byla provedena studie všech
     souvisejících nástrojů (kapitola \ref{kapJenkins}),  analýza architektury Jenkins CI
@@ -1989,33 +1989,33 @@ a~doba za jakou se rychlost odpovědi ustálí pod určitou hranici,
 
 
 \chapter{Závěr}
-    V~této práci proběhlo seznámení se~integračním serverem Jenkins CI,
+    V~této práci proběhlo seznámení se s~integračním serverem Jenkins CI,
     se servery Jetty a~Winstone, které jsou součástí jeho servlet kontejneru,
-    a~se serverem Undertow, jehož integrace do Jenkins CI je hlavní
+    a~ také se serverem Undertow, jehož integrace do Jenkins CI je hlavní
     náplní této práce. Architektura aplikace Jenkins CI byla
     důkladně analyzována se zaměřením na integrovaný
     servlet kontejner.
 
     Po seznámení se s~podmínkami pro integraci byly
     zkoumány možnosti provedení samotné integrace serveru Undertow do Jenkins CI.
-    Jednou možností bylo nahrazení pouze komponenty
+    První možností bylo nahrazení pouze komponenty
     Jetty, která vykonává většinu práce v~aktuálním kontejneru, zatímco druhou variantou bylo
     nahrazení obou součástí. 
     Po důkladném zvážení různých aspektů integrace byla 
     zvolena varianta nahrazení obou komponent současného 
-    servlet kontejneru a~tudíž vytvoření zcela nové implementace.
+    servlet kontejneru, a~tudíž vytvoření zcela nové implementace.
 
     Dle návrhu byla vytvořena nová implementace servlet kontejneru
     pro Jenkins CI. Při implementaci byl kladen důraz na zpětnou kompatibilitu
-    vytvářeného řešení s~původní variantou. Povedlo se implementovat všechny podstatné
-    funkcionality původní verze servlet kontejneru. Upravená
+    vytvářeného řešení s~původní verzí. Povedlo se implementovat všechny podstatné
+    funkce původní verze servlet kontejneru. Upravená
     aplikace byla testována a~zkoumána a~nebyly zjištěny žádné problémy
     při jejím běhu.
 
     Výkon původní a~upravené verze Jenkins CI byl otestován ve třech 
     definovaných případech a~bylo naměřeno průměrné zrychlení celé aplikace
     o~5.1\%. 
-    Jelikož tato hodnota udává zrychlení celé aplikace, tak je 
+    Jelikož tato hodnota udává zrychlení celé aplikace, je 
     zřejmé, že zrychlení samotného servlet kontejneru bylo ještě větší.
     Kromě vyšší rychlosti dosahovala nová implemetace také stabilnějšího
     výkonu, což je pro práci serveru podstatná informace.
@@ -2024,12 +2024,12 @@ a~doba za jakou se rychlost odpovědi ustálí pod určitou hranici,
     a~spolehlivějším řešením servlet kontejneru pro Jenkins CI než současná implementace
     a~bude prezentován komunitě projektu.
     Jistou výhodou je také skutečnost, že implementace byla provedena
-    odznovu a~byl odstraněn přebytečný kód ze zastaralé původní varianty.
+    nanovo a~byl odstraněn přebytečný kód ze zastaralé původní varianty.
     
     Stanovených cílů bylo v~rámci této diplomové práce dosaženo.
     Předmětem pro následující vývoj projektu je 
-    přidání podpory komunikace pomocí protokolu SPDY, 
-    která může být v~blízké době přidána až skončí beta testování
+    dodělána podpory komunikace pomocí protokolu SPDY, 
+    která může být v~blízké době dodělána po skončení beta testování
     nové verze serveru Undertow.
 
     
