@@ -6,10 +6,10 @@
 %\listoffigures
 
 \chapter{Úvod}
-    Tato diplomová práce se zabývá vylepšením serveru Jenkins CI, který je v~praxi využíván pro potřeby průběžného testování softwaru
-    a~jeho kontinuální integraci. Vylepšení se týká především webového serveru a~\emph{servlet kontejneru}, který je v~Jenkins CI integrován. 
+    Tato diplomová práce se zabývá vylepšením serveru Jenkins CI, který je v~praxi využíván pro potřeby  
+    kontinuální integrace softwaru. Vylepšení se týká především webového serveru a~\emph{servlet kontejneru}, který je v~Jenkins CI integrován. 
     V~současném stavu tyto funkce vykonává kombinace serverů Winstone a~Jetty. 
-    
+        
     Server Winstone je již neudržovaný a~zastaralý nástroj a~z~tohoto důvodu
     byl z~velké části nahrazen serverem Jetty, který potřebnou funkcionalitu poskytuje. Server Jetty je poměrně komplexní projekt a~nabízí
     mnoho funkcionality, ale na druhou stranu jeho rozsah nedovoluje poskytovat maximální rychlost.
@@ -18,7 +18,7 @@
     a~vhodný pro Jenkins CI. Jelikož tento server je nový a~je sponzorován firmou Red Hat, tak lze předpokládat, že jeho vývoj
     bude nadále pokračovat a~nebude zastarávat.
 
-    Cílem této práce je nahradit server Jetty a~případně i~\emph{servlet kontejner} Winstone pomocí serveru Undertow 
+    Cílem této práce je nahradit server Jetty a~případně i~server Winstone pomocí serveru Undertow 
     a~integrovat jej se serverem Jenkins CI. Při integraci je kladen důraz na snahu
     zachovat zpětnou kompatibilitu s~původním řešením. 
 
@@ -1970,6 +1970,7 @@ o~0.1\%. Nicméně tato hodnota je velmi nízká a~lze prohlásit, že
 
 
 \chapter{Závěr}
+    %asi upravit
     Začátek této práce se věnoval seznámení s~integračním serverem Jenkins CI,
     se servery Jetty a~Winstone, které jsou součástí jeho servlet kontejneru,
     a~se serverem Undertow, jehož integrace do Jenkins CI je hlavní
@@ -1984,7 +1985,14 @@ o~0.1\%. Nicméně tato hodnota je velmi nízká a~lze prohlásit, že
     Po důkladném zvážení různých aspektů integrace byla 
     zvolena varianta nahrazení obou komponent současného 
     servlet kontejneru a~tudíž vytvoření zcela nové implementace.
+    %provedena implementace
 
+    %testování výkonu
+    %získané zrychlení
+    %plně funkční a neobjeveny žádné problémy se zpětnou kompatibilitou
+    %bude předloženo komunitě Jenkins CI
+    %další vývoj: přidání podpory SPDY až bude přidána do Undertow, 
+    %zpracování zbytku web.xml?
 
 
 %=========================================================================
