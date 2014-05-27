@@ -1963,23 +1963,23 @@ HttpHandler httpHandler = manager.start();
         Ve třech testovacích případech byly otestovány původní implementace Jenkins CI
         a~implementace s~novým vestavěným servlet kontejnerem.
 
-        V~prvních dvou případech dosáhla nová implementace lepších výsledků
+        V~prvních dvou případech dosáhla nová varianta lepších výsledků
         výkonnosti z~pohledu doby odezvy aplikace. V~prvním případě zrychlení činilo téměř 12\%
-        a~ve druhém případě téměř 4\%. V~těchto dvou případech u~nové varianty
-        docházelo ke stabilnějším výsledkům mezi měřeními. O~trochu dříve docházelo
-        také k~ustálení odpovědí serveru, ale zlepšení nebylo výrazné.
+        a~ve druhém případě téměř 4\%. V~těchto dvou případech nová varianta
+        dosahovala stabilnějších výsledků mezi měřeními a bylo zaznamenáno 
+        zkrácení doby, kdy docházelo k~ustálení odpovědí serveru.
 
-        V~posledním testovaném případě nebylo prokázáno zrychlení, ale mírné zpomalení
-        o~0,1 \%. Nicméně tato hodnota je velmi nízká a~lze prohlásit, že
+        V~posledním testovaném případě nebylo prokázáno zrychlení, ale naopak mírné zpomalení
+        o~0,1\%. Nicméně tato hodnota je velmi nízká a~lze prohlásit, že
         byly obě implementace v~tomto testovaném případě stejně rychlé. 
-        Z~pohledu rychlosti ustálení serveru byla v~tomto případě mírně lepší původní
+        Z~pohledu rychlosti ustálení serveru byla v~tomto případě lepší původní
         implementace Jenkins CI.
 
         \medskip
         V~provedených měřeních byla tedy implementace Jenkins CI s~novým
         servlet kontejnerem rychlejší než původní verze. Průměrné zrychlení
-        aplikace činilo asi 5.1\% (počítáno jako aritmetický průměr ze tří hodnot zrychlení).
-        Nová implementace také poskytovala stabilnější hodnoty mezi jednotlivými měřeními.
+        aplikace činilo asi 5,1\% (počítáno jako aritmetický průměr ze tří hodnot zrychlení).
+        Nová implementace také většinou poskytovala stabilnější hodnoty mezi jednotlivými měřeními.
 
         Rychlost servlet kontejneru ovlivňuje všechny testované činnosti, ale podstatná část
         zpoždění je také ovlivněna samotnou implementací webové aplikace. Tedy je zřejmé, 
@@ -1987,8 +1987,8 @@ HttpHandler httpHandler = manager.start();
         je výsledek těchto měření pro celou aplikaci.
 
     \section{Zhodnocení přínosu pro komunitu Jenkins CI} \label{kapPrinos}
-        Cíl vytvořit servlet kontejneru založený na serveru Undertow, který bude
-        funkčně kompatibiltní se stávajícím servlet kontejnerem, se podařilo
+        Cíl vytvořit servlet kontejner založený na serveru Undertow, který bude
+        funkčně kompatibiltní se stávajícím servlet kontejnerem v Jenkins CI, se podařilo
         naplnit. Tento vytvořený servlet kontejner bude v~následujících dnech
         představen komunitě Jenkins CI.
 
@@ -2027,7 +2027,7 @@ HttpHandler httpHandler = manager.start();
 \chapter{Závěr}
     V~této práci proběhlo seznámení se s~integračním serverem Jenkins CI,
     se servery Jetty a~Winstone, které jsou součástí jeho servlet kontejneru,
-    a~ také se serverem Undertow, jehož integrace do Jenkins CI je hlavní
+    a~také se serverem Undertow, jehož integrace do Jenkins CI je hlavní
     náplní této práce. Architektura aplikace Jenkins CI byla
     důkladně analyzována se zaměřením na integrovaný
     servlet kontejner.
@@ -2065,7 +2065,7 @@ HttpHandler httpHandler = manager.start();
     Stanovených cílů bylo v~rámci této diplomové práce dosaženo.
     Předmětem pro následující vývoj projektu je 
     přidání podpory komunikace pomocí protokolu SPDY, 
-    která může být v~blízké době dodělána po skončení beta testování
+    která může být v~blízké době dodělána až skončí beta testování
     nové verze serveru Undertow.
 
     
