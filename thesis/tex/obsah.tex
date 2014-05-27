@@ -811,7 +811,7 @@ HttpHandler httpHandler = manager.start();
                     a~uživatel si je může stáhnout nebo si nějaký vlastní modul vytvořit.
                     
                     Samotná aplikace se dodává jen s~těmi nejnutnějšími součástmi a~ponechává na uživatelích, které
-                    další funkcionality si do systému doinstalují. V~současné době již existují stovky takových
+                    další funkce si do systému doinstalují. V~současné době již existují stovky takových
                     modulů, které jsou volně ke stažení. }
             \end{itemize}
             
@@ -847,9 +847,9 @@ HttpHandler httpHandler = manager.start();
             jediného servletu aplikace Jenkins CI a~tím je servlet Stapler (bližší informace o~tomto
             servletu jsou v~kapitole \ref{secJenkinsArchitektura}). 
             Pokud se podaří úspěšně spustit tento servlet, tak je spuštění celé aplikace Jenkins CI z~pohledu
-            servlet kontejneru úspěšně provedené a~aplikace běží.
+            servlet kontejneru úspěšně provedeno a~aplikace běží.
 
-            Zjištění, které komponenty má servlet kontejner při svém startu zavést,
+            Informace o tom, které komponenty má servlet kontejner při svém startu zavést,
             se nachází v~souboru \emph{web.xml}, což je standardní konfigurační soubor
             pro webové aplikace v~jazyce Java~EE. Může se zde nacházet také například
             konfigurace uživatelských účtů pro přístup k~aplikaci nebo~specifikování
@@ -907,12 +907,12 @@ HttpHandler httpHandler = manager.start();
         se výměnou servlet kontejneru nestala část aplikace nebo rozšiřujících modulů nefunkční.
         Také je potřeba zachovat výchozí hodnoty jednotlivých parametrů.
 
-        \subsection{Funkcionality servlet kontejneru} \label{kapFunkcionality}
+        \subsection{Funkce servlet kontejneru} \label{kapFunkcionality}
             Při spouštění aplikace je před předáním řízení aplikace servlet kontejneru
             část parametrů zpracována komponentou \texttt{extras-executable-war} (blíže 
-            rozebrána v~kapitole \ref{secArchitecture}) a~zbylé parametry jsou přímo
+            rozebráno v~kapitole \ref{secArchitecture}) a~zbylé parametry jsou přímo
             předány servlet kontejneru, který podle nich nastaví svou činnost.
-            Jednotlivé parametry zde nejsou rozebírány, ale následující analýza
+            Jednotlivé parametry zde rozebírány nejsou, ale následující analýza
             se zaměřuje především na klíčové body funkčnosti servlet kontejneru.
 
             \newpage
