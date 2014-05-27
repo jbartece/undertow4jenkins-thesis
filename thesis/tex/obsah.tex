@@ -504,13 +504,13 @@ webapp.war
             
             Při komunikaci umožňuje server podporu jak pro asynchronní, tak
             pro synchronní komunikaci.
-            Dalšími funcionalitami, které server poskytuje, jsou možnost integrace
+            Dalšími funcionalitami, které server poskytuje, jsou: možnost integrace
             servlet kontejneru odpovídajícího specifikaci verze 3.1,
             využití plné podpory webových soketů (angl. \emph{websockets}) nebo 
             podpory technologie \emph{HTTP upgrade}.
 
         \subsection{Architektura serveru}
-            V~této kapitole jsou podrobněji rozebrány základní principy, jak Undertow funguje, 
+            V~této kapitole jsou podrobněji rozebrány základní principy fungování Undertow, 
             a~je zjednodušeně popsána jeho architektura z~pohledu uživatele. Další podrobnější informace o~serveru 
             lze nalézt ve webové dokumentaci projektu, která byla hlavním zdrojem této kapitoly \cite{undertowDocs}.
             Popis architektury serveru se přímo vztahuje k~samotné integraci do Jenkins~CI.
@@ -519,35 +519,35 @@ webapp.war
                 Architektura serveru Undertow nevyužívá koncept jednoho velkého kontejneru, který se pomocí vysokoúrovňového rozhraní nastaví 
                 pro danou aplikaci a~sám o~sobě funguje. Naopak aplikace jsou sestavovány z~množství tříd tzv. \textbf{\emph{handlerů}}
                 (viz níže), které spravují příchozí požadavky a~utvářejí tak samotný webový server. 
-                Díky tomuto konceptu je možné využít jen ty funkcionality serveru, které jsou v~aplikaci potřeba, a~server
+                Díky tomuto konceptu je možné využít jen ty funkce serveru, které jsou v~aplikaci potřeba, a~server
                 není brzděn zbytečnými činnostmi, které nejsou pro konkrétní aplikaci potřebné. 
 
                 Vstupním bodem aplikace jsou tzv. \textbf{\emph{listenery}} (angl. \emph{listener}), které naslouchají na určených síťových
                 rozhraních a~portech a~zpracovávají příchozí požadavky. Jednotlivé \emph{listenery} se liší dle protokolu, kterým komunikují.
                 V~Undertow jsou 3 základní typy \emph{listenerů}
-                pro protokoly HTTP, HTTPS, a~AJP. Také je vytvořena podpora protokolu SPDY, ale v~aktuální verzi ještě není zahrnuta. 
+                pro protokoly HTTP, HTTPS a~AJP. Také je vytvořena podpora protokolu SPDY, ale v~aktuální verzi ještě není zahrnuta. 
                 Pro uživatele poskytují abstrakci nad samotnými síťovými protokoly, takže v~serveru lze stejným způsobem zpracovávat
-                požadavky přicházejícími v~různých protokolech. Jediným samozřejmým omezením je, že nelze v~jednom protokolu
+                požadavky přicházející v~různých protokolech. Jediným samozřejmým omezením je, že nelze v~jednom protokolu
                 používat informace specifické pouze pro protokol jiný. 
                 
-                Pro umožnění této abstrakce každý \emph{listener} provádí překlad 
+                Pro umožnění této abstrakce provádí každý \emph{listener} překlad 
                 požadavku do objektu třídy
                 \texttt{HttpServerExchange}. V~něm je uchováván aktuální stav požadavku a~vytvářené odpovědi
                 a~při odesílání odpovědi \emph{listener} z~tohoto objektu vytvoří odpověď, která je poslána klientovi.
 
-                Tyto listenery jsou těsně navázané na knihovnu XNIO\footnote{Webové stránky projektu XNIO: \texttt{http://xnio.jboss.org/}}, která
+                Tyto listenery jsou těsně navázany na knihovnu XNIO\footnote{Webové stránky projektu XNIO: \texttt{http://xnio.jboss.org/}}, která
                 pro Undertow poskytuje abstrakci nad síťovou komunikací. Samotné listenery v~Undertow je možné konfigurovat
                 nastavením několika parametrů \cite{undertowListeners}, ale lze také přímo konfigurovat síťové kanály knihovny XNIO.
 
                 \medskip
                 Samotné jádro serveru tvoří již zmiňované \emph{handlery}.
-                \textbf{\emph{Handler}} je třída, která definuje metodu \texttt{handleRequest} v~níž
+                \textbf{\emph{Handler}} je třída, která definuje metodu \texttt{handleRequest}, v~níž
                 je příchozí požadavek na serveru libovolně upraven a~předán dalšímu \emph{handleru} ke zpracování nebo je vytvořena odpověď 
                 a~poslána zpět klientovi (tedy jsou vynechány následující \emph{handlery}). 
                 \emph{Handlery} jsou za sebou napojeny a~tvoří řetěz (angl. \emph{handler chain}).
                 Je možné si nadefinovat libovolný vlastní \emph{handler}, který pouze musí implementovat patřičné rozhraní s~metodou 
                 \texttt{handleRequest} nebo je možné využít již předpřipravených tříd. V~těchto předpřipravených třídách
-                jsou běžně požadované funkce serveru jako úprava hlaviček příchozího požadavku, přesměrování požadavku apod.
+                jsou implementovány běžně požadované funkce serveru jako úprava hlaviček příchozího požadavku, přesměrování požadavku apod.
                 Pomocí jediného parametru (objekt třídy \texttt{HttpServerExchange}) metody \texttt{handleRequest} 
                 si \emph{handlery} předávají aktuální stav požadavku a~postupně vytvářené odpovědi.
 
@@ -599,7 +599,7 @@ server.start();
                 Při inicializaci servlet kontejneru se nastavují požadované funkce v~entitě \texttt{DeploymentInfo}
                 a~až po jeho kompletním nastavení se provede vytvoření řetězce \emph{handlerů}, což
                 dává prostor k~vnitřním optimalizacím. 
-                Základem konfigurace je potřeba nastavit prvky webové aplikace, které jsou definovány v~souboru web.xml (viz. kapitola \ref{kapWebXml}).
+                Základem konfigurace je potřeba nastavení prvků webové aplikace, které jsou definovány v~souboru web.xml (viz. kapitola \ref{kapWebXml}).
                 Pro nastavení většiny možných prvků tohoto souboru je
                 definováno několik statických metod ve třídě \\\texttt{io.undertow.servlets.Servlets}, které    
                 pomáhají servlet kontejner patřičně inicializovat.
@@ -660,7 +660,7 @@ HttpHandler httpHandler = manager.start();
                 
                 Druhou možností je definovat
                 libovolný počet instancí rozhraní \\\texttt{AuthenticationMechanism}. Každý příchozí požadavek
-                následně prochází každou instancí, jejíž základním činností je určit, zda požadavek má
+                následně prochází všemi instancemi, jejíž základním činností je určit, zda požadavek má
                 mít umožněn přístup do kontejneru nebo ne. Bližší informace lze nalézt v~dokumentaci z~níž
                 byly čerpány informace v~této kapitole \cite{undertowDeployment}, \cite{undertowSecurity}.
 
@@ -686,7 +686,7 @@ HttpHandler httpHandler = manager.start();
             vzhledem k~využití v~systému Jenkins CI:
             \begin{itemize}
                 \item {\textbf{Rychlost:} Server Undertow je sice nový, ale už přesto existují
-                    testy v~kterých se ukázal být výkonnější než server Jetty. V~tomto           
+                    testy, ve~kterých se ukázal být výkonnější než server Jetty. V~tomto           
                     testování\footnote{Porovnání rychlosti, odezvy a~celkové výkonnosti serverů Undertow, Jetty a~jiných: 
                     \\\texttt{http://www.techempower.com/benchmarks/\#section=data-r8\&hw=ec2\&test=plaintext}}
                     byl v~počtu zpracovaných 
@@ -715,7 +715,7 @@ HttpHandler httpHandler = manager.start();
                         U~serveru Undertow byla dokončena první finální verze teprve nedávno,
                         takže lze předpokládat, že může obsahovat ještě drobné nedostatky,
                         které budou časem opravovány. Jelikož tento server je integrován
-                        v~novém aplikačním serveru WildFly 8, tak lze předpokládat,
+                        v~novém aplikačním serveru WildFly 8, lze předpokládat,
                         že postupem času bude také velmi spolehlivý. 
                         Nicméně v~tomto aspektu je server Jetty zřejmě 
                         aktuálně lepší.}
@@ -727,14 +727,14 @@ HttpHandler httpHandler = manager.start();
                     Tato filozofie je velmi blízká filozofii projektu Jenkins CI. 
                     
                     Server Jetty
-                    je oproti tomu robustnější a~rozsáhlejší, ale neumožňuje tak velké přizpůsobování potřebám
+                    je oproti tomu robustnější a~rozsáhlejší, ale neumožňuje tak velké přizpůsobování se potřebám
                     uživatele jako například využití jen několika malých částí jeho funkčnosti či jejich
                     kombinování. }
 
 
                 \item{\textbf{Snadnost použití:}}                      
-                    Server Jetty má již dlouhou historii a~je v~něm vše pečlivě dokumentováno
-                    a~to jeho využití pro uživatele činí poměrně snadným. Podstatnou výhodou je, že
+                    Server Jetty má již dlouhou historii a~je v~něm vše pečlivě dokumentováno,
+                    což usnadňuje uživateli jeho využití. Podstatnou výhodou je, že
                     server Jetty poskytuje velké množství vysokoúrovňových rozhraní
                     pro různé konfigurace serveru.
                     
@@ -744,7 +744,7 @@ HttpHandler httpHandler = manager.start();
                     Dokumentace k~serveru
                     Undertow je poměrně strohá, místy ne úplně přesná a~stále se vyvíjí. 
                     Jeho velká flexibilita při konfiguraci s~sebou nese i~jisté nevýhody
-                    a~tím je právě složitější způsob použití. Další nepříjemností je, že není
+                    a~jednou z nich je právě složitější způsob použití. Další nepříjemností je, že není
                     dostupné tolik propracované rozhraní pro konfiguraci jako u~serveru Jetty,
                     což lze opět přičítat délce trvání projektu.
 
