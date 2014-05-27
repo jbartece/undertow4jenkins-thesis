@@ -1179,7 +1179,7 @@ HttpHandler httpHandler = manager.start();
     základních funkcí servlet kontejneru (kapitola \ref{implDetail}). 
     Následně jsou zmíněny hlavní problémy, které se vyskytly a~musely
     být řešeny (kapitola \ref{implProblemy}).
-    V závěru této kapitoly je blíže vymezena míra zachování zpětné kompatibility
+    V~závěru této kapitoly je blíže vymezena míra zachování zpětné kompatibility
     vytvořené implementace (kapitola \ref{implOmezeni}) a~je popsán způsob
     spuštění této nové implementace (kapitola \ref{implSpusteni}).
 
@@ -1253,7 +1253,7 @@ HttpHandler httpHandler = manager.start();
 
 
         \subsection{Realizace základních funkcí}
-            V této části jsou popsány klíčové prvky vytvořené aplikace a~způsob, jakým byly implementovány. Většina těchto
+            V~této části jsou popsány klíčové prvky vytvořené aplikace a~způsob, jakým byly implementovány. Většina těchto
             funkcionalit přímo koresponduje s~uvedenými požadavky na zachování kompatibility s~původní verzí, 
             které jsou popsány v~kapitole \ref{secKompatibilita}.
             Zde uváděné přístupy a~komponenty serveru Undertow jsou blíže rozebírány v~kapitole \ref{undertow}.
@@ -1262,7 +1262,7 @@ HttpHandler httpHandler = manager.start();
             navazují. V~následujícím přehledu jsou jednotlivé činnosti seřazeny tak, jak
             se po sobě vykonávají. 
             Část činností se provádí při každém spuštění servlet kontejneru,
-            ale některé jsou volitelné a~spouštějí se pouze v případě, že jsou při spuštění
+            ale některé jsou volitelné a~spouštějí se pouze v~případě, že jsou při spuštění
             zadány určité parametry. 
 
             Inicializace vytvořeného servlet kontejneru pro Jenkins CI probíhá
@@ -1615,7 +1615,7 @@ HttpHandler httpHandler = manager.start();
             a~jako pomocný ukazatel také doba, za jakou se rychlost odpovědí serveru ustálí pod určitou hranicí.
             
             V~průběhu činnosti serveru jeho doba odpovědi
-            na požadavek rapidně klesá, a to především z~těchto důvodů:
+            na požadavek rapidně klesá, a~to především z~těchto důvodů:
             
             \begin{itemize}
                 \item Na počátku běhu serveru je aplikace brzděna inicializacemi svých jednotlivých částí
@@ -1758,7 +1758,7 @@ HttpHandler httpHandler = manager.start();
             ale rozdíl není příliš velký.
             Tento fakt můžeme pozorovat i~na grafu~\ref{imgGetMainPageCast}.
             
-            K samotnému zjištěnému zrychlení je důležité poznamenat, že se jedná o~zrychlení celé aplikace, takže
+            K~samotnému zjištěnému zrychlení je důležité poznamenat, že se jedná o~zrychlení celé aplikace, takže
             zrychlení samotného servlet kontejneru bylo oproti původní variantě ještě vyšší než naměřených 11,73\%.
             
 
@@ -1949,7 +1949,7 @@ HttpHandler httpHandler = manager.start();
 
             Na počátku experimentů došlo opět k~výraznému poklesu doby odezvy, ale oproti
             předchozím dvěma případům se rychleji do stabilního stavu dostávala původní implementace Jenkins CI.
-            Tuto tendenci potvrzují jak graf \ref{imgCreateFreestyleCast}, tak i průměrné hodnoty stabilního
+            Tuto tendenci potvrzují jak graf \ref{imgCreateFreestyleCast}, tak i~průměrné hodnoty stabilního
             stavu.
 
             V~tomto testovaném případě se nepotvrdilo zrychlení nové implementace Jenkins CI,
@@ -1957,7 +1957,7 @@ HttpHandler httpHandler = manager.start();
             mírné zpomalení o~0,021 milisekund, což je vyjádřeno procenty \textbf{0,11\%}.
             Tato hodnota je velmi nízká a~můžeme tedy prohlásit, že v~tomto experimentu
             byly z~hlediska doby odezvy obě varianty rovnocenné.
-            Podobnost krajních hodnot průměrné doby odezvy je také patrná z grafu \ref{imgCreateFreestyleCast}.
+            Podobnost krajních hodnot průměrné doby odezvy je také patrná z~grafu \ref{imgCreateFreestyleCast}.
 
 
     \section{Zhodnocení výsledků testování} \label{kapPerfVysledky}
@@ -2013,8 +2013,8 @@ HttpHandler httpHandler = manager.start();
         starší verze serveru Jetty a~nebude možné přistoupit k~jeho
         nahrazení verzí novější.
         Naopak server Undertow a~servlet kontejner vytvořený v~rámci této práce
-        je kompatibilní s~verzí Java 6
-        a~může být do budoucna dále vylepšován, což je jistá výhoda oproti stávajícímu
+        jsou kompatibilní s~verzí Java 6
+        a~mohou být do budoucna dále vylepšovány, což znamená jistou výhodu oproti stávajícímu
         stavu. 
 
         Pokud by se komunita rozhodla, že chce tento servlet kontejner
