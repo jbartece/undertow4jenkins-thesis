@@ -1873,9 +1873,9 @@ HttpHandler httpHandler = manager.start();
             Navíc před každým spuštěním byla smazána domovská složka aplikace. Pokud by smazání neproběhlo,
             tak by narůstající počet dat mohl ovlivňovat pozdější běhy testů.
 
-            Výsledky tohoto testu jsou zobrazeny v~grafech \ref{imgCreateFreestyleCely} a~\ref{imgCreateFreestyleCast}.
+            Výsledky testu jsou zobrazeny v~grafech \ref{imgCreateFreestyleCely} a~\ref{imgCreateFreestyleCast}.
             V~tabulce \ref{tabCreateFreestyleFinal} jsou uvedené vypočítané statistické hodnoty
-            z~naměřených dat.
+            z~naměřených dat, které obsahuje tabulka \ref{tabCreateFreestyleMain}.
 
             \begin{table}[ht]
              \catcode`\-=12
@@ -1927,8 +1927,8 @@ HttpHandler httpHandler = manager.start();
              \begin{adjustwidth}{-0.5cm}{}
                 \begin{center}
                     \scalebox{0.65}{\includegraphics{img/createFreestyleJob_cely.png}}
-                    \caption{Průběh naměřených hodnot při testu vytváření nové úlohy na serveru.
-                        Graf zobrazuje nejlepší a~nejhorší naměřené případ pro každý server.  
+                    \caption{Průběh průměrné doby odezvy při testu vytváření nové úlohy na serveru.
+                        Graf zobrazuje nejlepší a~nejhorší naměřený případ pro každý server.  
                         Na svislé ose je použito logaritmické měřítko.}
                     \label{imgCreateFreestyleCely}
                 \end{center}
@@ -1939,21 +1939,21 @@ HttpHandler httpHandler = manager.start();
              \begin{adjustwidth}{-0.5cm}{}
                 \begin{center}
                     \scalebox{0.65}{\includegraphics{img/createFreestyleJob_cast.png}}
-                    \caption{Průběh naměřených hodnot při testu vytváření nové úlohy na serveru.
-                        Graf zobrazuje nejlepší a~nejhorší naměřené případ pro každý server.}
+                    \caption{Průběh průměrné doby odezvy při testu vytváření nové úlohy na serveru.
+                        Graf zobrazuje nejlepší a~nejhorší naměřený případ pro každý server.}
                     \label{imgCreateFreestyleCast}
                 \end{center}
              \end{adjustwidth}
             \end{figure}
 
             Na počátku experimentů došlo opět k~výraznému poklesu doby odezvy, ale oproti
-            zbylým dvou případům se rychleji do stabilního stavu dostávala původní implementace Jenkins CI.
+            předchozím dvěma případům se rychleji do stabilního stavu dostávala původní implementace Jenkins CI.
             Tento trend vidíme jak na grafu \ref{imgCreateFreestyleCast}, tak z~průměrných
             hodnot stabilního stavu.
 
             V~tomto testovaném případě se nepotvrdilo zrychlení nové implementace Jenkins CI,
             které bylo naměřeno v~předchozích testovaných případech. Bylo naměřeno
-            mírné zpomalení o~-0.021 milisekund, což je vyjádřeno procenty \textbf{0.11\%}.
+            mírné zpomalení o~0,021 milisekund, což je vyjádřeno procenty \textbf{0,11\%}.
             Tato hodnota je velmi nízká a~můžeme tedy prohlásit, že v~tomto experimentu
             byly z~pohledu doby odezvy obě varianty rovnocené.
             Podobnost krajních hodnoty průměrné doba odezvy je také vidět na grafu \ref{imgCreateFreestyleCast}.
