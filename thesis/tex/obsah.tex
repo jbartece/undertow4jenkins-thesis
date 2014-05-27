@@ -1567,17 +1567,17 @@ HttpHandler httpHandler = manager.start();
 \chapter{Srovnání výkonu původní a~nové implementace}  \label{kapPerformance}
     V~této kapitole je porovnána z~hlediska výkonu upravená varianta Jenkins CI s~jeho původní implementací.
     Kapitoly \ref{kapPodminky} a~\ref{testovanePripady} se zabývají samotným testování
-    výkoností obou implementací. Výsledky testování jsou shrnuty v~kapitole \ref{kapPerfVysledky}
+    výkonnosti obou implementací. Výsledky testování jsou shrnuty v~kapitole \ref{kapPerfVysledky}
     a~na závěr této části jsou diskutovány přínosy tohoto projektu pro komunitu Jenkins CI (kapitola \ref{kapPrinos}).
 
     \section{Podmínky pro testování}\label{kapPodminky}
         Testování probíhalo na dvou serverech, které jsou používány pro běh Jenkins CI ve firmě RedHat, ale
-        v~průběhu testování byly dané instance Jenkins CI vypnuté. 
+        v~průběhu testování byly dané instance Jenkins CI vypnuty. 
         Oba servery se nacházejí ve stejné laboratoři, což umožnilo minimalizovat
         ovlivnění výsledků zpožděním na síti. Testování nemohlo probíhat pouze na jednom
         serveru, protože by se instance aplikace a~testovací skripty navzájem ovlivňovaly.
         
-        V~průběhu testování na jedno serveru běžela testovaná aplikace Jenkins CI a~na druhém běžely testovací
+        V~průběhu testování běžela na jednom serveru testovaná aplikace Jenkins CI a~na druhém běžely testovací
         skripty, které zasílaly požadavky na server a~měřily zpoždění odpovědí.
         Před každou iterací testování byl server vždy vypnut a~znovu spuštěn, aby se jednotlivé
         iterace navzájem neovlivňovaly.
@@ -1591,7 +1591,7 @@ HttpHandler httpHandler = manager.start();
         Pro potřeby této práce byly definovány tři testovací případy, jejichž popisem i~vyhodnocením se 
         zabývá následující kapitola. 
 
-        Výsledky, které byly naměřené v~ppůběhu testování, jsou uloženy na přiloženém DVD.
+        Výsledky, které byly naměřeny v~průběhu testování, jsou uloženy na přiloženém DVD.
              
         
 
@@ -1599,7 +1599,7 @@ HttpHandler httpHandler = manager.start();
         Byly formulovány tři scénáře pro otestování aplikace, jejichž cílem bylo testovat různorodé
         činnosti serveru.        
         Jako protokol pro komunikaci
-        se serverem byl zvolen protokol HTTP, jelikož je to výchozí protokol v~Jenkins CI.
+        se serverem byl zvolen protokol HTTP, jelikož je výchozím protokolem v~Jenkins CI.
         Typy požadavků \texttt{DELETE} a~\texttt{PUT} nejsou v~aplikaci Jenkins CI používány (i~mazání
         se děje požadavkem \texttt{POST}\footnote{Mazání úlohy (angl. \emph{job}) je popsáno v~REST API aplikace,
         které se zobrazí po zadání adresy: \texttt{<adresa\_serveru>/job/<nazev\_ulohy>/API}}). 
@@ -1611,14 +1611,14 @@ HttpHandler httpHandler = manager.start();
         a~vyhodnoceny.
 
         \subsection{Popis způsobu vyhodnocování výsledků} \label{zpusobVyhodnoceniVysledku}
-            Při testování a~vyhodnocení výsledků byly sledovány především průměrná odezva serveru na požadavky
-            a~jako pomocný ukazatel také doba za jakou se rychlost odpovědí serveru ustálí pod určitou hranicí.
+            Při testování a~vyhodnocování výsledků byly sledovány především průměrná odezva serveru na požadavky
+            a~jako pomocný ukazatel také doba, za jakou se rychlost odpovědí serveru ustálí pod určitou hranicí.
             
             V~průběhu činnosti serveru jeho doba odpovědi
-            na požadavek rapidně klesá především z~těchto důvodů:
+            na požadavek rapidně klesá, a to především z~těchto důvodů:
             
             \begin{itemize}
-                \item Na počátku běhu serveru je aplikace brzděna inicializacema svých jednotlivých částí
+                \item Na počátku běhu serveru je aplikace brzděna inicializacemi svých jednotlivých částí
                 \item Po prvním načtení dat z~disku jsou data ukládána do vyrovnávacích pamětí
                 \item V~průběhu své činnosti je aplikace optimalizována interpretem jazyka Java,
                     který dokáže znatelně ovlivnit její výkonnost
