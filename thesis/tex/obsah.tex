@@ -72,7 +72,7 @@ v~závěru této práce zhodnocen její přínos pro komunitu projektu Jenkins C
 
         Zkratka CI je z~anglického spojení \emph{continuous integration}, což lze do češtiny přeložit jako kontinuální nebo průběžná 
         integrace. Představení této metodologie je věnován
-        prostor v následující kapitole.
+        prostor v~následující kapitole.
         
         Informace v~této kapitole byly čerpány zejména  z~knihy \cite{jenkinsBook}, ve které lze nalézt další informace o~serveru Jenkins CI,
         a~také z~webové stránky projektu \cite{jenkinsWeb}.
@@ -95,7 +95,7 @@ v~závěru této práce zhodnocen její přínos pro komunitu projektu Jenkins C
             
             \begin{itemize}
                 \item Spouštění integračních a~jednotkových testů v~přesně definovaném čase (např. v~noci, kdy jsou servery méně vytížené)
-                \item Spouštění integračních a~jednotkových testů při změně ve verzovacím systému. Jenkins~CI dokáže zaznamenat změnu v~repozitáři,
+                \item Spouštění integračních a~jednotkových testů při změně v~systému pro správu verzí. Jenkins~CI dokáže zaznamenat změnu v~repozitáři,
                     stáhnout si změny a~spustit testování
                 \item Shromažďování a~vyhodnocování metrik vývoje softwaru
                 \item Spouštění akceptačních testů
@@ -744,7 +744,7 @@ HttpHandler httpHandler = manager.start();
                     Dokumentace k~serveru
                     Undertow je poměrně strohá, místy ne úplně přesná a~stále se vyvíjí. 
                     Jeho velká flexibilita při konfiguraci s~sebou nese i~jisté nevýhody
-                    a~jednou z nich je právě složitější způsob použití. Další nepříjemností je, že není
+                    a~jednou z~nich je právě složitější způsob použití. Další nepříjemností je, že není
                     dostupné tolik propracované rozhraní pro konfiguraci jako u~serveru Jetty,
                     což lze opět přičítat délce trvání projektu.
 
@@ -849,7 +849,7 @@ HttpHandler httpHandler = manager.start();
             Pokud se podaří úspěšně spustit tento servlet, tak je spuštění celé aplikace Jenkins CI z~pohledu
             servlet kontejneru úspěšně provedeno a~aplikace běží.
 
-            Informace o tom, které komponenty má servlet kontejner při svém startu zavést,
+            Informace o~tom, které komponenty má servlet kontejner při svém startu zavést,
             se nachází v~souboru \emph{web.xml}, což je standardní konfigurační soubor
             pro webové aplikace v~jazyce Java~EE. Může se zde nacházet také například
             konfigurace uživatelských účtů pro přístup k~aplikaci nebo~specifikování
@@ -956,7 +956,7 @@ HttpHandler httpHandler = manager.start();
                 \item Zaznamenávat informace o~přístupech k~aplikaci. V~současném servlet kontejneru je možné zaznamenávat
                     údaje o~IP adrese, jménu uživatele (pro přístup do aplikace), času, cílové URL adrese, hodnotě 
                     kódu HTTP odpovědi a~o~hodnotách hlaviček \emph{Referer} a~\emph{User-Agent}, které jsou v~protokolu HTTP.
-                    Při spuštění si uživatel může zvolit, které z~údajů si přeje zaznamenávat a~s~každým přístup poté 
+                    Při spuštění si uživatel může zvolit, které z~údajů si přeje zaznamenávat a~s~každým přístupem poté 
                     servlet kontejner uchovává patřičné informace v~souboru na disku.
 
             \end{itemize}
@@ -968,14 +968,14 @@ HttpHandler httpHandler = manager.start();
             komunikaci, pro kterou již protokol HTTP není ideální \cite{spdyArticle}.
             Jeho využití v~budoucnu může přinést zrychlení aplikace, ale 
             tento protokol ještě není 
-            v~Jenkins~CI více využíván a~tudíž jeho podpora v~servlet kontejneru není pro činnost Jenkins CI zásadní~\cite{kohsukeTopic}.
+            v~Jenkins~CI více využíván, a~tudíž jeho podpora v~servlet kontejneru není pro činnost Jenkins CI zásadní~\cite{kohsukeTopic}.
         
         \subsection{Zabezpečení v~Jenkins CI} \label{secSecurityArchitecture}
             Zabezpečení serveru Jenkins CI z~pohledu autentizace a~autorizace je poměrně komplikované,
             ale pouze část se týká servlet kontejneru a~vyžaduje jeho činnost. 
             Autorizace a~autentizace je v~Jenkins CI založena na tzv. filtrech (angl. \emph{filters})
             (prvky webové aplikace upravující příchozí požadavky než je začne zpracovávat servlet) 
-            a~na dalších metodikách, jejichž většina není pro činnost servlet kontejneru podstatná~\cite{securityArchitectureJenkins}. 
+            a~na dalších metodikách, z~nichž většina není pro činnost servlet kontejneru podstatná~\cite{securityArchitectureJenkins}. 
             
             Kontrolu přístupu k~jednotlivým prvkům aplikace provádí 
             Jenkins CI samostatně, ale pro provádění autentizace využívá několik externích zdrojů. Pro nastavení autentizace
@@ -999,7 +999,7 @@ HttpHandler httpHandler = manager.start();
                 \item \emph{security-constraint} definuje části aplikace mající chráněný přístup a~role, které k~nim
                     mohou přistupovat. V~Jenkins CI je tato kontrola prováděná interně a~je specifikován
                     omezený přístup pouze k~přihlašovacímu formuláři.
-                \item \emph{login-config} umožňuje určit způsob jakým se má po uživateli vyžadovat zadání přistupových
+                \item \emph{login-config} umožňuje určit způsob, jakým se má po uživateli vyžadovat zadání přistupových
                     údajů, pokud přistupuje k~chráněnému zdroji, a~na jaké stránky má být přesměrován v~případě úspěchu
                     nebo neúspěchu pokusu o~přihlášení
             \end{itemize}
@@ -1008,7 +1008,7 @@ HttpHandler httpHandler = manager.start();
             \subsubsection{Autentizace pomocí servlet kontejneru}
                 Jedním z~výše uvedených způsobů autentizace v~Jenkins CI je využít servlet kontejneru pro autentizaci.
                 Princip tohoto způsobu autentizace je znázorněn na obrázku \ref{imgSecurity}. 
-                Tento způsob funguje následovně. Příchozí 
+                Tento způsob funguje následovně: příchozí 
                 požadavek je předán servlet kontejnerem do Jenkins~CI k~normálnímu zpracování. 
                 Pokud Jenkins CI zjistí, že uživatel
                 není autentizován, tak pošle požadavek servlet kontejneru pro ověření uživatele. Servlet
@@ -1039,7 +1039,7 @@ HttpHandler httpHandler = manager.start();
                     \item Přidávání uživatelů pomocí parametrů příkazové řádky při spuštění servlet kontejneru 
                     \item Definování uživatelů v~XML souboru s~implicitním jménem \emph{users.xml} (název
                     lze upravit pomocí parametru). Formát položky
-                        pro zadání uživatele je uveden v~příkladu \ref{prUsers}
+                        pro zadání uživatele je uveden v~příkladu~\ref{prUsers}
                 \end{itemize}
 
 \begin{priklad} \label{prUsers}
@@ -1051,7 +1051,7 @@ HttpHandler httpHandler = manager.start();
 
 
     \section{Zjištěné problémy} \label{kapSpdy}
-        Z~analyzování možností integrace vyplývá jeden problém.
+        Z~analýzy možností integrace vyplývá jeden problém.
         Při integraci serveru Jetty do Jenkins CI byla přidána
         možnost využít protokol SPDY, jehož implementace
         není v~současné době v~serveru Undertow dostupná. Nicméně tato možnost
@@ -1078,14 +1078,14 @@ HttpHandler httpHandler = manager.start();
                     zbytku implementace kontejneru Winstone, což by představovalo
                     pouze úpravy části stávajícího kódu. }
 
-                \item{Nahrazení jak serveru Jetty tak kontejneru Winstone. 
+                \item{Nahrazení jak serveru Jetty tak i~kontejneru Winstone. 
                     Tento přístup v~podstatě znamená provedení celé implementace
                     servlet kontejneru pro Jenkins CI úplně znovu.}
             \end{enumerate}
 
             \noindent Obě varianty integrace mají své klady a~zápory. 
             Srovnáme je z~hlediska výkonu, proveditelnosti a~zpětné kompatibility
-            implementace, abychom mohli následně zvolit vhodnější variantu:
+            implementace, abychom mohli následně zvolit nejvhodnější variantu:
 
             \begin{itemize}
                 \item{\textbf{Srovnání výkonu:} V~první variantě integrace je ponechána stále
@@ -1135,7 +1135,7 @@ HttpHandler httpHandler = manager.start();
             zdrojových kódů.
 
             Při implementaci budou tedy nahrazeny obě komponenty stávajícího servlet kontejneru
-            a~bude tudíž provedena celá implementace znovu s~využitím serveru Undertow. Tato
+            a~celá implementace bude tudíž provedena znovu s~využitím serveru Undertow. Tato
             varianta by měla přinést lepší čitelnost zdrojového kódu a~poskytnout 
             lepší výkonnost celé aplikace než druhá varianta.
 
@@ -1150,7 +1150,7 @@ HttpHandler httpHandler = manager.start();
             je potřeba upravit modul \texttt{extras-executable-war} (viz kapitola \ref{secArchitecture}), který
             je vstupním bodem aplikace a~mimo jiné provádí spuštění servlet kontejneru.
             
-            Hlavním cílem tohoto projektu je zachovat kompatibilitu s~aktuální verzí servlet kontejneru a~tudíž je 
+            Hlavním cílem tohoto projektu je zachovat kompatibilitu s~aktuální verzí servlet kontejneru. Z~tohoto důvodu je 
             potřeba implementovat všechny podstatné funkcionality tak, jak byly popsány v~kapitole \ref{secKompatibilita}.
             
 
@@ -1172,14 +1172,14 @@ HttpHandler httpHandler = manager.start();
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Implementace}  \label{kapImpl}
     Tato kapitola popisuje způsob, jakým byla provedena samotná integrace serveru Undertow do Jenkins CI.
-    Jednotlivé kroky zde popisované se přímo vážou k~informacím, které byly uvedeny v~předchozích kapitolách.
+    Jednotlivé kroky zde popisované se přímo vztahují k~informacím, které byly uvedeny v~předchozích kapitolách.
     
     Na začátku jsou popsány obecné informace o~implementaci (kapitola \ref{implZaklad})
     a~je detailněji rozebrána struktura aplikace a~způsob implementace
     základních funkcí servlet kontejneru (kapitola \ref{implDetail}). 
-    Následně jsou zmíněny hlavní problémy, které se naskytly a~musely
+    Následně jsou zmíněny hlavní problémy, které se vyskytly a~musely
     být řešeny (kapitola \ref{implProblemy}).
-    Závěrem této kapitoly je blíže vymezena míra zachování zpětné kompatibility
+    V závěru této kapitoly je blíže vymezena míra zachování zpětné kompatibility
     vytvořené implementace (kapitola \ref{implOmezeni}) a~je popsán způsob
     spuštění této nové implementace (kapitola \ref{implSpusteni}).
 
@@ -1192,15 +1192,16 @@ HttpHandler httpHandler = manager.start();
         jsem pojmenoval \emph{Undertow4Jenkins}. 
         Jak vyplývá z~předchozích kapitol, tak program byl vytvořen v~jazyce Java a~jeho základ 
         tvoří server Undertow. 
-        Z~důvodu kompatibility se serverem Jenkins CI musela být využita starší verze jazyka a~to verze Java 6.
+        Z~důvodu kompatibility se serverem Jenkins CI musela být využita starší verze jazyka, a~to verze Java 6.
         Pro správu a~překlad projektu bylo nutné použít program Maven. 
         
         Projekt Jenkins CI je umístěn na serveru GitHub v~několika oddělených repozitářích, které
-        využívají verzovací program Git. Aby vývoj nového servlet kontejneru bylo možné následně předvést 
-        komunitě Jenkins CI, tak byl tento projekt také verzován na serveru 
+        využívají program pro správu verzí Git. Aby bylo možné následně vývoj
+        nového servlet kontejneru předvést komunitě Jenkins CI, 
+        byl tento projekt také verzován na serveru 
         GitHub\footnote{Repozitář projektu \emph{Undertow4Jenkins}: \texttt{https://github.com/jbartece/undertow4jenkins}} 
         a~je uveřejněn pod licencí \emph{Apache License 2.0}\footnote{Text licence \emph{Apache license 2.0} je dostupný na: 
-        \texttt{http://www.apache.org/licenses/LICENSE-2.0.html}}, takže je \emph{open source} projektem.
+        \texttt{http://www.apache.org/licenses/LICENSE-2.0.html}}, takže ho můžeme označit za \emph{open source} projekt.
 
         Na počátku integrace bylo nutné vytvořit kopie (tzv. \emph{fork}) dvou repozitářů stávající implementace serveru Jenkins CI.
         Jedná se o~repozitář s~celým serverem\footnote{Adresa kopie repozitáře Jenkins CI: 
@@ -1208,7 +1209,7 @@ HttpHandler httpHandler = manager.start();
         \\\texttt{extras-executable-war}\footnote{Adresa kopie modulu \texttt{extras-executable-war}:
         \texttt{https://github.com/jbartece/extras-executable-war} }.
         Vývoj nového servlet kontejneru probíhal na verzi \texttt{1.543} systému Jenkins CI, což byla nejnovější verze
-        programu v~době, kdy započala práce na tomto diplomovém projektu. 
+        programu v~době, kdy začala práce na této diplomovém práci. 
         
         \medskip
         Jelikož hlavním cílem projektu je dosáhnout zpětné kompatibility s~původní verzí servlet kontejneru,
@@ -1220,7 +1221,7 @@ HttpHandler httpHandler = manager.start();
      \section{Rozbor způsobu implementace} \label{implDetail}
         Tato kapitola se více zaměřuje na způsob, jakým byla implementace provedena. Jsou rozebrány nejdůležitější
         části implementace výsledného servlet kontejneru, způsob integrace do Jenkins CI
-        a~celé jeho architektura. V~této kapitole se předpokládá, že čtenář je
+        a~celá jeho architektura. V~této kapitole se předpokládá, že čtenář je
         základním způsobem seznámen se servery Undertow a~Jenkins CI v~rozsahu, který byl popsán
         v~předchozích kapitolách.
 
@@ -1244,7 +1245,7 @@ HttpHandler httpHandler = manager.start();
 \end{priklad}
 
             Po úspěšném vložení archivu nové implementace byl upraven modul \\\texttt{extras-executable-war}.
-            Většina jeho činnost byla ponechána, ale bylo nahrazeno spuštění původního servlet kontejneru
+            Většina jeho činností byla ponechána, ale bylo nahrazeno spuštění původního servlet kontejneru
             jeho novou implementací. Po takto provedeném nastavení byla práce zaměřena přímo na vývoj
             nového servlet kontejneru. 
 
@@ -1252,16 +1253,16 @@ HttpHandler httpHandler = manager.start();
 
 
         \subsection{Realizace základních funkcí}
-            Nyní jsou popsány klíčové části vytvořené aplikace a~způsob jakým byly implementovány. Většina těchto
+            V této části jsou popsány klíčové prvky vytvořené aplikace a~způsob, jakým byly implementovány. Většina těchto
             funkcionalit přímo koresponduje s~uvedenými požadavky na zachování kompatibility s~původní verzí, 
             které jsou popsány v~kapitole \ref{secKompatibilita}.
-            Zde uváděné přístupy a~komponenty serveru Undertow jsou blíže rozebrány v~kapitole \ref{undertow}.
+            Zde uváděné přístupy a~komponenty serveru Undertow jsou blíže rozebírány v~kapitole \ref{undertow}.
 
             Proces inicializace servlet kontejneru probíhá v~několika krocích, které na sebe
             navazují. V~následujícím přehledu jsou jednotlivé činnosti seřazeny tak, jak
             se po sobě vykonávají. 
             Část činností se provádí při každém spuštění servlet kontejneru,
-            ale některé jsou volitelné a~spouštějí se pouze pokud jsou při spuštění
+            ale některé jsou volitelné a~spouštějí se pouze v případě, že jsou při spuštění
             zadány určité parametry. 
 
             Inicializace vytvořeného servlet kontejneru pro Jenkins CI probíhá
@@ -1275,8 +1276,8 @@ HttpHandler httpHandler = manager.start();
                     přesně odpovídají parametrům, které jsou dostupné v~nápovědě 
                     serveru Jenkins CI. 
                     
-                    V~servlet kontejneru je dostupné velké množství parametrů
-                    a~proto je jejich zpracování implementováno s~důrazem na obecnost a~jednoduché
+                    V~servlet kontejneru je dostupné velké množství parametrů,
+                    proto je jejich zpracování implementováno s~důrazem na obecnost a~jednoduché
                     přidávání nových parametrů. 
                     Pro přidání nového parametru stačí do třídy pro parametry přidat položku (tzv. \emph{field})
                     s~datovým typem (jsou podporovány datové typy \texttt{Boolean}, \texttt{String}, 
@@ -1289,7 +1290,7 @@ HttpHandler httpHandler = manager.start();
                 \item \textbf{Příprava adresáře s~webovou aplikací:}  Webová aplikace
                     je předávána servlet kontejneru ve formě 
                     archivu \texttt{.war} (parametr \texttt{warfile}). Tento archiv je následně extrahován do 
-                    adresáře, který je specifikovaný jako další parametr servlet kontejneru (parametr \texttt{webroot}).
+                    adresáře, který je specifikovan jako další parametr servlet kontejneru (parametr \texttt{webroot}).
                     
                     Načítání aplikace bylo provedeno obecně a~je ji možné spustit zadáním
                     pouze adresáře, kde je archiv již extrahován. Tyto možnosti mohou posloužit
@@ -1314,17 +1315,17 @@ HttpHandler httpHandler = manager.start();
                     a~proto byla implementována pouze podpora těch konfigurací, které jsou
                     v~systému Jenkins CI využité. Nicméně toto zpracování bylo vytvořeno obecně 
                     a~je možné jej rozšířit o~další konfigurace, což může být předmětem dalšího vývoje,
-                    ale není to nezbytné pro běh serveru Jenkins CI.
+                    ale není to nezbytné pro fungování serveru Jenkins CI.
                 
                 \item \textbf{Nastavení servlet kontejneru v~Undertow:} V~tomto kroku
                     jsou již připraveny všechny pomocné informace pro nastavení servlet kontejneru
                     a~spuštění Jenkins CI. Nejprve jsou všechny načtené konfigurace ze souboru \emph{web.xml}
-                    nastaveny v~třídě \texttt{DeploymentInfo}, která reprezentuje data pro vytvoření servlet
+                    nastaveny ve~třídě \texttt{DeploymentInfo}, která reprezentuje data pro vytvoření servlet
                     kontejneru. Při konfiguracích jsou načítány třídy z~archivu aplikace pomocí zavaděče vytvořeného
                     v~předcházejících krocích.
 
                     Jednou ze standardních konfigurací servlet kontejneru je definování typů přenášených dat (tzv.
-                    \emph{MIME} typy). V~původním servlet kontejneru bylo automaticky načítáno téměř tisíc těchto mapování
+                    \emph{MIME} typy). V~původním servlet kontejneru bylo automaticky načítáno téměř tisíc těchto mapování,
                     a~proto jsou tyto hodnoty načítány i~v~nové implementaci.
                     
                     Pro správu statických zdrojů Jenkins CI je vytvořena instance třídy \\\texttt{FileResourceManager}
@@ -1337,8 +1338,8 @@ HttpHandler httpHandler = manager.start();
                 \item \textbf{Nastavení správy uživatelských účtů (volitelné):} Základem autentizace
                     uživatelů je třída, která implementuje rozhraní \texttt{IdentityManager}, a~ta musí
                     být předána Undertow před jeho spuštěním. 
-                    V~souladu s~původní implementací servlet kontejneru byly vyvořeny dvě třídy pro autentizaci, které
-                    se liší pouze způsobem jak načítají data o~uživatelích (uživatelské jméno, heslo a~jeho role):
+                    V~souladu s~původní implementací servlet kontejneru byly vytvořeny dvě třídy pro autentizaci, které
+                    se liší pouze způsobem načítání dat o~uživatelích (uživatelské jméno, heslo a~jeho role):
                     \begin{itemize}
                         \item \texttt{ArgumentsIdentityManager} -- načítá informace o~uživatelích z~parametrů předaných
                             při spuštění aplikace
@@ -1374,7 +1375,7 @@ HttpHandler httpHandler = manager.start();
                 
                 \item \textbf{Konfigurace webového serveru:} 
                     Po inicializaci servlet kontejneru zbývá patřičně nastavit 
-                    samotný webový server. Jsou incializovány konektory pro uživatelem zadané
+                    samotný webový server. Jsou inicializovány konektory pro uživatelem zadané
                     protokoly pro komunikaci (dostupnými protokoly jsou HTTP, HTTPS a~AJP). 
                     Jsou implementovány tři způsoby nastavení šifrované komunikace pomocí SSL, jejichž 
                     implemetace je založena na implementaci v~původním servlet kontejneru
@@ -1386,15 +1387,15 @@ HttpHandler httpHandler = manager.start();
                     přidáním \emph{handleru} \texttt{RedirectHandler} jako vstupního \emph{handleru}
                     celé aplikace.
 
-                    Provedním těchto posledních konfigurací je webový server i~servlet kontejner
+                    Provedením těchto posledních konfigurací je webový server i~servlet kontejner
                     plně inicializován a~následně je spuštěn.
                 
                 \item \textbf{Vytvoření řídícího portu (volitelné):} 
-                    V~době kdy již probíhá spouštění webového serveru, 
-                    tak se vytvoří rozhraní pro ukončení a~restart aplikace.
-                    Jedná se o~standardní síťový \emph{socket} na němž aplikace 
+                    V~době, kdy již probíhá spouštění webového serveru, 
+                    se vytvoří rozhraní pro ukončení a~restart aplikace.
+                    Jedná se o~standardní síťový \emph{socket}, na němž aplikace 
                     po celou dobu svého běhu naslouchá příchozím požadavkům (parametr \texttt{controlPort}). 
-                    Protokol, který akceptuje je popsaný v~kapitole~\ref{kapFunkcionality}.
+                    Protokol, který akceptuje, je popsán v~kapitole~\ref{kapFunkcionality}.
 
             \end{enumerate}
 
@@ -1430,11 +1431,11 @@ HttpHandler httpHandler = manager.start();
 
 
             V~následujícím výčtu jsou stručně popsány balíky aplikace.
-            Některé obsahují i~větší množství tříd a~proto je uvedeno pouze o~jaké činnosti
+            Některé obsahují i~větší množství tříd, a~proto je uvedeno pouze o~jaké činnosti
             se třídy v~daném balíku starají:
             \begin{itemize}
                 \item \texttt{option} -- zpracování parametrů a~jejich reprezentace za běhu programu
-                \item \texttt{parser} -- načtení souboru \emph{web.xml} a~reprezetace načtených hodnot
+                \item \texttt{parser} -- načtení souboru \emph{web.xml} a~reprezentace načtených hodnot
                 \item \texttt{creator} -- vytvoření webového serveru a~servlet kontejneru pomocí serveru Undertow
                 \item \texttt{listener} -- vytvoření konektoru pro síťové protokoly HTTP, HTTPS a~AJP
                 \item \texttt{handlers} -- vlastní vytvořené \emph{handlery} pro běh aplikace
@@ -1449,9 +1450,9 @@ HttpHandler httpHandler = manager.start();
 
     \section{Řešené problémy při implementaci} \label{implProblemy}
         Při implementaci jsem se potýkal s~nedostatečným komentováním zdrojových kódů serveru Undertow.
-        Velká část serveru je naprosto nedostatečně komentovaná a~největším problémem je, že
-        není komentované ani veřejné rozraní API. 
-        Dokumentace projektu v~průběhu implementace teprve postupně vznikala a~navíc se zaobírá pouze popisem jednotlivých součástí,
+        Velká část serveru je naprosto nedostatečně komentována a~největším problémem je, že
+        není komentováno ani veřejné rozhraní API. 
+        Dokumentace projektu v~průběhu implementace teprve postupně vznikala, a~navíc se zaobírá pouze popisem jednotlivých součástí,
         ale implementační detaily jsou rozebírány jen v~některých částech.
         Z~těchto důvodů bylo během implementace nutné velmi často zkoumat a~analyzovat přímo zdrojové kódy serveru Undertow
         a~někdy i~napsané integrační testy, které umožňovaly lépe pochopit určité typy konfigurací (např. vytvoření podpory autentizace
@@ -1469,8 +1470,8 @@ HttpHandler httpHandler = manager.start();
     \section{Omezení aplikace} \label{implOmezeni}
         Veškerá podstatná funkčnost servlet kontejneru byla zachována,
         ale některé nedůležité parametry nebyly implementovány. Aby nedocházelo
-        k~problémům s~kompatibilitou (např. při spouštění staršími skripty), tak program zadání těchto
-        parametrů akceptuje, ale pouze vypíše varování, že nejsou podporovány,   a~dále je ignoruje.
+        k~problémům s~kompatibilitou (např. při spouštění staršími skripty) akceptuje program zadání těchto
+        parametrů, ale pouze vypíše varování, že nejsou podporovány,   a~dále je ignoruje.
         
         \medskip
         \noindent Nepodporovanými parametry jsou:
@@ -1503,7 +1504,7 @@ HttpHandler httpHandler = manager.start();
         
         Při implementaci dvou parametrů \texttt{httpKeepAliveTimeout}, \texttt{httpsKeepAliveTimeout}, které slouží 
         k~určení doby uchovávání aktivních spojení při komunikaci (hodnota \emph{keep-alive}), nebylo možné jednoduchým způsobem
-        nastavit chování serveru jako v~původní verzi. U~původní verze bylo možné provést nastavení zvlášť pro
+        nastavit chování serveru jako v~původní verzi. V~původní verzi bylo možné provést nastavení zvlášť pro
         protokol HTTP i~HTTPS, ale při standardním využití serveru Undertow lze nastavit tuto hodnotu pouze pro celý
         server a~tedy společnou pro oba protokoly. 
         
@@ -1535,7 +1536,7 @@ HttpHandler httpHandler = manager.start();
     
     Po přeložení nového servlet kontejneru je následně nutné stejným příkazem přeložit upravenou
     verzi modulu \texttt{extras-executable-war}. Jakmile jsou moduly připravené
-    v~lokálním Maven repozitáři, tak již lze aplikaci Jenkins CI spustit standardním postupem,
+    v~lokálním Maven repozitáři, lze již aplikaci Jenkins CI spustit standardním postupem,
     který je popsán v~kapitole \ref{jenkinsUsage}.
     Postup pro přeložení a~spuštění upraveného projektu Jenkins CI 
     je také shrnut v~příloze \ref{prilohaNavod}.
@@ -1553,7 +1554,7 @@ HttpHandler httpHandler = manager.start();
     pro prokázání funkčnosti aplikace nebylo možné.
     Kromě spouštění vlastních vytvořených testů byla aplikace opakovaně testována používáním jejich různých součástí
     v~Jenkins CI
-    a~nebyly zjištěné žádné nefunkční prvky.
+    a~nebyly zjištěny žádné nefunkční prvky.
 
     
 
