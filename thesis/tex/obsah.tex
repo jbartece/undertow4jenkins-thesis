@@ -14,8 +14,8 @@
     byl z~velké části nahrazen serverem Jetty, který potřebnou funkcionalitu poskytuje. Server Jetty je poměrně komplexní projekt a~nabízí
     mnoho funkcí, ale na druhou stranu jeho rozsah neumožňuje dosažení maximální rychlosti.
     
-    Nedávno vznikl nový webový server Undertow, který si klade za cíl být co nejjednodušší a~nejrychlejší a mohl by být potenciálně přínosný
-    pro Jenkins CI. Vzhledem k tomu, že je tento server nový a~je sponzorován firmou Red Hat, lze předpokládat, že jeho vývoj
+    Nedávno vznikl nový webový server Undertow, který si klade za cíl být co nejjednodušší a~nejrychlejší a~mohl by být potenciálně přínosný
+    pro Jenkins CI. Vzhledem k~tomu, že je tento server nový a~je sponzorován firmou Red Hat, lze předpokládat, že jeho vývoj
     bude nadále pokračovat a~nebude zastarávat.
 
     Cílem této práce je nahradit server Jetty a~případně i~server Winstone serverem Undertow 
@@ -30,8 +30,8 @@
     Následně je popsán způsob provedení navržené integrace serveru Undertow do Jenkins~CI
     a~poslední část této práce je věnována zhodnocení výkonu původní a~upravené verze serveru Jenkins CI. Výkon
     obou variant je porovnáván ve třech zvolených testovaných případech. Na základě získaných informací o~výkonnosti 
-    a~výsledku celé integrace je v
-    závěru této práce zhodnocen její přínos pro komunitu projektu Jenkins CI.
+    a~výsledku celé integrace je
+v~závěru této práce zhodnocen její přínos pro komunitu projektu Jenkins CI.
 
     Diplomová práce navazuje na předcházející semestrální projekt, v~rámci něhož byla provedena studie všech
     souvisejících nástrojů (kapitola \ref{kapJenkins}),  analýza architektury Jenkins CI
@@ -68,7 +68,7 @@
         Původní název tohoto projektu je Hudson\footnote{Webové stránky projektu Hudson: \texttt{http://hudson-ci.org/}}. 
         Když se jeho vývoje ujala firma Oracle, tak se projekt
         rozštěpil a~vznikla jeho komunitní verze, kterou je projekt Jenkins CI. Přesto se v~některých částech tohoto projektu 
-        stále objevuje název Hudson, ale jedná se pouze o pozůstatek z~původního projektu.
+        stále objevuje název Hudson, ale jedná se pouze o~pozůstatek z~původního projektu.
 
         Zkratka CI je z~anglického spojení \emph{continuous integration}, což lze do češtiny přeložit jako kontinuální nebo průběžná 
         integrace. Krátké seznámení s~touto metodologií je v~následující kapitole.
@@ -171,7 +171,7 @@
             definován a~lze jej najít v~uživatelské příručce\footnote{
                 Způsob zpracovávání požadavků komponentou Stapler:
                 \texttt{http://stapler.kohsuke.org/reference.html}}, 
-                ale není potřebné jej v této práci rozebírat.
+                ale není potřebné jej v~této práci rozebírat.
 
             Architektura serveru je přizpůsobena tak, aby byla snadno rozšiřitelná
             pomocí rozšiřujících modulů (angl. \emph{plugins}). Popis technologie Jelly
@@ -210,7 +210,7 @@
             komunikuje pomocí protokolu \emph{HTTP} na portu 8080. Je tedy možné se na lokálním počítači připojit do aplikace zadáním URL adresy 
             \texttt{http://localhost:8080} do webového prohlížeče. 
 
-            Pokud se aplikaci povede spustit, tak je již možné libovolně pracovat s aplikací pouze z~webového prohlížeče. Detaily práce s~aplikací Jenkins CI
+            Pokud se aplikaci povede spustit, tak je již možné libovolně pracovat s~aplikací pouze z~webového prohlížeče. Detaily práce s~aplikací Jenkins CI
             lze nalézt v~této knize \cite{jenkinsBook}, ale tyto informace jsou již nad rámec této publikace.
 
 
@@ -326,7 +326,7 @@ webapp.war
         ze~kterých byly čerpány informace v~této kapitole. 
         
         Maven je nástroj, který provádí činnosti spojené s~vytváření spustitelných aplikací ze zdrojových kódů
-        a je zaměřen na aplikace vytvářené v~jazyce Java. Jeho hlavním cílem je umožnit uživatelům v~co nejkratším
+        a~je zaměřen na aplikace vytvářené v~jazyce Java. Jeho hlavním cílem je umožnit uživatelům v~co nejkratším
         čase provádět běžné a~opakující se úkony při překladu aplikace. Především umožňuje
         provádění překladu aplikací, spuštění jejich automatizovaných jednotkových
         a~integračních testů, uložení spustitelné podoby aplikace do lokálního repozitáře 
@@ -370,7 +370,7 @@ webapp.war
         \end{priklad}
 
         V~části \texttt{repository} je definována cesta k~serveru, z~kterého má Maven stahovat potřebné soubory
-        a~v~těle značky \texttt{dependency} je pomocí hodnot \emph{groupId, artifactId} a \emph{version} jednoznačně
+        a~v~těle značky \texttt{dependency} je pomocí hodnot \emph{groupId, artifactId} a~\emph{version} jednoznačně
         definována potřebná knihovna. Na základě těchto informací poté Maven při překladu stáhne požadovanou
         knihovnu a~při distribuci aplikace nemusí být tato knihovna k~programu přibalena. 
 
@@ -1182,13 +1182,13 @@ HttpHandler httpHandler = manager.start();
         jsem pojmenoval \emph{Undertow4Jenkins}. 
         Jak vyplývá z~předchozích kapitol, tak program byl vytvořen v~jazyce Java a~jeho základ 
         tvoří server Undertow. 
-        Z~důvodu kompatibility se serverem Jenkins CI musela být využita starší verze jazyka a~to verze 6.
+        Z~důvodu kompatibility se serverem Jenkins CI musela být využita starší verze jazyka a~to verze Java 6.
         Pro správu a~překlad projektu bylo nutné použít program Maven. 
         
         Projekt Jenkins CI je umístěn na serveru GitHub v~několika oddělených repozitářích, které
         využívají verzovací program Git. Aby vývoj nového servlet kontejneru bylo možné následně předvést 
-        komunitě Jenkins CI, tak byl tento projekt také verzován na serveru GitHub\footnote{Server GitHub je 
-        dostupný na adrese: \texttt{https://github.com/}} 
+        komunitě Jenkins CI, tak byl tento projekt také verzován na serveru 
+        GitHub\footnote{Repozitář projektu \emph{Undertow4Jenkins}: \texttt{https://github.com/jbartece/undertow4jenkins}} 
         a~je uveřejněn pod licencí \emph{Apache License 2.0}\footnote{Text licence \emph{Apache license 2.0} je dostupný na: 
         \texttt{http://www.apache.org/licenses/LICENSE-2.0.html}}, takže je \emph{open source} projektem.
 
@@ -1203,7 +1203,7 @@ HttpHandler httpHandler = manager.start();
         \medskip
         Jelikož hlavním cílem projektu je dosáhnout zpětné kompatibility s~původní verzí servlet kontejneru,
         tak v~případě nejasného přístupu k~implementaci některých komponent byly studovány zdrojové kódy
-        původní implementace a~nové servlet kontejner jim byl přizpůsobován. Tohoto přístupu bylo využito
+        původní implementace a~nový servlet kontejner jim byl přizpůsobován. Tohoto přístupu bylo využito
         například při volbě šifrovacích protokolů pro nastavení komunikaci pomocí protokolu HTTPS nebo nastavení zaznamenávání
         příchozích požadavků.
         
@@ -1216,11 +1216,11 @@ HttpHandler httpHandler = manager.start();
 
 
         \subsection{Nahrazení původního servlet kontejneru}
-            První krokem před započetím vývoje nového servlet kontejneru bylo zajištění vložení archivu \texttt{undertow4jenkins.jar} 
+            Prvním krokem před započetím vývoje nového servlet kontejneru bylo zajištění vložení archivu \texttt{undertow4jenkins.jar} 
             do výsledného archivu \texttt{.war}.
             Jelikož je Jenkins CI překládán programem Maven, tak byla změněna závislost v~souboru \texttt{pom.xml} 
             (viz kapitola \ref{maven} o~programu Maven)
-            z~původního kontejneru \emph{winstone} na nový projekt \emph{Undertow4Jenkins}.
+            z~původního kontejneru Winstone na nový projekt Undertow4Jenkins.
             Nastavení této konfigurace je uvedeno na příkladu \ref{prDep}. Jedná se o~zvolenou identifikaci nového servlet
             kontejneru pro program Maven, který provede vložení archivu \texttt{.jar} do Jenkins CI ze svého lokálního repozitáře.
 
@@ -1242,7 +1242,7 @@ HttpHandler httpHandler = manager.start();
 
 
         \subsection{Realizace základních funkcionalit}
-            V~této kapitole jsou popsány klíčové části vytvořené aplikace a~způsob jakým byly implementovány. Většina těchto
+            Nyní jsou popsány klíčové části vytvořené aplikace a~způsob jakým byly implementovány. Většina těchto
             funkcionalit přímo koresponduje s~uvedenými požadavky na zachování kompatibility s~původní verzí, 
             které jsou popsány v~kapitole \ref{secKompatibilita}.
             Zde uváděné přístupy a~komponenty serveru Undertow jsou blíže rozebrány v~kapitole \ref{undertow}.
@@ -1268,7 +1268,7 @@ HttpHandler httpHandler = manager.start();
                     a~proto je jejich zpracování implementováno s~důrazem na obecnost a~jednoduché
                     přidávání nových parametrů. 
                     Pro přidání nového parametru stačí do třídy pro parametry přidat položku (tzv. \emph{field})
-                    a~jeho datový typ (jsou podporovány datové typy \texttt{Boolean}, \texttt{String}, 
+                    s~datovým typem (jsou podporovány datové typy \texttt{Boolean}, \texttt{String}, 
                     \texttt{Integer}) a~jeho zpracování bude probíhat patřičným
                     způsobem. K~dosažení této obecnosti bylo využito \emph{Java Reflection API}.
                     Jako podpora pro zpracování parametrů byla použita knihovna \emph{Apache
@@ -1288,7 +1288,7 @@ HttpHandler httpHandler = manager.start();
                     a~přeložené třídy aplikace ve standardních adresářích 
                     \texttt{/WEB-INF/lib} a~\texttt{/WEB-INF/classes}, které jsou definovaným
                     umístěním pro tyto zdroje (viz kapitola \ref{kapWebXml}). 
-                    Na základě dostupných knihoven a~tříd je vytvořen instance třídy \texttt{URLClassLoader},
+                    Na základě dostupných knihoven a~tříd je vytvořena instance třídy \texttt{URLClassLoader},
                     která provádí inicializaci a~zavádění tříd v~programu. 
                     
                     Tento zavaděč je potřebný
@@ -1297,7 +1297,7 @@ HttpHandler httpHandler = manager.start();
                     potřebné součásti aplikace za běhu.
 
                 \item \textbf{Analýza souboru web.xml:} Soubor \emph{web.xml} je 
-                    zpracován za pomoci XML parseru \emph{StAX}, který je standardně dostupný v~knihovně
+                    zpracován za pomoci XML parseru \emph{StAX}, který je  dostupný ve standardní knihovně
                     jazyka Java. Z~analyzovaného souboru jsou načteny potřebné informace pro inicializaci
                     Jenkins CI. Podpora všech možných konfigurací souboru \emph{web.xml} je velmi rozsáhlá
                     a~proto byla implementována pouze podpora těch konfigurací, které jsou
@@ -1312,8 +1312,8 @@ HttpHandler httpHandler = manager.start();
                     kontejneru. Při konfiguracích jsou načítány třídy z~archivu aplikace pomocí zavaděče vytvořeného
                     v~předcházejících krocích.
 
-                    Jednou ze standardních konfigurací servlet kontejneru je definování typů souborů tzv.
-                    \emph{MIME}. V~původním servlet kontejneru bylo automaticky načítáno téměř tisíc těchto mapování
+                    Jednou ze standardních konfigurací servlet kontejneru je definování typů přenášených dat (tzv.
+                    \emph{MIME} typy). V~původním servlet kontejneru bylo automaticky načítáno téměř tisíc těchto mapování
                     a~proto jsou tyto hodnoty načítány i~v~nové implementaci.
                     
                     Pro správu statických zdrojů Jenkins CI je vytvořena instance třídy \\\texttt{FileResourceManager}
@@ -1329,7 +1329,7 @@ HttpHandler httpHandler = manager.start();
                     V~souladu s~původní implementací servlet kontejneru byly vyvořeny dvě třídy pro autentizaci, které
                     se liší pouze způsobem jak načítají data o~uživatelích (uživatelské jméno, heslo a~jeho role):
                     \begin{itemize}
-                        \item \texttt{ArgumentsIdentityManager} -- načítá informace o~uživatelích z~parametrů předáných
+                        \item \texttt{ArgumentsIdentityManager} -- načítá informace o~uživatelích z~parametrů předaných
                             při spuštění aplikace
                         \item \texttt{FileIdentityManager} -- načítá informace o~uživatelích z~XML souboru s~definovaným formátem 
                             (viz kapitola \ref{secSecurityArchitecture})
@@ -1343,20 +1343,22 @@ HttpHandler httpHandler = manager.start();
                     který definuje její plně kvalifikované jméno. Je pouze nutné, aby tato třída implementavala
                     rozhraní \texttt{IdentityManager}.
 
-                    Volba třídy pro autentizaci se provádí zadáním jejího plně kvalifikovaného jména, což
+                    Volba třídy pro autentizaci zadáním jejího plně kvalifikovaného jména
                     je způsob, který musel být zachován v~souladu s~původní implementací servlet kontejneru. 
                     Zde ovšem vzniká problém, protože v~původní implementaci byla jiná struktura balíků
                     a~názvy tříd. Z~tohoto důvodu je v~aplikaci kontrolováno, zda nebylo zadáno
-                    jméno třídy z~původní implementace a~je případně nahrazeno za třídu v~současné implementaci.
-                    Stejný přístup byl použit při externím zadávání tříd v~následujcím bodu.
+                    jméno třídy z~původní implementace a~pokud ano, tak je 
+                    nahrazeno obdobnou třídu v~nové implementaci.
                 
                 \item \textbf{Nastavení zaznamenávání příchozích požadavků (volitelné):}
-                     Tato funkcionalita je řešena přidáním vlastního \emph{handleru} na konec řetězce 
-                     těsně před tím než je vyvolán samotný servlet. V~servlet kontejneru je 
+                     Tato funkcionalita je řešena přidáním vlastního \emph{handleru} na konec řetězce
+                     těsně před tím, než je vyvolán samotný servlet. V~servlet kontejneru je 
                      vytvořena jedna třída zajišťující tuto činnost (odpovídající implementaci v~původním
                      kontejneru), ale je opět možné přidat vlastní implementaci. Toto přidání
-                     je řešeno obdobně jako bylo popsáno v~předchozím bodě, ale
-                     třída musí implementovat rozhraní \texttt{AccessLoggerHandler}.
+                     je řešeno obdobně jako bylo popsáno v~předchozím bodě, s~jediným
+                     rozdílem, že 
+                     třída musí implementovat rozhraní \texttt{AccessLoggerHandler} (nové
+                     rozhraní definované v~tomto projektu).
                      
                 
                 \item \textbf{Konfigurace webového serveru:} 
@@ -1367,9 +1369,9 @@ HttpHandler httpHandler = manager.start();
                     implemetace je založena na implementaci v~původním servlet kontejneru
                     a~odpovídá popisu v~kapitole \ref{kapFunkcionality}.
                     
-                    Pokud uživatel specifikoval při spuštění požadavek (parametr \texttt{prefix}), 
+                    Pokud uživatel specifikoval při spuštění požadavek, 
                     aby  URL adresa aplikace začínala 
-                    nějakým daným řetězecem, tak je tento požadavek implementován
+                    pevně daným řetězecem (parametr \texttt{prefix}), tak je tento požadavek implementován
                     přidáním \emph{handleru} \texttt{RedirectHandler} jako vstupního \emph{handleru}
                     celé aplikace.
 
@@ -1377,11 +1379,11 @@ HttpHandler httpHandler = manager.start();
                     plně inicializován a~následně je spuštěn.
                 
                 \item \textbf{Vytvoření řídícího portu (volitelné):} 
-                    V~době kdy již províhá spouštění webového serveru, 
-                    tak je možné vytvořit rozhraní pro ukončení nebo restart aplikace.
-                    Je vytvořený standardní síťový \emph{socket} a~až do ukončení aplikace
-                    na něm naslouchá příchozím požadavkům (parametr \texttt{controlPort}). Protokol, který akceptuje je popsaný
-                    v~kapitole \ref{kapFunkcionality}.
+                    V~době kdy již probíhá spouštění webového serveru, 
+                    tak se vytvoří rozhraní pro ukončení a~restart aplikace.
+                    Jedná se o~standardní síťový \emph{socket} na němž aplikace 
+                    po celou dobu svého běhu naslouchá příchozím požadavkům (parametr \texttt{controlPort}). 
+                    Protokol, který akceptuje je popsaný v~kapitole~\ref{kapFunkcionality}.
 
             \end{enumerate}
 
