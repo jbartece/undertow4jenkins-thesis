@@ -1241,13 +1241,12 @@ HttpHandler httpHandler = manager.start();
         
 
 
-        \subsection{Realizace základních funkcionalit}
+        \subsection{Realizace základních funkcí}
             Nyní jsou popsány klíčové části vytvořené aplikace a~způsob jakým byly implementovány. Většina těchto
             funkcionalit přímo koresponduje s~uvedenými požadavky na zachování kompatibility s~původní verzí, 
             které jsou popsány v~kapitole \ref{secKompatibilita}.
             Zde uváděné přístupy a~komponenty serveru Undertow jsou blíže rozebrány v~kapitole \ref{undertow}.
 
-            %moznost pridat diagram aktivit s optional vetví činností, které se nemusí zadat
             Proces inicializace servlet kontejneru probíhá v~několika krocích, které na sebe
             navazují. V~následujícím přehledu jsou jednotlivé činnosti seřazeny tak, jak
             se po sobě vykonávají. 
@@ -1255,6 +1254,8 @@ HttpHandler httpHandler = manager.start();
             ale některé jsou volitelné a~spouštějí se pouze pokud jsou při spuštění
             zadány určité parametry. 
 
+            Inicializace vytvořeného servlet kontejneru pro Jenkins CI probíhá
+            v těchto fázích:
             \begin{enumerate}
                 \item \textbf{Zpracování parametrů:} Jsou zkontrolovány zadané parametry
                     aplikace a~přítomnost povinných parametrů. Při spuštění aplikace
@@ -1401,7 +1402,7 @@ HttpHandler httpHandler = manager.start();
             \begin{figure}[h!t]
                 \begin{center}
                     \scalebox{0.7}{\includegraphics{img/package.png}}
-                    \caption{Diagram balíků, rozšířený o~tři nejdůležitější třídy, který zachycuje architekturu servlet kontejneru}
+                    \caption{Diagram balíků zachycující architekturu vytvořeného servlet kontejneru rozšířený o~tři nejdůležitější třídy}
                     \label{imgPackage}
                 \end{center}
             \end{figure}
@@ -1411,10 +1412,10 @@ HttpHandler httpHandler = manager.start();
                 \item \texttt{Launcher} -- vstupní bod aplikace obsahující metodu \texttt{main}. 
                     Zajišťuje kontrolu celého běhu servlet kontejneru. 
 
-                \item \texttt{UndertowCreator} -- stará se o~inicializaci webového serveru
+                \item \texttt{UndertowCreator} -- zajišťuje inicializaci webového serveru
                     a~konfiguraci servlet kontejneru deleguje na třídu \texttt{DeploymentCreator}.
 
-                \item \texttt{DeploymentCreator} -- zajišťuje inicializaci servlet kontejneru 
+                \item \texttt{DeploymentCreator} -- provádí inicializaci servlet kontejneru 
             \end{itemize}
 
 
@@ -1424,14 +1425,15 @@ HttpHandler httpHandler = manager.start();
             \begin{itemize}
                 \item \texttt{option} -- zpracování parametrů a~jejich reprezentace za běhu programu
                 \item \texttt{parser} -- načtení souboru \emph{web.xml} a~reprezetace načtených hodnot
-                \item \texttt{creator} -- vytvoření webového serveru a~servlet kontejneru pomocí Undertow
+                \item \texttt{creator} -- vytvoření webového serveru a~servlet kontejneru pomocí serveru Undertow
                 \item \texttt{listener} -- vytvoření konektoru pro síťové protokoly HTTP, HTTPS a~AJP
-                \item \texttt{handlers} -- vlastní vytvořené handlery pro běh aplikace
+                \item \texttt{handlers} -- vlastní vytvořené \emph{handlery} pro běh aplikace
                 \item \texttt{loader} -- inicializace servlet kontejneru na základě načtených informací ze souboru \emph{web.xml}
                 \item \texttt{security} -- zajištění podpory autentizace uživatelů
                 \item \texttt{util} -- zpracování webového archivu a~načítání informací z~konfiguračních souborů
             \end{itemize}
 
+            
 
 
 
@@ -1442,60 +1444,61 @@ HttpHandler httpHandler = manager.start();
         Dokumentace projektu v~průběhu implementace teprve postupně vznikala a~navíc se zaobírá pouze popisem jednotlivých součástí,
         ale implementační detaily jsou rozebírány jen v~některých částech.
         Z~těchto důvodů bylo během implementace nutné velmi často zkoumat a~analyzovat přímo zdrojové kódy serveru Undertow
-        a~někdy i~napsané integrační testy, které umožňují lépe pochopit některé typy konfigurací (např. vytvoření podpory autentizace
+        a~někdy i~napsané integrační testy, které umožňovaly lépe pochopit určité typy konfigurací (např. vytvoření podpory autentizace
         pomocí instance rozhraní \texttt{Identity Manager}).
 
         Implementace některých částí aplikace byla podstatně komplikovanější oproti původní verzi servlet kontejneru
         a~očekáváním na začátku projektu. Server Undertow 
-        neposkytuje některé standardní funkcionality pro integraci servlet kontejneru. Mezi nejvýznamnější patří nutnost
+        neposkytuje některé standardní funkcionality pro integraci servlet kontejneru, které
+        jsou u serveru Jetty samozřejmostí. Mezi nejvýznamnější patří nutnost
         zpracování souboru \emph{web.xml} a~nastavení dle něj servlet kontejneru nebo například nutnost 
         provádět zavádění tříd servletů (tzv. \emph{classloading}). V~aplikaci Jetty lze provést načtení 
         souboru \emph{web.xml} pomocí jediného volání metody serveru.
 
         
     \section{Omezení aplikace}
-        Veškerá podstatná funkčnost servlet kontejneru byla zachována a~při testování nebyly odhaleny žádné chyby,
+        Veškerá podstatná funkčnost servlet kontejneru byla zachována,
         ale některé nedůležité parametry nebyly implementovány. Aby nedocházelo
         k~problémům s~kompatibilitou (např. při spouštění staršími skripty), tak program zadání těchto
-        parametrů akceptuje, ale pouze vypíše varování, že nejsou podporovány a~dále je ignoruje.
+        parametrů akceptuje, ale pouze vypíše varování, že nejsou podporovány,   a~dále je ignoruje.
         
         \medskip
         \noindent Nepodporovanými parametry jsou:
         \begin{itemize}
             \item Parametr \texttt{spdy}, který umožňoval zapnutí podpory komunikace pomocí protokolu SPDY. Tento parametr
                 nebyl implementován, jelikož v~aktuální verzi Undertow není ještě podporován, ale zřejmě
-                brzy bude přidán (viz kapitola \ref{kapSpdy}.
+                brzy bude přidán (viz kapitola \ref{kapSpdy}), což dává prostor pro další vývoj tohoto projektu.
 
             \item Skupina parametrů \texttt{httpDoHostnameLookups}, \texttt{httpsDoHostnameLookups}, \\\texttt{handlerCountStartup},
                 \texttt{logThrowingLineNo}, které zůstaly v~kontejneru jako pozůstatek z~původní implementace, ale po integraci
                 serveru Jetty do servlet kontejneru se přestaly využívat.
 
             \item Parametry \texttt{webappsDir} a~\texttt{hostsDir} byly v~aktuálním servlet kontejneru implementovány
-                a~sloužily ke spuštění více webových aplikací v~servlet kontejneru. Server Jenkins CI má omezení,
+                a~sloužily ke spuštění více webových aplikací v~servlet kontejneru. Ovšem server Jenkins~CI má omezení,
                 že může současně běžet na jednom počítači pouze jeho jediná instance. 
-                Jelikož tento servlet kontejner je určen pouze pro Jenkins CI, tak jejich implementace nebyla smysluplná,
+                Jelikož tento servlet kontejner je určen pouze pro Jenkins~CI, tak jejich implementace nebyla smysluplná,
                 protože by tyto parametry nemohly být využity pro jeho spuštění.
 
             \item Parametr \texttt{handlerCountMaxIdle} umožňoval určit maximální počet vláken servlet kontejneru, 
                 které aktuálně neprováděly žádnou činnost. V~původní implementaci byla vlákna pro práci servlet kontejneru
-                inicializována ručně instance rozhraní \\\texttt{ExecutorService} ze standardní knihovny. Jelikož
-                tato možnost v~serveru Undertow nebyla, tak byla správa vláken ponechána ve výchozím stavu,
-                protože tento parametr nemá zásadní vliv na zachování zpětné kopatibility.
+                inicializována ručně pomocí instance rozhraní \\\texttt{ExecutorService} ze standardní knihovny. 
+                V~serveru Undertow tato možnost chybí, a proto byla správa vláken ponechána ve výchozím stavu. Každopádně
+                tento parametr nemá zásadní vliv na zachování zpětné kopatibility.
 
             \item Parametry \texttt{debug} a~\texttt{logThrowingThread}, které pouze upravovaly vypisování průběhu
-                běhu aplikace, ale nemají žádný vliv na jeho funkčnost. Jejich implementace může být předmětem dalšího
+                běhu aplikace, ale nemají žádný vliv na jeho fungování. Jejich implementace může být předmětem dalšího
                 vývoje.
         \end{itemize}
         
         
         Při implementaci dvou parametrů \texttt{httpKeepAliveTimeout}, \texttt{httpsKeepAliveTimeout}, které slouží 
         k~určení doby uchovávání aktivních spojení při komunikaci (hodnota \emph{keep-alive}), nebylo možné jednoduchým způsobem
-        nastavit chování serveru jako u~původní verze. U~původní verze bylo možné provést nastavení zvlášť pro
+        nastavit chování serveru jako v~původní verzi. U~původní verze bylo možné provést nastavení zvlášť pro
         protokol HTTP i~HTTPS, ale při standardním využití serveru Undertow lze nastavit tuto hodnotu pouze pro celý
         server a~tedy společnou pro oba protokoly. 
         
         Existuje možnost nevyužít veřejné API pro sestavení serveru 
-        a~provést podstatně komplikovanější variantu jeho inicializace při které by bylo možné nastavit tyto hodnoty \cite{undertowAssembly}.
+        a~provést podstatně komplikovanější variantu jeho inicializace, při které by bylo možné nastavit tyto hodnoty \cite{undertowAssembly}.
         Tento přístup by byl překážkou při dalším vývoji servlet kontejneru, protože by bylo nutné tento
         kód upravovat s~přicházejícími novými verzemi Undertow (např. při přidání podpory SPDY). 
         Z~těchto důvodů bylo zvoleno kompromisní řešení, kdy je možné zadat hodnoty těchto parametrů, ale
@@ -1504,7 +1507,10 @@ HttpHandler httpHandler = manager.start();
         by se servlet kontejner ustálil, tak je možné provést zmíněné ruční sestavení serveru a~poskytnout
         podporu obou těchto parametrů.
           
-        Kromě zde uvedených parametrů byly ostatní parametry původního servlet kontejneru zachovány.
+        Kromě zde uvedených parametrů byly ostatní parametry podporované v původní
+        verzi Jenkins CI zachovány.
+
+        
 
 
 
@@ -1521,11 +1527,13 @@ HttpHandler httpHandler = manager.start();
     verzi modulu \texttt{extras-executable-war}. Jakmile jsou moduly připravené
     v~lokálním Maven repozitáři, tak již lze aplikaci Jenkins CI spustit standardním postupem,
     který je popsán v~kapitole \ref{jenkinsUsage}.
+    %Postup pro přeložení a spuštění upraveného projektu Jenkins CI 
+    %je také shrnut v příloze \ref{prilohaNavod}.
 
     \medskip
     Při vývoji aplikace bylo vytvořeno 6 integračních testů, které testují základní funkčnosti
-    vytvořeného servlet kontejneru. Nejedná se o~žádnou kompletní sadu testů, ale sloužily pro
-    otestování základní funkčnosti nezbytných komponent servlet kontejneru jako jsou
+    vytvořeného servlet kontejneru. Nejedná se o~žádnou kompletní sadu testů, ale testy sloužily pro
+    kontrolu základní funkčnosti nezbytných komponent servlet kontejneru jako jsou
     komunikace pomocí HTTP, HTTPS, správa přístupových údajů, aj. Tyto testy byly inspirovány
     testy v~původním servlet kontejneru. Pro jejich spuštění stačí při překladu vynechat poslední
     parametr \texttt{-DskipTests}.
