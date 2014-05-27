@@ -253,7 +253,7 @@ v~závěru této práce zhodnocen její přínos pro komunitu projektu Jenkins C
             Servlet je standardní program (konkrétně jedna třída) napsaný v~jazyce Java, 
             který implementuje rozhraní \texttt{javax.servlet}.
             Implementace tohoto rozhraní ho zavazuje k~definování několika metod, ale jinak se jedná o~běžnou
-            třídu, ze~které jsou při zpracovávání požadavků vytvářeny její instance. Po obdržení nějakého
+            třídu, ze~které jsou při zpracovávání požadavků vytvářeny její instance. Po obdržení
             požadavku servlet provede zpracování vstupních dat a~následně odešle patřičnou odpověď.
 
             Základní myšlenkou servlet kontejneru je umožnit dynamicky vytvářet odpovědi (často webové stránky)
@@ -294,7 +294,7 @@ webapp.war
 \end{priklad}
 
 
-            Pro konfiguraci aplikace je nejdůležitější adresář WEB-INF a~především tyto jeho položky:
+            Pro konfiguraci aplikace je nejdůležitější adresář WEB-INF a~především jeho následující položky:
 
             \begin{itemize}
                 \item Adresář \textbf{lib} obsahuje libovolné uživatelské knihovny, které jsou ve webové aplikaci využívány. 
@@ -305,14 +305,14 @@ webapp.war
                     Servlet kontejner je opět zodpovědný za jejich zavedení. 
 
                 \item Soubor \textbf{web.xml} obsahuje nejpodstatnější konfiguraci webové aplikace pro servlet kontejner.
-                    Na základě tohoto souboru servlet kontejner provádí nastavení celé aplikace.
+                    Na základě tohoto souboru provádí servlet kontejner nastavení celé aplikace.
                     Jsou zde popsány veškeré servlety, které aplikace obsahuje, pravidla pro zabezpečení aplikace,
-                    filtry (angl. \emph{filter}, které mohou upravovat příchozí požadavky a~spousta dalších konfigurací. 
+                    filtry (angl. \emph{filter}), které mohou upravovat příchozí požadavky a~spousta dalších konfigurací. 
             \end{itemize}
 
             Kromě základních výše popsaných položek, může archiv obsahovat libovolné jiné soubory pro běh aplikace jako jsou 
             HTML soubory, kaskádové styly (CSS), obrázky a~jiné. Servlet kontejner musí spravovat tyto zdroje
-            a~při příchozích požadavcích je načítat. Pro odkazování těchto souborů je jako kořenový adresář považován
+            a~načítat je při příchozích požadavcích. Pro odkazování těchto souborů je za kořenový adresář považován
             samotný archiv aplikace, takže cesta k~souboru web.xml je následující: \texttt{/WEB-INF/web.xml}.
 
             
@@ -320,7 +320,7 @@ webapp.war
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     \section{Nástroj Maven} \label{maven}
         Pro vývoj a~práci se serverem Jenkins CI v~podobě zdrojových kódů je zapotřebí nástroj Maven. 
-        Jeho využití je také nutné pro provedení integrace serveru Undertow do Jenkins CI. 
+        Je nutné jej také využít pro provedení integrace serveru Undertow do Jenkins~CI. 
         V~této kapitole budou o~něm poskytnuty pouze základní informace. Pro případné bližší
         seznámení se s~tímto nástrojem lze další informace získat z~webových stránek projektu \cite{mavenWeb},
         ze~kterých byly čerpány informace v~této kapitole. 
@@ -342,13 +342,13 @@ webapp.war
 
         Zmíněný lokální repozitář neslouží pouze ke stahování knihoven ze serveru, ale
         také pro ukládání lokálně vyvíjených aplikací.
-        Pokud je aplikace vyvíjena lokálně a~skládá se z~více nezávislých modulů, tak je potřeba
+        Pokud je aplikace vyvíjena lokálně a~skládá se z~více nezávislých modulů, je potřeba
         postupně tyto moduly přidávat do lokálního repozitáře, aby je při sestavování
         výsledného programu Maven mohl najít (na serveru je totiž nenajde). Pro přidání modulu či aplikace do 
         lokálního repozitáře slouží parametr \texttt{install}.
 
 
-        Na příkladu \ref{jenkinsPom} je ukázka části souboru \texttt{pom.xml}, který je vytvořen pro Jenkins~CI:
+        Na příkladu \ref{jenkinsPom} je zobrazena ukázka části souboru \texttt{pom.xml}, který je vytvořen pro Jenkins~CI:
         
         \newpage
         \begin{priklad} \label{jenkinsPom} 
@@ -369,7 +369,7 @@ webapp.war
 \end{verbatim}
         \end{priklad}
 
-        V~části \texttt{repository} je definována cesta k~serveru, z~kterého má Maven stahovat potřebné soubory
+        V~části \texttt{repository} je definována cesta k~serveru, ze~kterého má Maven stahovat potřebné soubory
         a~v~těle značky \texttt{dependency} je pomocí hodnot \emph{groupId, artifactId} a~\emph{version} jednoznačně
         definována potřebná knihovna. Na základě těchto informací poté Maven při překladu stáhne požadovanou
         knihovnu a~při distribuci aplikace nemusí být tato knihovna k~programu přibalena. 
@@ -389,9 +389,9 @@ webapp.war
         Jetty je webový server a~poskytuje funkcionalitu servlet kontejneru dle specifikace verze~3.0. 
         Návrh serveru umožňuje samostatné spouštění aplikací i~jeho integraci do jiné aplikace. 
         Kromě těchto základních možností obsahuje
-        řadu souvisejících technologií, jako jsou SPDY, webové sokety\footnote{Oficiální stránky 
+        řadu souvisejících technologií jako jsou SPDY, webové sokety\footnote{Oficiální stránky 
             specifikace webových soketů: \texttt{http://www.websocket.org/}}(angl. \emph{websocket}) a~další. 
-        Informace v~této kapitole byly čerpány z~webových stránek serveru Jetty \cite{jettyWeb}, kde lze nalézt 
+        Informace v~této kapitole byly čerpány z~webových stránek serveru Jetty \cite{jettyWeb}, na kterých lze nalézt 
         další informace o~zmíněných technologiích a~o~tomto serveru.
         
         Aktuální využití serveru Jetty v~aplikaci Jenkins CI je podrobněji rozebráno
@@ -403,12 +403,12 @@ webapp.war
     \section{Servlet kontejner Winstone} \label{winstone}
         Další komponentou serveru Jenkins CI je servlet kontejner Winstone.
         Winstone je velmi jednoduchý a~poskytuje funkcionalitu
-        servlet kontejneru aniž by byl zatížen velkým množstvím požadavků, které jsou ve specifikaci jazyka Java EE.
+        servlet kontejneru, aniž by byl zatížen velkým množstvím požadavků, které jsou ve specifikaci jazyka Java EE.
         Nikdy neposkytoval veškeré služby servlet kontejneru, které specifikace jazyka definuje. 
         V~jeho názvu je zahrnutý pouze pojem servlet kontejner, ale tato aplikace vykonává i~služby
         webového serveru odpovídající popisu v~kapitole \ref{servletWebserver}.
 
-        Hlavními cíli projektu bylo poskytovat funkcionalitu servlet kontejneru pouze pro jednu aplikaci,
+        Hlavními cíli projektu bylo poskytnout funkcionalitu servlet kontejneru pouze pro jednu aplikaci,
         což je opačný přístup než u~běžných aplikačních serverů jako jsou Glasfish, JBoss a~jiné.
         Díky jeho omezeným službám je jeho velikost velmi malá a~umožňuje jednoduchou integraci
         s~cílovou aplikací.
@@ -428,7 +428,7 @@ webapp.war
             Zpočátku možnosti servlet kontejneru postačovaly, ale časem bylo potřeba, aby 
             byly přidávány nové funkcionality, které odpovídají aktuálním trendům
             a~novým specifikacím. Příkladem mohou být nové specifikace servlet kontejneru nebo
-            vývoj nových technologií jako webové sokety.
+            vývoj nových technologií jako např. webové sokety.
 
 
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -460,7 +460,7 @@ webapp.war
         Těsně před integrací serveru Jetty s~Jenkins CI
         vznikalo zadání tohoto diplomového projektu, které mělo za cíl
         výrazně zlepšit aktuální stav servlet kontejneru v~projektu Jenkins~CI. Během
-        formulace zadání byl servlet kontejner v~projektu přepracován a~proto
+        formulace zadání byl servlet kontejner v~projektu přepracován, a~proto
         muselo být zadání upraveno. I~po této změně byly stále důvody pro 
         nahrazení stávajícího servlet kontejneru serverem Undertow.
         Aktuální situace již není tak kritická jako v~předchozí verzi,
@@ -499,7 +499,7 @@ webapp.war
             Tohoto přístupu je dosaženo kombinováním a~řetězením
             obslužných funkcí (angl. \emph{handler}), které server poskytuje.
             Díky tomuto přístupu je server velmi flexibilní a~v~jeho důsledku
-            také patřičně rychlý, protože uživatele nebrzdí funkcionality
+            také patřičně rychlý, protože uživatele nebrzdí funkce
             serveru, které nutně nepotřebuje a~nevyužívá.
             
             Při komunikaci umožňuje server podporu jak pro asynchronní, tak
