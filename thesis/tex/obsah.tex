@@ -1627,7 +1627,7 @@ HttpHandler httpHandler = manager.start();
             Samotný server Jenkins CI na počátku provádí asynchronně různé činnosti (např. zjišťování aktualizací),
             což může ovlivnit především počátek testování. Při testování byla tendence spustit testovací 
             skript okamžitě po spuštění, ale jelikož neběžel na stejném serveru jako testovaná
-            aplikace, tak nebylo možné dosáhnout přesně stejného okamžiku. 
+            aplikace, nebylo možné dosáhnout přesně stejného okamžiku. 
 
             \medskip
             Z~těchto důvodů byla zkoumána především průměrná odezva serveru v~dlouhém časovém
@@ -1638,7 +1638,7 @@ HttpHandler httpHandler = manager.start();
             Tento stav byl definován jako okamžik, kdy je v~aktuálním stavu
             pokles průměrné doby odezvy serveru 
             menší než $0,5\%$ (definováno ve vzorci \ref{eqStabilni})
-            oproti třem předcházejícím naměřeným hodnotám (většinou období 3 sekund).
+            oproti třem předcházejícím naměřeným hodnotám (většinou rozmezí tří sekund).
             
             \begin{equation}\label{eqStabilni}
                 \frac{\mid predchozi\_hodnota - aktualni\_hodnota\mid}{predchozi\_hodnota} < 0,005
@@ -1647,7 +1647,7 @@ HttpHandler httpHandler = manager.start();
 
         
             Při analýze naměřených hodnot byla počítána jejich směrodatná odchylka, která je
-            definováná v~rovnici \ref{eqOdchylka}, a~aritmetický průměr
+            definována v~rovnici \ref{eqOdchylka}, a~aritmetický průměr
             definovaný v~rovnici \ref{eqPrumer}.
             \begin{equation}\label{eqOdchylka}
                 s~= \sqrt{\frac{1}{N} \sum_{i=1}^N (x_i - \overline{x})^2}      
@@ -1659,7 +1659,7 @@ HttpHandler httpHandler = manager.start();
             \medskip
 
             V~každém scénáři byly porovnány průměrné doby odezvy původní a~nové
-            varianty serveru Jenkins CI a~bylo spočítáno zrychlení aplikace (případně zpomalení) pomocí vzorce~\ref{eqZrychleni}.
+            varianty serveru Jenkins CI a~také bylo spočítáno zrychlení aplikace (případně zpomalení) pomocí vzorce~\ref{eqZrychleni}.
 
             \begin{equation}\label{eqZrychleni}
                 \left(\frac{Prumerna\_rychlost\_puvodni\_implementace}{Prumerna\_rychlost\_nove\_implementace} - 1\right)* 100 ~~ [\%]
@@ -1692,7 +1692,7 @@ HttpHandler httpHandler = manager.start();
                 9 & 29,323 & 163 & 26,528 & 119\\\hline
                 10 & 29,839 & 143 & 26,786 & 119\\\hline
               \end{tabular}
-              \caption{ Tabulka zobrazující výsledky jednotlivých běhů experimentu, kdy byla získávána hlavní stránka Jenkins CI}
+              \caption{ Tabulka zobrazující výsledky jednotlivých běhů experimentu, při kterém byla získávána hlavní stránka Jenkins CI}
               \label{tabMainPageMain}
              \end{center}
             \end{adjustwidth}
@@ -1710,7 +1710,7 @@ HttpHandler httpHandler = manager.start();
                 Nová verze & 26,772 &  0,477 &  126,6 &  18,195\\\hline
                 \textbf{Rozdíl} &  \textbf{3,141}  &  \textbf{0,265}  &  \textbf{2,9}  &  \textbf{6,718}\\\hline  
               \end{tabular}
-              \caption{Tabulka shrnující výsledky celého experimentu, kdy byla získávána hlavní stránka Jenkins CI}
+              \caption{Tabulka shrnující výsledky celého experimentu, při kterém byla získávána hlavní stránka Jenkins CI}
               \label{tabMainPageFinal}
              \end{center}
              \end{adjustwidth}
@@ -1718,7 +1718,7 @@ HttpHandler httpHandler = manager.start();
 
             Průběh průměrné doby odezvy serverů je zobrazen v~grafu \ref{imgGetMainPageCely} a~v~grafu
             \ref{imgGetMainPageCast} je zachycen detail pozdější fáze testu, kdy se už průměrná doba odezvy téměř neměnila.
-            Z~důvodu lepší čitelnosti grafů jsou vyneseny pouze ty experimenty, kdy byly naměřené nejlepší a~nejhorší hodnoty
+            Z~důvodu lepší čitelnosti grafů jsou vyneseny pouze ty experimenty, ve kterých byly naměřeny nejlepší a~nejhorší hodnoty
             pro danou variantu serveru.
             Pro vyhodnocení byly z~naměřených dat vypočítány hodnoty aritmetického průměru a~směrodatné odchylky,
             které shrnují naměřená data v~experimentech (tabulka \ref{tabMainPageFinal}).
@@ -1749,7 +1749,7 @@ HttpHandler httpHandler = manager.start();
 
             \medskip
             Na počátku testů byla odezva serveru vždy vysoká, ale v~průběhu docházelo k~jejímu rapidnímu poklesu.
-            Tento pokles a~stabilní stav nastával u~nové varianty serveru mírně dříve a~ze
+            Tento pokles a~stabilní stav nastával u~nové varianty serveru trochu dříve a~ze
             směrodatné odchylky vidíme, že jeho okamžik nastával v~menším rozpětí než u~varianty původní. Hlavním
             zjištěním testu je pokles průměrné doby odezvy serveru Jenkins~CI o~asi 3,141 milisekund,
             což představuje zrychlení celé aplikace v~průměru o~\textbf{11,73\%} (dle vztahu pro výpočet \ref{eqZrychleni}).
@@ -1758,7 +1758,7 @@ HttpHandler httpHandler = manager.start();
             ale rozdíl není příliš velký.
             Tento fakt můžeme pozorovat i~na grafu~\ref{imgGetMainPageCast}.
             
-            U~zjištěného zrychlení je důležité zdůraznit, že se jedná o~zrychlení celé aplikace, takže
+            K samotnému zjištěnému zrychlení je důležité poznamenat, že se jedná o~zrychlení celé aplikace, takže
             zrychlení samotného servlet kontejneru bylo oproti původní variantě ještě vyšší než naměřených 11,73\%.
             
 
@@ -1797,7 +1797,7 @@ HttpHandler httpHandler = manager.start();
                 9 & 1838,782 & 108 & 1810,809 & 100\\\hline
                 10 & 1811,317 & 104 & 1789,687 & 104\\\hline
               \end{tabular}
-              \caption{Tabulka zobrazující výsledky jednotlivých běhů experimentu, kdy byla získávána konfigurace úlohy}
+              \caption{Tabulka zobrazující výsledky jednotlivých běhů experimentu, při kterém byla získávána konfigurace úlohy}
               \label{tabGetFreestyleMain}
              \end{center}
             \end{adjustwidth}
@@ -1817,7 +1817,7 @@ HttpHandler httpHandler = manager.start();
                 Nová verze &  1768,139 &  20,229 &  97,300 &  5,496\\\hline
                 \textbf{Rozdíl} &  \textbf{66,516} &  \textbf{10,098} &  \textbf{7,400} &  \textbf{5,339}\\\hline  
               \end{tabular}
-              \caption{Tabulka shrnující výsledky měřeného experimentu, kdy byla získávána konfigurace úlohy}
+              \caption{Tabulka shrnující výsledky měřeného experimentu, při kterém získávána konfigurace úlohy}
               \label{tabGetFreestyleFinal}
              \end{center}
              \end{adjustwidth}
@@ -1846,16 +1846,16 @@ HttpHandler httpHandler = manager.start();
              \end{adjustwidth}
             \end{figure}
 
-            V~průběhu tohoto testu byl opět zaznamenán velký pokles doby odezvy na začátků experimentů.
+            V~průběhu tohoto testu byl opět zaznamenán velký pokles doby odezvy na začátcích experimentů.
             Z~grafů vidíme, že k~ustálení stavu v~nové variantě docházelo v~nejlepším případě v~obdobné době.
-            Naopak z~grafů i~hodnot směrodatné odchylky vidíme,
+            Naopak z~grafů i~hodnot směrodatné odchylky je zřejmé,
             že v~nejhorší variantě byla doba ustálení u~původní implementace Jenkins CI znatelně horší.
 
             Z~pohledu naměřených hodnot průměrné doby odezvy byl zaznamenán pokles
             u~nové varianty asi o~66,52 milisekund, což činí zrychlení o~\textbf{3,76\%}.
-            Na grafu \ref{imgGetFreestyleCast} lze vidět, že v~obou variantách 
+            Grafu \ref{imgGetFreestyleCast} ukazuje, že v~obou variantách 
             docházelo k~mírným záchvěvům v~průběhu testů. Tyto stavy byly zřejmě 
-            způsobeny tím, že požadavků na server docházelo velké množství
+            způsobeny tím, že docházelo velké množství požadavků na server
             a~požadovaný úkon je výpočetně náročný. 
             Nicméně z~pohledu rozptylu naměřených hodnot mezi jednotlivými
             běhy poskytovala nová varianta Jenkins CI lepší hodnoty,
@@ -1872,10 +1872,10 @@ HttpHandler httpHandler = manager.start();
             Jelikož v~průběhu testování tohoto scénáře na serveru vznikalo velmi velké množství dat v~Jenkins CI (řádově stovky tisíc úloh),
             tak musela být stanovena nižší doba testování i~počet vláken, které posílají požadavky.
             Navíc před každým spuštěním byla smazána domovská složka aplikace. Pokud by smazání neproběhlo,
-            tak by narůstající počet dat mohl ovlivňovat pozdější běhy testů.
+            mohlo by narůstající množství dat ovlivňovat pozdější běhy testů.
 
             Výsledky testu jsou zobrazeny v~grafech \ref{imgCreateFreestyleCely} a~\ref{imgCreateFreestyleCast}.
-            V~tabulce \ref{tabCreateFreestyleFinal} jsou uvedené vypočítané statistické hodnoty
+            V~tabulce \ref{tabCreateFreestyleFinal} jsou uvedeny statistické hodnoty vypočítané
             z~naměřených dat, které obsahuje tabulka \ref{tabCreateFreestyleMain}.
 
             \begin{table}[ht]
@@ -1897,7 +1897,7 @@ HttpHandler httpHandler = manager.start();
                 9 & 20,162 & 9 & 19,433 & 16\\\hline
                 10 & 19,838 & 12 & 19.590 & 16\\\hline
               \end{tabular}
-              \caption{Tabulka zobrazující výsledky jednotlivých běhů experimentu, kdy byla vytvářena nová úloha}
+              \caption{Tabulka zobrazující výsledky jednotlivých běhů experimentu, při kterém byla vytvářena nová úloha}
               \label{tabCreateFreestyleMain}
              \end{center}
             \end{adjustwidth}
@@ -1917,7 +1917,7 @@ HttpHandler httpHandler = manager.start();
                 Nová verze &  19,665 &  0,282 &  15,900 & 1,814 \\\hline
                 Rozdíl & $-$0,021  &  0,099 &  $-$5,000 & 1,100 \\\hline  
               \end{tabular}
-              \caption{Tabulka shrnující výsledky měřeného experimentu, kdy byla vytvářena nová úloha}
+              \caption{Tabulka shrnující výsledky měřeného experimentu, při kterém byla vytvářena nová úloha}
               \label{tabCreateFreestyleFinal}
              \end{center}
              \end{adjustwidth}
@@ -1949,23 +1949,23 @@ HttpHandler httpHandler = manager.start();
 
             Na počátku experimentů došlo opět k~výraznému poklesu doby odezvy, ale oproti
             předchozím dvěma případům se rychleji do stabilního stavu dostávala původní implementace Jenkins CI.
-            Tento trend vidíme jak na grafu \ref{imgCreateFreestyleCast}, tak z~průměrných
-            hodnot stabilního stavu.
+            Tuto tendenci potvrzují jak graf \ref{imgCreateFreestyleCast}, tak i průměrné hodnoty stabilního
+            stavu.
 
             V~tomto testovaném případě se nepotvrdilo zrychlení nové implementace Jenkins CI,
             které bylo naměřeno v~předchozích testovaných případech. Bylo naměřeno
             mírné zpomalení o~0,021 milisekund, což je vyjádřeno procenty \textbf{0,11\%}.
             Tato hodnota je velmi nízká a~můžeme tedy prohlásit, že v~tomto experimentu
-            byly z~pohledu doby odezvy obě varianty rovnocené.
-            Podobnost krajních hodnoty průměrné doba odezvy je také vidět na grafu \ref{imgCreateFreestyleCast}.
+            byly z~hlediska doby odezvy obě varianty rovnocenné.
+            Podobnost krajních hodnot průměrné doby odezvy je také patrná z grafu \ref{imgCreateFreestyleCast}.
 
 
     \section{Zhodnocení výsledků testování} \label{kapPerfVysledky}
-        Ve třech testovacích případech byly otestovány původní implementace Jenkins CI
+        Ve třech zkoumaných případech byly otestovány původní implementace Jenkins CI
         a~implementace s~novým vestavěným servlet kontejnerem.
 
         V~prvních dvou případech dosáhla nová varianta lepších výsledků
-        výkonnosti z~pohledu doby odezvy aplikace. V~prvním případě zrychlení činilo téměř 12\%
+        výkonnosti z~pohledu doby odezvy aplikace. V~prvním případě činilo zrychlení téměř 12\%
         a~ve druhém případě téměř 4\%. V~těchto dvou případech nová varianta
         dosahovala stabilnějších výsledků mezi měřeními a~bylo zaznamenáno 
         zkrácení doby, kdy docházelo k~ustálení odpovědí serveru.
@@ -1979,7 +1979,7 @@ HttpHandler httpHandler = manager.start();
         \medskip
         V~provedených měřeních byla tedy implementace Jenkins CI s~novým
         servlet kontejnerem rychlejší než původní verze. Průměrné zrychlení
-        aplikace činilo asi 5,1\% (počítáno jako aritmetický průměr ze tří hodnot zrychlení).
+        aplikace činilo přibližně 5,1\% (počítáno jako aritmetický průměr ze tří hodnot zrychlení).
         Nová implementace také většinou poskytovala stabilnější hodnoty mezi jednotlivými měřeními.
 
         Rychlost servlet kontejneru ovlivňuje všechny testované činnosti, ale podstatná část
@@ -1989,7 +1989,7 @@ HttpHandler httpHandler = manager.start();
 
     \section{Zhodnocení přínosu pro komunitu Jenkins CI} \label{kapPrinos}
         Cíl vytvořit servlet kontejner založený na serveru Undertow, který bude
-        funkčně kompatibiltní se stávajícím servlet kontejnerem v~Jenkins CI, se podařilo
+        funkčně kompatibilní se stávajícím servlet kontejnerem v~Jenkins CI, se podařilo
         naplnit. Tento vytvořený servlet kontejner bude v~následujících dnech
         představen komunitě Jenkins CI.
 
