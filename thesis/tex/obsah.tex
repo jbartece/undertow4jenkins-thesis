@@ -1173,11 +1173,21 @@ HttpHandler httpHandler = manager.start();
 \chapter{Implementace}  \label{kapImpl}
     Tato kapitola popisuje způsob, jakým byla provedena samotná integrace serveru Undertow do Jenkins CI.
     Jednotlivé kroky zde popisované se přímo vážou k~informacím, které byly uvedeny v~předchozích kapitolách.
+    
+    Na začátku jsou popsány obecné informace o implementaci (kapitola \ref{implZaklad})
+    a je detailněji rozebrána struktura aplikace a způsob implementace
+    základních funkcí servlet kontejneru (kapitola \ref{implDetail}). 
+    Následně jsou zmíněny hlavní problémy, které se naskytly a musely
+    být řešeny (kapitola \ref{implProblemy}).
+    Závěrem této kapitoly je blíže vymezena míra zachování zpětné kompatibility
+    vytvořené implementace (kapitola \ref{implOmezeni}) a je popsán způsob
+    spuštění této nové implementace (kapitola \ref{implSpusteni}).
+
 
     
 
     
-    \section{Základní informace}
+    \section{Základní informace} \label{implZaklad}
         Integrace serveru Undertow do Jenkins CI zahrnovala vytvoření nového projektu, který 
         jsem pojmenoval \emph{Undertow4Jenkins}. 
         Jak vyplývá z~předchozích kapitol, tak program byl vytvořen v~jazyce Java a~jeho základ 
@@ -1207,7 +1217,7 @@ HttpHandler httpHandler = manager.start();
         například při volbě šifrovacích protokolů pro nastavení komunikaci pomocí protokolu HTTPS nebo nastavení zaznamenávání
         příchozích požadavků.
         
-     \section{Rozbor způsobu implementace}
+     \section{Rozbor způsobu implementace} \label{implDetail}
         Tato kapitola se více zaměřuje na způsob, jakým byla implementace provedena. Jsou rozebrány nejdůležitější
         části implementace výsledného servlet kontejneru, způsob integrace do Jenkins CI
         a~celé jeho architektura. V~této kapitole se předpokládá, že čtenář je
@@ -1437,7 +1447,7 @@ HttpHandler httpHandler = manager.start();
 
 
 
-    \section{Řešené problémy při implementaci}
+    \section{Řešené problémy při implementaci} \label{implProblemy}
         Při implementaci jsem se potýkal s~nedostatečným komentováním zdrojových kódů serveru Undertow.
         Velká část serveru je naprosto nedostatečně komentovaná a~největším problémem je, že
         není komentované ani veřejné rozraní API. 
@@ -1456,7 +1466,7 @@ HttpHandler httpHandler = manager.start();
         souboru \emph{web.xml} pomocí jediného volání metody serveru.
 
         
-    \section{Omezení aplikace}
+    \section{Omezení aplikace} \label{implOmezeni}
         Veškerá podstatná funkčnost servlet kontejneru byla zachována,
         ale některé nedůležité parametry nebyly implementovány. Aby nedocházelo
         k~problémům s~kompatibilitou (např. při spouštění staršími skripty), tak program zadání těchto
@@ -1514,7 +1524,7 @@ HttpHandler httpHandler = manager.start();
 
 
 
-    \section{Spuštění a~testování}
+    \section{Spuštění a~testování} \label{implSpusteni}
         Nová implementace servlet kontejneru byla vyvíjena jako samostatný modul a~její přeložení
         a~uložení do lokálního Maven repozitáře provede následující příkaz (volaný z~adresáře projektu
         Undertow4Jenkins):
@@ -1557,13 +1567,13 @@ HttpHandler httpHandler = manager.start();
     V~této kapitole je porovnána z~hlediska výkonu upravená varianta Jenkins CI s~jeho původní implementací.
     Kapitoly \ref{kapPodminky} a~\ref{testovanePripady} se zabývají samotným testování
     výkoností obou implementací. Výsledky testování jsou shrnuty v~kapitole \ref{kapPerfVysledky}
-    a~na závěr této části jsou diskutovány přínosy tohoto projektu pro komunitu Jenkins CI \ref{kapPrinos}.
+    a~na závěr této části jsou diskutovány přínosy tohoto projektu pro komunitu Jenkins CI (kapitola \ref{kapPrinos}).
 
     \section{Podmínky pro testování}\label{kapPodminky}
         Testování probíhalo na dvou serverech, které jsou používány pro běh Jenkins CI ve firmě RedHat, ale
         v~průběhu testování byly dané instance Jenkins CI vypnuté. 
         Oba servery se nacházejí ve stejné laboratoři, což umožnilo minimalizovat
-        ovlivnění výsledků zpožděním na síti. Testování nemohlo probhat pouze na jednom
+        ovlivnění výsledků zpožděním na síti. Testování nemohlo probíhat pouze na jednom
         serveru, protože by se instance aplikace a~testovací skripty navzájem ovlivňovaly.
         
         V~průběhu testování na jedno serveru běžela testovaná aplikace Jenkins CI a~na druhém běžely testovací
@@ -1576,11 +1586,11 @@ HttpHandler httpHandler = manager.start();
         \texttt{https://www.perfcake.org/}}. Tento framework je jednoduchým \emph{open source} testovacím nástrojem
         ovládaným z~příkazové řádky, 
         který poskytuje podporu pro testování aplikací. Způsob testování aplikace se definuje pomocí
-        souboru XML \cite{perfcake}.
+        souboru XML~\cite{perfcake}.
         Pro potřeby této práce byly definovány tři testovací případy, jejichž popisem i~vyhodnocením se 
         zabývá následující kapitola. 
 
-        Výsledky, které byly naměřené v~rpůběhu testování, jsou uloženy na přiloženém DVD.
+        Výsledky, které byly naměřené v~ppůběhu testování, jsou uloženy na přiloženém DVD.
              
         
 
