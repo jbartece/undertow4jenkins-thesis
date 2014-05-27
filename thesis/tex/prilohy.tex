@@ -17,15 +17,54 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\chapter{Návod na přeložení a spuštění výsledné aplikace} \label{prilohaNavod}
- %   Zde uvedený postup pro přeložení a spuštění aplikace se neliší od popisu v textu práce,
- %   ale pouze shrnuje uvedená fakta.
- %   Pro přeložení a spuštění Jenkins CI s novým servlet kontejnerem
- %   je potřeba učinit následující kroky:
+\chapter{Návod na přeložení a spuštění výsledné aplikace} \label{prilohaNavod}
+    Zde uvedený postup pro přeložení a spuštění aplikace se neliší od popisu v textu práce,
+    ale pouze shrnuje uvedená fakta.
+    Pro přeložení a spuštění Jenkins CI s novým servlet kontejnerem
+    je potřeba učinit následující kroky:
 
- %   \begin{enumerate}
- %       \item TODO %TODO
- %   \end{enumerate}
+    \begin{enumerate}
+        \item Nainstalovat program Maven a zajistit přístup na internet
+        \item Provést překlad projektu \emph{undertow4jenkins} a upraveného modulu \\\emph{extras-executable-war}
+            spuštěním příkazu: 
+
+\vspace{-0.3cm}
+\begin{verbatim}            
+    mvn clean install -DskipTests
+\end{verbatim}
+\vspace{-0.3cm}
+
+            Tento příkaz je nutné spustit z kořenového adresáře obou projektů. Pro spuštění testování
+            stačí vypustit parametr \texttt{-DskipTests}.
+
+        \item Přeložit upravenou aplikaci Jenkins CI spuštěním následujícího příkazu z kořenové
+            složky projektu:
+
+\vspace{-0.3cm}
+\begin{verbatim}
+    mvn clean install -pl war -am -DskipTests
+\end{verbatim}
+\vspace{-0.3cm}
+
+        \item Spustit přeloženou aplikaci Jenkins CI z vytvořeného archivu příkazem:
+\vspace{-0.3cm}
+\begin{verbatim}
+    java -jar war/target/jenkins.war
+\end{verbatim}
+\vspace{-0.3cm}
+            
+            V příkladu je použito výchozí umístění archivu po přeložení aplikace (vzhledem
+            ke kořenovému adresáři Jenkins CI). Pro vypsání možných úrav
+            spuštění aplikace lze vypsat všechny parametry zadáním parametru \texttt{--help}.
+
+        \item Nyní by se aplikace měla během několika sekund spustit a je možné s ní pracovat
+            pomocí webového prohlížeče zadáním URL adresy:
+
+\vspace{-0.3cm}
+\begin{verbatim}
+    http://localhost:8080
+\end{verbatim}
+    \end{enumerate}
 
 
 
@@ -44,7 +83,7 @@
 
     Pro některé URL adresy nebyl rozsah stránky dostatečný a proto byly
     rozděleny na dvě části, ale ve skutečnosti musí být spojeny.
-    Vytvořené scénáře jsou také uložené na přiloženém DVD a jejich text je následující:
+    Vytvořené scénáře jsou uložené na přiloženém DVD a jejich text je následující:
        \begin{itemize}
         \item Scénář pro testování zobrazení hlavní stránky:
 \begin{verbatim}
