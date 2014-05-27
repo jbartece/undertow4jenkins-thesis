@@ -1726,7 +1726,7 @@ HttpHandler httpHandler = manager.start();
              \begin{adjustwidth}{-0.5cm}{}
                 \begin{center}
                     \scalebox{0.65}{\includegraphics{img/getMainPage_cely.png}}
-                    \caption{Průběh naměřených hodnot při testu získávání hlavní stránky projektu.
+                    \caption{Průběh průměrné doby odezvy při testu získávání hlavní stránky projektu.
                         Graf zobrazuje nejlepší a~nejhorší naměřený případ pro obě varianty.  
                         Na svislé ose je použito logaritmické měřítko.}
                     \label{imgGetMainPageCely}
@@ -1738,7 +1738,7 @@ HttpHandler httpHandler = manager.start();
              \begin{adjustwidth}{-0.5cm}{}
                 \begin{center}
                     \scalebox{0.65}{\includegraphics{img/getMainPage_cast.png}}
-                    \caption{Část průběhu naměřených hodnot při testu získávání hlavní stránky projektu.
+                    \caption{Část průběhu průměrné doby odezvy  při testu získávání hlavní stránky projektu.
                         Graf zobrazuje nejlepší a~nejhorší naměřený případ pro obě varianty.}
                     \label{imgGetMainPageCast}
                 \end{center}
@@ -1766,15 +1766,15 @@ HttpHandler httpHandler = manager.start();
             V~tomto testu byly pomocí metody \texttt{GET} posílány požadavky na získání
             konfigurace jedné vytvořené úlohy na serveru (tzv. \emph{freestyle job}). 
             Testovací skript posílal požadavky pomocí \textbf{padesáti} vláken po dobu \textbf{osmi} minut.
-            Pro každou variantu serveru bylo uskutečněno \textbf{10 běhů}. 
+            Pro každou variantu serveru bylo uskutečněno \textbf{10~běhů}. 
 
             Výsledky tohoto testu jsou zobrazeny v~grafech \ref{imgGetFreestyleCely} a~\ref{imgGetFreestyleCast}.
-            Z~naměřených dat vypočítány hodnoty aritmetického průměru a~směrodatné odchylky,
-            které shrnují naměřená data v~experimentech (tabulka \ref{tabGetFreestyleFinal}).
-            +Jelikož na
-            počátku testů nedocházelo vždy k~poklesům hodnot okamžitě zřejmě z~důvodu
-            náročnosti operace, tak pro určení stabilního stavu (vzorec \ref{eqStabilni}) byla přidána
-            podmínka, že průměrná hodnota doby odezvy musí být nižší než 4s.
+            Z~naměřených dat (tabulka~\ref{tabGetFreestyleMain}) byly vypočítány hodnoty aritmetického průměru a~směrodatné odchylky,
+            které naměřená data shrnují (tabulka \ref{tabGetFreestyleFinal}).
+            Jelikož na
+            počátku testů nedocházelo vždy k~poklesům hodnot okamžitě (zřejmě z~důvodu
+            náročnosti operace), tak pro určení stabilního stavu (vzorec \ref{eqStabilni}) byla přidána
+            podmínka, že průměrná hodnota doby odezvy musí být nižší než 4 sekundy.
 
 
             \begin{table}[ht]
@@ -1785,19 +1785,19 @@ HttpHandler httpHandler = manager.start();
                 \multirow{4}{*}{Běh}  &   \multicolumn{2}{c||}{\textbf{Původní verze}}  &  \multicolumn{2}{c|}{\textbf{Nová verze}}\\ \cline{2-5}
                  & \textbf{Aritmetický} &  \textbf{Stabilní} &  \textbf{Aritmetický}  &  \textbf{Stabilní}\\  
                  & \textbf{průměr odezvy} [ms]  &   \textbf{stav} [s]  &  \textbf{průměr odezvy} [s] &  \textbf{stav} [s]\\\hline
-                1 & 1834.752 & 112 &  1780.747 & 102\\\hline
-                2  & 1821.016 & 100 & 1753.001 & 96\\\hline
-                3 & 1797.174 & 89 & 1763.485 & 93\\\hline
-                4 & 1800.974  & 88 & 1734.458 & 92\\\hline
-                5 & 1833.579 & 104 & 1756.754 & 101\\\hline\hline
-                6 & 1833.173 & 105 & 1758.102 & 100\\\hline
-                7 & 1876.958 & 109 & 1771.095 & 85\\\hline
-                8 & 1898.825 & 128 & 1763.257 & 100\\\hline
-                9 & 1838.782 & 108 & 1810.809 & 100\\\hline
-                10 & 1811.317 & 104 & 1789.687 & 104\\\hline
+                1 & 1834,752 & 112 &  1780,747 & 102\\\hline
+                2  & 1821,016 & 100 & 1753,001 & 96\\\hline
+                3 & 1797,174 & 89 & 1763,485 & 93\\\hline
+                4 & 1800,974  & 88 & 1734,458 & 92\\\hline
+                5 & 1833,579 & 104 & 1756,754 & 101\\\hline\hline
+                6 & 1833,173 & 105 & 1758,102 & 100\\\hline
+                7 & 1876,958 & 109 & 1771,095 & 85\\\hline
+                8 & 1898,825 & 128 & 1763,257 & 100\\\hline
+                9 & 1838,782 & 108 & 1810,809 & 100\\\hline
+                10 & 1811,317 & 104 & 1789,687 & 104\\\hline
               \end{tabular}
               \caption{Tabulka zobrazující výsledky jednotlivých běhů experimentu, kdy byla získávána konfigurace úlohy}
-              \label{tabgetFreestyleMain}
+              \label{tabGetFreestyleMain}
              \end{center}
             \end{adjustwidth}
             \end{table}
@@ -1812,11 +1812,11 @@ HttpHandler httpHandler = manager.start();
                 \multirow{3}{*}{}  &   \multicolumn{2}{c||}{\textbf{Doba odezvy}}  &  \multicolumn{2}{c|}{\textbf{Stabilní stav}}\\ \cline{2-5}
                  & \textbf{Aritmetický}  &  \textbf{Směrodatná}  &  \textbf{Aritmetický} &  \textbf{Směrodatná}\\ 
                  & \textbf{průměr} [ms]  &  \textbf{odchylka} [ms]  &  \textbf{průměr} [s]  &  \textbf{odchylka} [s]\\ \hline
-                Původní verze &  1834.655 &  30.328 &  104.700 & 10.836 \\\hline
-                Nová verze &  1768.139 &  20.229 &  97.300 &  5.496\\\hline
-                Rozdíl &  66.516 &  10.098 &  7.400 &  5.339\\\hline  
+                Původní verze &  1834,655 &  30,328 &  104,700 & 10,836 \\\hline
+                Nová verze &  1768,139 &  20,229 &  97,300 &  5,496\\\hline
+                \textbf{Rozdíl} &  \textbf{66,516} &  \textbf{10,098} &  \textbf{7,400} &  \textbf{5,339}\\\hline  
               \end{tabular}
-              \caption{Tabulka shrnující výsledky měřeného experimentu, kdy byla získávána konfigurace úlohy.}
+              \caption{Tabulka shrnující výsledky měřeného experimentu, kdy byla získávána konfigurace úlohy}
               \label{tabGetFreestyleFinal}
              \end{center}
              \end{adjustwidth}
@@ -1826,7 +1826,7 @@ HttpHandler httpHandler = manager.start();
              \begin{adjustwidth}{-0.5cm}{}
                 \begin{center}
                     \scalebox{0.65}{\includegraphics{img/getFreestyleJob_cely.png}}
-                    \caption{Průběh naměřených hodnot při testu získávání konfigurace úlohy ze serveru.
+                    \caption{Průběh průměrné doby odezvy při testu získávání konfigurace úlohy ze serveru.
                         Graf zobrazuje nejlepší a~nejhorší naměřený případ pro každý server.  
                         Na svislé ose je použito logaritmické měřítko.}
                     \label{imgGetFreestyleCely}
@@ -1838,7 +1838,7 @@ HttpHandler httpHandler = manager.start();
              \begin{adjustwidth}{-0.5cm}{}
                 \begin{center}
                     \scalebox{0.65}{\includegraphics{img/getFreestyleJob_cast.png}}
-                    \caption{Průběh naměřených hodnot při testu získávání konfigurace úlohy ze serveru.
+                    \caption{Část průběhu průměrné doby odezvy při testu získávání konfigurace úlohy ze serveru.
                         Graf zobrazuje nejlepší a~nejhorší naměřený případ pro každý server.}
                     \label{imgGetFreestyleCast}
                 \end{center}
@@ -1847,11 +1847,11 @@ HttpHandler httpHandler = manager.start();
 
             V~průběhu tohoto testu byl opět zaznamenán velký pokles doby odezvy na začátků experimentů.
             Z~grafů vidíme, že k~ustálení stavu v~nové variantě docházelo v~nejlepším případě v~obdobné době.
-            Naopak z~grafův i~hodnot směrodatné odchylky vidíme,
-            že v~nejhorší variantě byla doba ustálení u~původní implementace Jenkins CI horší.
+            Naopak z~grafů i~hodnot směrodatné odchylky vidíme,
+            že v~nejhorší variantě byla doba ustálení u~původní implementace Jenkins CI znatelně horší.
 
             Z~pohledu naměřených hodnot průměrné doby odezvy byl zaznamenán pokles
-            u~nové varianty asi o~66.516 milisekund, což činí zrychlení o~\textbf{3.76\%}.
+            u~nové varianty asi o~66,52 milisekund, což činí zrychlení o~\textbf{3,76\%}.
             Na grafu \ref{imgGetFreestyleCast} lze vidět, že v~obou variantách 
             docházelo k~mírným záchvěvům v~průběhu testů. Tyto stavy byly zřejmě 
             způsobeny tím, že požadavků na server docházelo velké množství
@@ -1868,10 +1868,10 @@ HttpHandler httpHandler = manager.start();
             Testovací skript posílal požadavky pomocí \textbf{dvou} vláken po dobu \textbf{jedné} minuty.
             Pro každou variantu serveru bylo uskutečněno \textbf{10 běhů}.
 
-            Jelikož v~průběhu testování tohoto scénáře na serveru vznikalo velmi velké množství dat v~Jenkins CI (řádově stovky tisíc),
-            tak musela být stanovena nižší doba testování i~počet serverů, které posílají požadavky.
+            Jelikož v~průběhu testování tohoto scénáře na serveru vznikalo velmi velké množství dat v~Jenkins CI (řádově stovky tisíc úloh),
+            tak musela být stanovena nižší doba testování i~počet vláken, které posílají požadavky.
             Navíc před každým spuštěním byla smazána domovská složka aplikace. Pokud by smazání neproběhlo,
-            tak by mohly být ovlivňovány pozdější běhy testování narůstajícím množstvím dat.
+            tak by narůstající počet dat mohl ovlivňovat pozdější běhy testů.
 
             Výsledky tohoto testu jsou zobrazeny v~grafech \ref{imgCreateFreestyleCely} a~\ref{imgCreateFreestyleCast}.
             V~tabulce \ref{tabCreateFreestyleFinal} jsou uvedené vypočítané statistické hodnoty
@@ -1882,14 +1882,39 @@ HttpHandler httpHandler = manager.start();
              \begin{adjustwidth}{-0.5cm}{}
              \begin{center}
               \begin{tabular}{| c || c | c || c | c |} \hline
+                \multirow{4}{*}{Běh}  &   \multicolumn{2}{c||}{\textbf{Původní verze}}  &  \multicolumn{2}{c|}{\textbf{Nová verze}}\\ \cline{2-5}
+                 & \textbf{Aritmetický} &  \textbf{Stabilní} &  \textbf{Aritmetický}  &  \textbf{Stabilní}\\  
+                 & \textbf{průměr odezvy} [ms]  &   \textbf{stav} [s]  &  \textbf{průměr odezvy} [s] &  \textbf{stav} [s]\\\hline
+                1 & 1834,752 & 112 &  1780,747 & 102\\\hline
+                2  & 1821,016 & 100 & 1753,001 & 96\\\hline
+                3 & 1797,174 & 89 & 1763,485 & 93\\\hline
+                4 & 1800,974  & 88 & 1734,458 & 92\\\hline
+                5 & 1833,579 & 104 & 1756,754 & 101\\\hline\hline
+                6 & 1833,173 & 105 & 1758,102 & 100\\\hline
+                7 & 1876,958 & 109 & 1771,095 & 85\\\hline
+                8 & 1898,825 & 128 & 1763,257 & 100\\\hline
+                9 & 1838,782 & 108 & 1810,809 & 100\\\hline
+                10 & 1811,317 & 104 & 1789,687 & 104\\\hline
+              \end{tabular}
+              \caption{Tabulka zobrazující výsledky jednotlivých běhů experimentu, kdy byla vytvářena nová úloha}
+              \label{tabCreateFreestyleMain}
+             \end{center}
+            \end{adjustwidth}
+            \end{table}
+
+            \begin{table}[ht]
+             \catcode`\-=12
+             \begin{adjustwidth}{-0.5cm}{}
+             \begin{center}
+              \begin{tabular}{| c || c | c || c | c |} \hline
                 \multirow{3}{*}{}  &   \multicolumn{2}{c||}{\textbf{Doba odezvy}}  &  \multicolumn{2}{c|}{\textbf{Stabilní stav}}\\ \cline{2-5}
                  & \textbf{Aritmetický}  &  \textbf{Směrodatná}  &  \textbf{Aritmetický} &  \textbf{Směrodatná}\\ 
                  & \textbf{průměr} [ms]  &  \textbf{odchylka} [ms]  &  \textbf{průměr} [s]  &  \textbf{odchylka} [s]\\ \hline
-                Původní verze & 19.644  &  0.381 &  10.900 & 2.914 \\\hline
-                Nová verze &  19.665 &  0.282 &  15.900 & 1.814 \\\hline
-                Rozdíl & $-$0.021  &  0.099 &  $-$5.000 & 1.100 \\\hline  
+                Původní verze & 19,644  &  0,381 &  10,900 & 2,914 \\\hline
+                Nová verze &  19,665 &  0,282 &  15,900 & 1,814 \\\hline
+                Rozdíl & $-$0,021  &  0,099 &  $-$5,000 & 1,100 \\\hline  
               \end{tabular}
-              \caption{Tabulka shrnující výsledky měřeného experimentu, kdy byla vytvářena nová úloha.}
+              \caption{Tabulka shrnující výsledky měřeného experimentu, kdy byla vytvářena nová úloha}
               \label{tabCreateFreestyleFinal}
              \end{center}
              \end{adjustwidth}
@@ -1943,7 +1968,7 @@ HttpHandler httpHandler = manager.start();
         také k~ustálení odpovědí serveru, ale zlepšení nebylo výrazné.
 
         V~posledním testovaném případě nebylo prokázáno zrychlení, ale mírné zpomalení
-        o~0.1\%. Nicméně tato hodnota je velmi nízká a~lze prohlásit, že
+        o~0,1 \%. Nicméně tato hodnota je velmi nízká a~lze prohlásit, že
         byly obě implementace v~tomto testovaném případě stejně rychlé. 
         Z~pohledu rychlosti ustálení serveru byla v~tomto případě mírně lepší původní
         implementace Jenkins CI.
