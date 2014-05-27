@@ -46,11 +46,11 @@ v~závěru této práce zhodnocen její přínos pro komunitu projektu Jenkins C
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Jenkins CI a~související nástroje} \label{kapJenkins}
-    Tato kapitola se zaměřuje na teoretické základy práce, které je nutné nebo vhodné znát pro pochopení zpracovávané problematiky.
-    Je zde detailněji popsán systém Jenkins CI (kapitola~\ref{jenkins}) ke kterému se tato práce přímo váže. S~ním je spojeno seznámení
-    se servery Winstone (kapitola \ref{winstone}) a~Jetty (kapitola \ref{jetty}), jejichž kombinace je současně v~Jenkins CI integrována.
+    Tato kapitola se zaměřuje na teoretické základy práce, které je vhodné znát pro pochopení zpracovávané problematiky.
+    Je zde detailněji popsán systém Jenkins CI (kapitola~\ref{jenkins}), ke kterému se tato práce přímo váže. S~ním je spojeno seznámení
+    se se servery Winstone (kapitola \ref{winstone}) a~Jetty (kapitola \ref{jetty}), jejichž kombinace je současně v~Jenkins CI integrována.
     Po popisu těchto serverů je rozebírán průběh jejich využití v~servlet kontejneru Jenkins CI a~průběh jeho vývoje (kapitola \ref{vyvojWinstone}). 
-    V~kapitole \ref{servletWebserver} jsou vysvětleny často zde používané pojmy \emph{servlet kontejner} a~webový server.
+    V~kapitole \ref{servletWebserver} jsou vysvětleny často v~práci používané pojmy \emph{servlet kontejner} a~webový server.
 
     Větší důraz je dále věnován serveru Undertow (kapitola \ref{undertow}), který byl vybrán jako nový webový server pro Jenkins CI. V~tomto případě je provedena hlubší studie
     tohoto nástroje, aby na jejím základě bylo možné pochopit a~provést samotnou integraci s~Jenkins CI, která je jádrem této práce. 
@@ -71,16 +71,17 @@ v~závěru této práce zhodnocen její přínos pro komunitu projektu Jenkins C
         stále objevuje název Hudson, ale jedná se pouze o~pozůstatek z~původního projektu.
 
         Zkratka CI je z~anglického spojení \emph{continuous integration}, což lze do češtiny přeložit jako kontinuální nebo průběžná 
-        integrace. Krátké seznámení s~touto metodologií je v~následující kapitole.
-
-        Informace v~této kapitole byly čerpány především  z~knihy \cite{jenkinsBook}, kde lze nalézt další informace o~serveru Jenkins CI,
+        integrace. Představení této metodologie je věnován
+        prostor v následující kapitole.
+        
+        Informace v~této kapitole byly čerpány zejména  z~knihy \cite{jenkinsBook}, ve které lze nalézt další informace o~serveru Jenkins CI,
         a~také z~webové stránky projektu \cite{jenkinsWeb}.
 
         \subsection{Kontinuální integrace a~využití Jenkins CI}
             V~minulosti byla integrace programu do výsledného produktu velmi náročným procesem a~často ztraceným časem.
-            S~vydáním každé verze programu se musel postup probíhající před vydáním produktu opakovat a~pro tým vývojářů
-            to prakticky znamenalo zdržení. Pokud se v~tomto procesu odhalil nějaký problém (což bylo běžné),
-            tak jeho řešení bylo z~důvodu nedostatku času a~jeho pozdního objevení mnohem problematičtější
+            S~vydáním každé nové verze programu se musel postup probíhající před vydáním produktu opakovat a~pro tým vývojářů
+            to prakticky znamenalo zdržení. Pokud byl v~tomto procesu odhalen nějaký problém (což bylo běžné),
+            bylo jeho řešení z~důvodu nedostatku času a~jeho pozdního objevení mnohem problematičtější,
             než kdyby byl tento problém odhalen dříve.
 
             Kontinuální integrace je moderní přístup k~vývoji softwaru, který mění způsob přemýšlení nad celým procesem vývoje
@@ -102,7 +103,7 @@ v~závěru této práce zhodnocen její přínos pro komunitu projektu Jenkins C
                 \item Automatické nahrávání nové verze produktu na server
             \end{itemize} 
 
-            Uživatelé mohou kdykoliv přidat využití libovolné funkcionality systému a~neopakovat stále stejné kroky. 
+            Uživatelé mohou kdykoliv přidat využití libovolné funkce systému a~neopakovat stále stejné kroky. 
             
 
         \subsection{Způsoby použití aplikace}
@@ -113,12 +114,11 @@ v~závěru této práce zhodnocen její přínos pro komunitu projektu Jenkins C
             na libovolném osobním počítači). 
             Komunikuje zejména pomocí protokolu HTTP nebo HTTPS, 
             které jsou založeny na modelu \emph{požadavek-odpověď} (angl. \emph{request-response}).  
-            Pro svou činnost potřebuje servlet kontejner ve kterém samotná 
-            aplikace poběží.
+            Pro svou činnost potřebuje servlet kontejner, ve kterém bude samotná aplikace spuštěna.
             Tento pojem je blíže objasněn v~kapitole \ref{servletWebserver}.
 
             \medskip \noindent
-            Existují dvě možnosti jak spustit server Jenkins CI:
+            Existují dvě možnosti, jak spustit server Jenkins CI:
 
             \begin{enumerate}
                 \item{Může běžet na libovolném \emph{Java EE} aplikačním serveru \cite{jenkinsServers} jako jsou například servery 
@@ -135,7 +135,7 @@ v~závěru této práce zhodnocen její přínos pro komunitu projektu Jenkins C
                     
                     Nahrazení těchto dvou nástrojů (nebo pouze serveru Jetty) a~zajištění vykonávání této činnosti je hlavním cílem této práce.
                     Záměrem je tedy nahradit server Jetty a~případně i~server Winstone pomocí zvoleného nového serveru Undertow.
-                    Studie těchto nástrojů a~jejich rozbor je předmětem následujícíh kapitol.}
+                    Studie těchto nástrojů a~jejich rozbor je předmětem následujících kapitol.}
             \end{enumerate}
 
             Pro tuto práci je důležitý druhý způsob používání Jenkins CI a~proto další informace se budou přímo vázat k~němu.
@@ -156,7 +156,7 @@ v~závěru této práce zhodnocen její přínos pro komunitu projektu Jenkins C
             Základem architektury je část \emph{Model}, což jsou objekty, které obsahují stav
             a~data aplikace. Každý model je přímo navázán na konkrétní URL adresu s~tím, že kořenovým
             modelem (dostupný pod URL \uv{/}) je pevně daná instance s~názvem \texttt{Hudson}.
-            Data z~objektů modelu jsou následně zobrazovány ve webovém rozhraní aplikace.
+            Data z~objektů modelu jsou následně zobrazována ve webovém rozhraní aplikace.
             Pro toto zobrazování je využita techonologie Jelly.
 
             Velmi podstatnou součástí aplikace je prvek \emph{Stapler}. Tento objekt
@@ -178,7 +178,7 @@ v~závěru této práce zhodnocen její přínos pro komunitu projektu Jenkins C
             i~tvorba rozšiřujících modulů je nad rámec této práce a~lze tyto informace
             najít v~odkazované literatuře.
         
-            Informace v~této kapitole byly čerpány z~tohoto dokumentu \cite{architectureOverview}
+            Informace v~této kapitole byly čerpány z~dokumentu \cite{architectureOverview}
             a~z~webových stránek projektu Stapler \cite{staplerWeb}.
 
         \subsection{Základy práce s~Jenkins CI} \label{jenkinsUsage}
@@ -188,7 +188,7 @@ v~závěru této práce zhodnocen její přínos pro komunitu projektu Jenkins C
             GitHub\footnote{Adresa aktuální verze Jekins CI: \texttt{www.github.com/jenkinsci}}.
 
             Po stažení zdrojových souborů je potřeba provést překlad aplikace. Pro automatizovaný 
-            překlad se používá nástroj Maven, který je krátce popsán v~kapitole \ref{maven}. 
+            překlad se používá nástroj Maven, který je stručně popsán v~kapitole \ref{maven}. 
             
             Překlad aplikace bez spuštění jednotkových testů i~integračních testů lze provést tímto příkazem:
             \begin{verbatim}
@@ -197,7 +197,7 @@ v~závěru této práce zhodnocen její přínos pro komunitu projektu Jenkins C
             
             \medskip
             Po úspěšném překladu aplikace vznikne v~adresáři \texttt{./war/target/} archiv \texttt{jenkins.war}, 
-            který obsahuje celou přeloženou webovou aplikaci včetně nástrojů na 
+            který obsahuje celou přeloženou webovou aplikaci včetně nástrojů, na 
             kterých závisí. Z~tohoto archivu je možné aplikaci přímo spustit pomocí příkazu:
 
             \begin{verbatim}
@@ -210,8 +210,8 @@ v~závěru této práce zhodnocen její přínos pro komunitu projektu Jenkins C
             komunikuje pomocí protokolu \emph{HTTP} na portu 8080. Je tedy možné se na lokálním počítači připojit do aplikace zadáním URL adresy 
             \texttt{http://localhost:8080} do webového prohlížeče. 
 
-            Pokud se aplikaci povede spustit, tak je již možné libovolně pracovat s~aplikací pouze z~webového prohlížeče. Detaily práce s~aplikací Jenkins CI
-            lze nalézt v~této knize \cite{jenkinsBook}, ale tyto informace jsou již nad rámec této publikace.
+            Pokud se aplikaci povede spustit, je již možné libovolně pracovat s~aplikací pomocí webového prohlížeče. Detaily práce s~aplikací Jenkins CI
+            lze nalézt v~knize \cite{jenkinsBook}, ale tyto informace jsou již nad rámec této publikace.
 
 
             
@@ -225,13 +225,13 @@ v~závěru této práce zhodnocen její přínos pro komunitu projektu Jenkins C
 
         \subsection{Webový server}
             Webový server je program, který zprostředkovává komunikaci přes síť s~klienty, kteří
-            se k~němu připojí a~požadují po něm nějaká data. Tato komunikace běžně probíhá pomocí protokolu HTTP
+            se k~němu připojí a~požadují po něm určitá data. Tato komunikace běžně probíhá pomocí protokolu HTTP
             nebo jeho šifrované verze HTTPS,
             které jsou založeny na modelu \emph{požadavek-odpověd} (angl. \emph{request-response}).
             Model této komunikace je zachycen na obrázku \ref{imgWebserver}.
             
             Typickým způsobem komunikace webového serveru je, 
-            že klient pomocí URL adresy specifikuje požadavek na nějaká
+            že klient pomocí URL adresy specifikuje požadavek na určitá
             data a~server mu v~odpovědi tato data pošle. Pokud by neexistoval za webovým serverem nějaký další
             program, tak by webový server vždy odpovídal na stejný požadavek stále stejnou odpovědí.
 
@@ -245,7 +245,7 @@ v~závěru této práce zhodnocen její přínos pro komunitu projektu Jenkins C
 
         \subsection{Servlet kontejner} \label{servletKontejner}
             Jelikož dostávat stále stejná statická data při stejném požadavku není dostatečná funkcionalita serveru,
-            tak existují způsoby jak zajistit dynamickou práci s~daty na serveru a~tudíž i~poskytovat
+            tak existují způsoby, jak zajistit dynamickou práci s~daty na serveru, a~tudíž i~poskytovat
             měnící se odpovědi na stejný dotaz.
             Jedním ze způsobů, jak této funkce docílit, je využití tzv. \emph{servletů},
             které jsou navrženy pro programovací jazyk Java.
@@ -253,7 +253,7 @@ v~závěru této práce zhodnocen její přínos pro komunitu projektu Jenkins C
             Servlet je standardní program (konkrétně jedna třída) napsaný v~jazyce Java, 
             který implementuje rozhraní \texttt{javax.servlet}.
             Implementace tohoto rozhraní ho zavazuje k~definování několika metod, ale jinak se jedná o~běžnou
-            třídu, z~které jsou při zpracovávání požadavků vytvářeny její instance. Po obdržení nějakého
+            třídu, ze~které jsou při zpracovávání požadavků vytvářeny její instance. Po obdržení nějakého
             požadavku servlet provede zpracování vstupních dat a~následně odešle patřičnou odpověď.
 
             Základní myšlenkou servlet kontejneru je umožnit dynamicky vytvářet odpovědi (často webové stránky)
@@ -1174,13 +1174,13 @@ HttpHandler httpHandler = manager.start();
     Tato kapitola popisuje způsob, jakým byla provedena samotná integrace serveru Undertow do Jenkins CI.
     Jednotlivé kroky zde popisované se přímo vážou k~informacím, které byly uvedeny v~předchozích kapitolách.
     
-    Na začátku jsou popsány obecné informace o implementaci (kapitola \ref{implZaklad})
-    a je detailněji rozebrána struktura aplikace a způsob implementace
+    Na začátku jsou popsány obecné informace o~implementaci (kapitola \ref{implZaklad})
+    a~je detailněji rozebrána struktura aplikace a~způsob implementace
     základních funkcí servlet kontejneru (kapitola \ref{implDetail}). 
-    Následně jsou zmíněny hlavní problémy, které se naskytly a musely
+    Následně jsou zmíněny hlavní problémy, které se naskytly a~musely
     být řešeny (kapitola \ref{implProblemy}).
     Závěrem této kapitoly je blíže vymezena míra zachování zpětné kompatibility
-    vytvořené implementace (kapitola \ref{implOmezeni}) a je popsán způsob
+    vytvořené implementace (kapitola \ref{implOmezeni}) a~je popsán způsob
     spuštění této nové implementace (kapitola \ref{implSpusteni}).
 
 
@@ -1265,7 +1265,7 @@ HttpHandler httpHandler = manager.start();
             zadány určité parametry. 
 
             Inicializace vytvořeného servlet kontejneru pro Jenkins CI probíhá
-            v těchto fázích:
+            v~těchto fázích:
             \begin{enumerate}
                 \item \textbf{Zpracování parametrů:} Jsou zkontrolovány zadané parametry
                     aplikace a~přítomnost povinných parametrů. Při spuštění aplikace
@@ -1460,7 +1460,7 @@ HttpHandler httpHandler = manager.start();
         Implementace některých částí aplikace byla podstatně komplikovanější oproti původní verzi servlet kontejneru
         a~očekáváním na začátku projektu. Server Undertow 
         neposkytuje některé standardní funkcionality pro integraci servlet kontejneru, které
-        jsou u serveru Jetty samozřejmostí. Mezi nejvýznamnější patří nutnost
+        jsou u~serveru Jetty samozřejmostí. Mezi nejvýznamnější patří nutnost
         zpracování souboru \emph{web.xml} a~nastavení dle něj servlet kontejneru nebo například nutnost 
         provádět zavádění tříd servletů (tzv. \emph{classloading}). V~aplikaci Jetty lze provést načtení 
         souboru \emph{web.xml} pomocí jediného volání metody serveru.
@@ -1492,7 +1492,7 @@ HttpHandler httpHandler = manager.start();
             \item Parametr \texttt{handlerCountMaxIdle} umožňoval určit maximální počet vláken servlet kontejneru, 
                 které aktuálně neprováděly žádnou činnost. V~původní implementaci byla vlákna pro práci servlet kontejneru
                 inicializována ručně pomocí instance rozhraní \\\texttt{ExecutorService} ze standardní knihovny. 
-                V~serveru Undertow tato možnost chybí, a proto byla správa vláken ponechána ve výchozím stavu. Každopádně
+                V~serveru Undertow tato možnost chybí, a~proto byla správa vláken ponechána ve výchozím stavu. Každopádně
                 tento parametr nemá zásadní vliv na zachování zpětné kopatibility.
 
             \item Parametry \texttt{debug} a~\texttt{logThrowingThread}, které pouze upravovaly vypisování průběhu
@@ -1517,7 +1517,7 @@ HttpHandler httpHandler = manager.start();
         by se servlet kontejner ustálil, tak je možné provést zmíněné ruční sestavení serveru a~poskytnout
         podporu obou těchto parametrů.
           
-        Kromě zde uvedených parametrů byly ostatní parametry podporované v původní
+        Kromě zde uvedených parametrů byly ostatní parametry podporované v~původní
         verzi Jenkins CI zachovány.
 
         
@@ -1537,8 +1537,8 @@ HttpHandler httpHandler = manager.start();
     verzi modulu \texttt{extras-executable-war}. Jakmile jsou moduly připravené
     v~lokálním Maven repozitáři, tak již lze aplikaci Jenkins CI spustit standardním postupem,
     který je popsán v~kapitole \ref{jenkinsUsage}.
-    %Postup pro přeložení a spuštění upraveného projektu Jenkins CI 
-    %je také shrnut v příloze \ref{prilohaNavod}.
+    Postup pro přeložení a~spuštění upraveného projektu Jenkins CI 
+    je také shrnut v~příloze \ref{prilohaNavod}.
 
     \medskip
     Při vývoji aplikace bylo vytvořeno 6 integračních testů, které testují základní funkčnosti
@@ -1613,7 +1613,7 @@ HttpHandler httpHandler = manager.start();
             Při testování a~vyhodnocení výsledků byly sledovány především průměrná odezva serveru na požadavky
             a~jako pomocný ukazatel také doba za jakou se rychlost odpovědí serveru ustálí pod určitou hranicí.
             
-            V průběhu činnosti serveru jeho doba odpovědi
+            V~průběhu činnosti serveru jeho doba odpovědi
             na požadavek rapidně klesá především z~těchto důvodů:
             
             \begin{itemize}
@@ -1748,8 +1748,8 @@ HttpHandler httpHandler = manager.start();
 
             \medskip
             Na počátku testů byla odezva serveru vždy vysoká, ale v~průběhu docházelo k~jejímu rapidnímu poklesu.
-            Tento pokles a~stabilní stav nastával u~nové varianty serveru mírně dříve a ze
-            směrodatné odchylky vidíme, že jeho okamžik nastával v menším rozpětí než u varianty původní. Hlavním
+            Tento pokles a~stabilní stav nastával u~nové varianty serveru mírně dříve a~ze
+            směrodatné odchylky vidíme, že jeho okamžik nastával v~menším rozpětí než u~varianty původní. Hlavním
             zjištěním testu je pokles průměrné doby odezvy serveru Jenkins~CI o~asi 3,141 milisekund,
             což představuje zrychlení celé aplikace v~průměru o~\textbf{11,73\%} (dle vztahu pro výpočet \ref{eqZrychleni}).
             Z~pohledu stability jednotlivých spuštění měla nová varianta Jenkins CI mírně sníženou
@@ -1757,7 +1757,7 @@ HttpHandler httpHandler = manager.start();
             ale rozdíl není příliš velký.
             Tento fakt můžeme pozorovat i~na grafu~\ref{imgGetMainPageCast}.
             
-            U zjištěného zrychlení je důležité zdůraznit, že se jedná o~zrychlení celé aplikace, takže
+            U~zjištěného zrychlení je důležité zdůraznit, že se jedná o~zrychlení celé aplikace, takže
             zrychlení samotného servlet kontejneru bylo oproti původní variantě ještě vyšší než naměřených 11,73\%.
             
 
@@ -1966,7 +1966,7 @@ HttpHandler httpHandler = manager.start();
         V~prvních dvou případech dosáhla nová varianta lepších výsledků
         výkonnosti z~pohledu doby odezvy aplikace. V~prvním případě zrychlení činilo téměř 12\%
         a~ve druhém případě téměř 4\%. V~těchto dvou případech nová varianta
-        dosahovala stabilnějších výsledků mezi měřeními a bylo zaznamenáno 
+        dosahovala stabilnějších výsledků mezi měřeními a~bylo zaznamenáno 
         zkrácení doby, kdy docházelo k~ustálení odpovědí serveru.
 
         V~posledním testovaném případě nebylo prokázáno zrychlení, ale naopak mírné zpomalení
@@ -1988,7 +1988,7 @@ HttpHandler httpHandler = manager.start();
 
     \section{Zhodnocení přínosu pro komunitu Jenkins CI} \label{kapPrinos}
         Cíl vytvořit servlet kontejner založený na serveru Undertow, který bude
-        funkčně kompatibiltní se stávajícím servlet kontejnerem v Jenkins CI, se podařilo
+        funkčně kompatibiltní se stávajícím servlet kontejnerem v~Jenkins CI, se podařilo
         naplnit. Tento vytvořený servlet kontejner bude v~následujících dnech
         představen komunitě Jenkins CI.
 
