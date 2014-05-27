@@ -100,7 +100,11 @@
         value="http://${server.url}:${server.port:8080}"/>
     <property name="method" value="GET"/>                                                                                               
   </sender>
+\end{verbatim}
   
+
+\newpage
+\begin{verbatim}
   <reporting>
     <reporter class="ResponseTimeReporter">
       <destination class="CSVDestination">
@@ -113,7 +117,6 @@
 </scenario>
 \end{verbatim}
 
-        \newpage
         \item Scénář pro testování vytvoření nové úlohy v Jenkins CI:
 \begin{verbatim}
 <?xml version="1.0" encoding="utf-8"?>
@@ -147,6 +150,7 @@
 </scenario>
 \end{verbatim}
 
+\newpage
         \item Scénář pro testování zobrazení konfigurace úlohy v Jenkins CI
 \begin{verbatim}
 <?xml version="1.0" encoding="utf-8"?>
