@@ -1601,8 +1601,8 @@ HttpHandler httpHandler = manager.start();
         se serverem byl zvolen protokol HTTP, jelikož je to výchozí protokol v~Jenkins CI.
         Typy požadavků \texttt{DELETE} a~\texttt{PUT} nejsou v~aplikaci Jenkins CI používány (i~mazání
         se děje požadavkem \texttt{POST}\footnote{Mazání úlohy (angl. \emph{job}) je popsáno v~REST API aplikace,
-        které se zobrazí po zadání adresy: \texttt{<adresa\_serveru>/job/<nazev\_ulohy>/API}}), 
-        proto nebyly testovány tyto typy požadavků, ale pouze typy \texttt{GET} (2 scénáře) a~\texttt{POST} (1 scénář). 
+        které se zobrazí po zadání adresy: \texttt{<adresa\_serveru>/job/<nazev\_ulohy>/API}}). 
+        Proto nebyly testovány tyto typy požadavků, ale pouze typy \texttt{GET} (2 scénáře) a~\texttt{POST} (1 scénář). 
 
         Jednotlivé testované scénáře jsou popsány v~následujících kapitolách. Jejich zápis
         pro framework PerfCake je umístěn v~příloze \ref{prilohaScenare}.
@@ -1611,11 +1611,10 @@ HttpHandler httpHandler = manager.start();
 
         \subsection{Popis způsobu vyhodnocování výsledků} \label{zpusobVyhodnoceniVysledku}
             Při testování a~vyhodnocení výsledků byly sledovány především průměrná odezva serveru na požadavky
-a~doba za jakou se rychlost odpovědi ustálí pod určitou hranici, 
-            která sloužila jako pomocný ukazatel.
+            a~jako pomocný ukazatel také doba za jakou se rychlost odpovědí serveru ustálí pod určitou hranicí.
             
-            Doba odpovědi
-            serveru na požadavek postupně rapidně klesá především z~těchto důvodů:
+            V průběhu činnosti serveru jeho doba odpovědi
+            na požadavek rapidně klesá především z~těchto důvodů:
             
             \begin{itemize}
                 \item Na počátku běhu serveru je aplikace brzděna inicializacema svých jednotlivých částí
@@ -1627,7 +1626,7 @@ a~doba za jakou se rychlost odpovědi ustálí pod určitou hranici,
             Samotný server Jenkins CI na počátku provádí asynchronně různé činnosti (např. zjišťování aktualizací),
             což může ovlivnit především počátek testování. Při testování byla tendence spustit testovací 
             skript okamžitě po spuštění, ale jelikož neběžel na stejném serveru jako testovaná
-            aplikace, tak nebylo možné dosáhnou stejného okamžiku. 
+            aplikace, tak nebylo možné dosáhnout přesně stejného okamžiku. 
 
             \medskip
             Z~těchto důvodů byla zkoumána především průměrná odezva serveru v~dlouhém časovém
@@ -1638,7 +1637,7 @@ a~doba za jakou se rychlost odpovědi ustálí pod určitou hranici,
             Tento stav byl definován jako okamžik, kdy je v~aktuálním stavu
             pokles průměrné doby odezvy serveru 
             menší než $0,5\%$ (definováno ve vzorci \ref{eqStabilni})
-            oproti třem předcházejícím naměřeným hodnotám (období 3 sekund).
+            oproti třem předcházejícím naměřeným hodnotám (většinou období 3 sekund).
             
             \begin{equation}\label{eqStabilni}
                 \frac{\mid predchozi\_hodnota - aktualni\_hodnota\mid}{predchozi\_hodnota} < 0,005
@@ -1646,8 +1645,8 @@ a~doba za jakou se rychlost odpovědi ustálí pod určitou hranici,
             \medskip
 
         
-            Při analýze naměřených hodnot byla počítána směrodatná odchylka hodnot, která je
-            definováná v~rovnici \ref{eqOdchylka} a~aritmetický průměr souboru hodnot
+            Při analýze naměřených hodnot byla počítána jejich směrodatná odchylka, která je
+            definováná v~rovnici \ref{eqOdchylka}, a~aritmetický průměr
             definovaný v~rovnici \ref{eqPrumer}.
             \begin{equation}\label{eqOdchylka}
                 s~= \sqrt{\frac{1}{N} \sum_{i=1}^N (x_i - \overline{x})^2}      
@@ -1681,19 +1680,18 @@ a~doba za jakou se rychlost odpovědi ustálí pod určitou hranici,
                 \multirow{4}{*}{Běh}  &   \multicolumn{2}{c||}{\textbf{Původní verze}}  &  \multicolumn{2}{c|}{\textbf{Nová verze}}\\ \cline{2-5}
                  & \textbf{Aritmetický} &  \textbf{Stabilní} &  \textbf{Aritmetický}  &  \textbf{Stabilní}\\  
                  & \textbf{průměr odezvy} [ms]  &   \textbf{stav} [s]  &  \textbf{průměr odezvy} [s] &  \textbf{stav} [s]\\\hline
-                1 & 28.797 & 124 &  26.595 & 119\\\hline
-                2  & 29.754 & 151 & 26.577 & 116\\\hline
-                3 & 29.764 & 147 & 27.921 & 113\\\hline
-                4 & 31.513  & 159 & 26.202 & 122\\\hline
-                5 & 29.652 & 104 & 26.809 & 119\\\hline\hline
-                6 & 30.989 & 112 & 26.509 & 166\\\hline
-                7 & 29.668 & 100 & 26.453 & 159\\\hline
-                8 & 29.839 & 92 & 27.343 & 114\\\hline
-                9 & 29.323 & 163 & 26.528 & 119\\\hline
-                10 & 29.839 & 143 & 26.786 & 119\\\hline
+                1 & 28,797 & 124 &  26,595 & 119\\\hline
+                2  & 29,754 & 151 & 26,577 & 116\\\hline
+                3 & 29,764 & 147 & 27,921 & 113\\\hline
+                4 & 31,513  & 159 & 26,202 & 122\\\hline
+                5 & 29,652 & 104 & 26,809 & 119\\\hline\hline
+                6 & 30,989 & 112 & 26,509 & 166\\\hline
+                7 & 29,668 & 100 & 26,453 & 159\\\hline
+                8 & 29,839 & 92 & 27,343 & 114\\\hline
+                9 & 29,323 & 163 & 26,528 & 119\\\hline
+                10 & 29,839 & 143 & 26,786 & 119\\\hline
               \end{tabular}
-              \caption{Tabulka zobrazující aritmetický průměr doby odezvy serverů a~čas, za který se změna průměrné doby odezvy ustálí 
-                (definováno v~kapitole \ref{zpusobVyhodnoceniVysledku}) }
+              \caption{ Tabulka zobrazující výsledky jednotlivých běhů experimentu, kdy byla získávána hlavní stránka Jenkins CI}
               \label{tabMainPageMain}
              \end{center}
             \end{adjustwidth}
@@ -1707,12 +1705,11 @@ a~doba za jakou se rychlost odpovědi ustálí pod určitou hranici,
                 \multirow{3}{*}{}   &    \multicolumn{2}{c||}{\textbf{Doba odezvy}}  &  \multicolumn{2}{c|}{\textbf{Stabilní stav}}\\ \cline{2-5}
                  & \textbf{Aritmetický}  &  \textbf{Směrodatná}  &  \textbf{Aritmetický} &  \textbf{Směrodatná}\\ 
                  & \textbf{průměr} [ms]  &  \textbf{odchylka} [ms]  &  \textbf{průměr} [s]  &  \textbf{odchylka} [s]\\ \hline
-                Původní verze & 29.914 &  0.741 &  129.5 &  24.913 \\\hline
-                Nová verze & 26.772 &  0.477 &  126.6 &  18.195\\\hline
-                \textbf{Rozdíl} &  \textbf{3.141}  &  \textbf{0.265}  &  \textbf{2.9}  &  \textbf{6.718}\\\hline  
+                Původní verze & 29,914 &  0,741 &  129,5 &  24,913 \\\hline
+                Nová verze & 26,772 &  0,477 &  126,6 &  18,195\\\hline
+                \textbf{Rozdíl} &  \textbf{3,141}  &  \textbf{0,265}  &  \textbf{2,9}  &  \textbf{6,718}\\\hline  
               \end{tabular}
-              \caption{Tabulka shrnující výsledky měřeného experimentu, kdy byla zobrazována hlavní stránka Jenkins CI. 
-                    Naměřené hodnoty jsou zobrazeny v~tabulce~\ref{tabMainPageMain}}
+              \caption{Tabulka shrnující výsledky celého experimentu, kdy byla získávána hlavní stránka Jenkins CI}
               \label{tabMainPageFinal}
              \end{center}
              \end{adjustwidth}
@@ -1730,7 +1727,7 @@ a~doba za jakou se rychlost odpovědi ustálí pod určitou hranici,
                 \begin{center}
                     \scalebox{0.65}{\includegraphics{img/getMainPage_cely.png}}
                     \caption{Průběh naměřených hodnot při testu získávání hlavní stránky projektu.
-                        Graf zobrazuje nejlepší a~nejhorší naměřené případ pro každý server.  
+                        Graf zobrazuje nejlepší a~nejhorší naměřený případ pro obě varianty.  
                         Na svislé ose je použito logaritmické měřítko.}
                     \label{imgGetMainPageCely}
                 \end{center}
@@ -1741,8 +1738,8 @@ a~doba za jakou se rychlost odpovědi ustálí pod určitou hranici,
              \begin{adjustwidth}{-0.5cm}{}
                 \begin{center}
                     \scalebox{0.65}{\includegraphics{img/getMainPage_cast.png}}
-                    \caption{Průběh naměřených hodnot při testu získávání hlavní stránky projektu.
-                        Graf zobrazuje nejlepší a~nejhorší naměřené případ pro každý server.}
+                    \caption{Část průběhu naměřených hodnot při testu získávání hlavní stránky projektu.
+                        Graf zobrazuje nejlepší a~nejhorší naměřený případ pro obě varianty.}
                     \label{imgGetMainPageCast}
                 \end{center}
              \end{adjustwidth}
@@ -1750,21 +1747,19 @@ a~doba za jakou se rychlost odpovědi ustálí pod určitou hranici,
 
 
             \medskip
-            Na počátku testů byla odezva serveru vždy vysoká, ale v~průběhu docházelo k~rapidnímu poklesu.
-            Tento pokles a~stabilní stav nastával u~nové varianty serveru mírně dříve, ale ze
-            směrodatné odchylky vidíme, že jeho okamžik se příliš nelišil. Hlavním
-            zjištěním testu je pokles průměrné doby odezvy serveru Jenkins CI o~asi 3.141 milisekund,
-            což představuje zrychlení celé aplikace v~průměru o~\textbf{11.73\%} (dle vztahu pro výpočet \ref{eqZrychleni}).
-            Z~pohledu stability jednotlivých spuštění měla nová varianta Jenkins CI výrazně sníženou
-            směrodatnou odchylku průměrné doby odezvy, což naznačuje konstantnější výkonnost celé aplikace.
-            Tento fakt můžeme pozorovat i~na grafu \ref{imgGetMainPageCast}, kde je křivka běhů nové implementace
-            také stabilnější.
-
-            Z~pohledu zrychlení je důležité zdůraznit, že se jedná o~zrychlení celé aplikace, takže
-            zrychlení samotného servlet kontejneru bude oproti původní variantě ještě vyšší než naměřených 11.73\%.
+            Na počátku testů byla odezva serveru vždy vysoká, ale v~průběhu docházelo k~jejímu rapidnímu poklesu.
+            Tento pokles a~stabilní stav nastával u~nové varianty serveru mírně dříve a ze
+            směrodatné odchylky vidíme, že jeho okamžik nastával v menším rozpětí než u varianty původní. Hlavním
+            zjištěním testu je pokles průměrné doby odezvy serveru Jenkins~CI o~asi 3,141 milisekund,
+            což představuje zrychlení celé aplikace v~průměru o~\textbf{11,73\%} (dle vztahu pro výpočet \ref{eqZrychleni}).
+            Z~pohledu stability jednotlivých spuštění měla nová varianta Jenkins CI mírně sníženou
+            směrodatnou odchylku průměrné doby odezvy, což naznačuje konstantnější výkonnost celé aplikace,
+            ale rozdíl není příliš velký.
+            Tento fakt můžeme pozorovat i~na grafu~\ref{imgGetMainPageCast}.
             
-
-
+            U zjištěného zrychlení je důležité zdůraznit, že se jedná o~zrychlení celé aplikace, takže
+            zrychlení samotného servlet kontejneru bylo oproti původní variantě ještě vyšší než naměřených 11,73\%.
+            
 
 
         \subsection{Získání konfigurace úlohy}
@@ -1801,7 +1796,7 @@ a~doba za jakou se rychlost odpovědi ustálí pod určitou hranici,
                 9 & 1838.782 & 108 & 1810.809 & 100\\\hline
                 10 & 1811.317 & 104 & 1789.687 & 104\\\hline
               \end{tabular}
-              \caption{Tabulka zobrazující výsledky jednotlivých běhů experimentu, kdy byla získávána konfigurace úlohy.}
+              \caption{Tabulka zobrazující výsledky jednotlivých běhů experimentu, kdy byla získávána konfigurace úlohy}
               \label{tabgetFreestyleMain}
              \end{center}
             \end{adjustwidth}
@@ -1832,7 +1827,7 @@ a~doba za jakou se rychlost odpovědi ustálí pod určitou hranici,
                 \begin{center}
                     \scalebox{0.65}{\includegraphics{img/getFreestyleJob_cely.png}}
                     \caption{Průběh naměřených hodnot při testu získávání konfigurace úlohy ze serveru.
-                        Graf zobrazuje nejlepší a~nejhorší naměřené případ pro každý server.  
+                        Graf zobrazuje nejlepší a~nejhorší naměřený případ pro každý server.  
                         Na svislé ose je použito logaritmické měřítko.}
                     \label{imgGetFreestyleCely}
                 \end{center}
@@ -1844,7 +1839,7 @@ a~doba za jakou se rychlost odpovědi ustálí pod určitou hranici,
                 \begin{center}
                     \scalebox{0.65}{\includegraphics{img/getFreestyleJob_cast.png}}
                     \caption{Průběh naměřených hodnot při testu získávání konfigurace úlohy ze serveru.
-                        Graf zobrazuje nejlepší a~nejhorší naměřené případ pro každý server.}
+                        Graf zobrazuje nejlepší a~nejhorší naměřený případ pro každý server.}
                     \label{imgGetFreestyleCast}
                 \end{center}
              \end{adjustwidth}
